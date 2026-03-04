@@ -66,12 +66,12 @@ canvas#airBG{position:absolute;inset:0;width:100%;height:100%;z-index:0}
 #board{z-index:10;padding:env(safe-area-inset-top,2px) env(safe-area-inset-right,2px) env(safe-area-inset-bottom,2px) env(safe-area-inset-left,2px)}
 #board.on{display:flex;align-items:center;justify-content:center}
 .bg{display:grid;grid-template-columns:1.15fr 1fr 1fr 1fr 1fr 1.15fr;grid-template-rows:1.15fr 1fr 1fr 1.15fr;gap:2px;width:100%;height:100%;max-width:800px;max-height:100%;position:relative;z-index:2}
-.cell{border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;border:2px solid rgba(255,255,255,.12);padding:1px;background:linear-gradient(165deg,rgba(14,20,40,.82),rgba(6,10,22,.93));transition:all .3s;}
+.cell{border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;border:2px solid rgba(255,255,255,.12);padding:1px;background:linear-gradient(165deg,rgba(18,26,50,.78),rgba(8,14,30,.88));transition:all .3s;}
 .cell::before{content:'';position:absolute;top:0;left:8%;right:8%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);pointer-events:none}
 .cell-strip{position:absolute;top:0;left:0;right:0;height:4px;border-radius:6px 6px 0 0}
-.cell-em{font-size:15px;filter:drop-shadow(0 3px 10px rgba(0,0,0,.7));line-height:1;margin-top:2px}
-.cell-nm{font-size:5.5px;font-weight:800;color:#fff;letter-spacing:.3px;text-transform:uppercase;margin-top:1px;text-align:center;line-height:1.1;text-shadow:0 1px 3px rgba(0,0,0,.5)}
-.cell-pr{font-size:6px;font-weight:900;color:#D4A843;text-shadow:0 0 10px rgba(212,168,67,.5)}
+.cell-em{font-size:17px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5)) drop-shadow(0 0 12px rgba(255,255,255,.15));line-height:1;margin-top:2px}
+.cell-nm{font-size:6.5px;font-weight:900;color:#fff;letter-spacing:.4px;text-transform:uppercase;margin-top:1px;text-align:center;line-height:1.1;text-shadow:0 0 6px rgba(255,255,255,.4),0 1px 4px rgba(0,0,0,.8)}
+.cell-pr{font-size:7px;font-weight:900;color:#f0cc6a;text-shadow:0 0 8px rgba(255,220,100,.6),0 0 16px rgba(212,168,67,.3)}
 .cell.corner-go{background:linear-gradient(165deg,rgba(212,168,67,.15),rgba(8,14,28,.88));border-color:rgba(212,168,67,.25)}
 .cell.corner-turkey{background:linear-gradient(165deg,rgba(139,69,19,.15),rgba(8,14,28,.88));border-color:rgba(139,69,19,.2)}
 .cell.corner-doordash{background:linear-gradient(165deg,rgba(255,48,8,.12),rgba(8,14,28,.88));border-color:rgba(255,48,8,.18)}
@@ -83,14 +83,14 @@ canvas#airBG{position:absolute;inset:0;width:100%;height:100%;z-index:0}
 .cell-arrow{position:absolute;top:-2px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #f0cc6a;filter:drop-shadow(0 0 8px rgba(212,168,67,.8));animation:aB .7s ease-in-out infinite}
 @keyframes aB{0%,100%{top:-2px}50%{top:1px}}
 .cell.owned-cell{border-color:rgba(46,204,113,.4);box-shadow:0 0 15px rgba(46,204,113,.15),inset 0 0 12px rgba(46,204,113,.05)}
-.cell.owned-cell .cell-pr{color:#2ecc71;text-shadow:0 0 8px rgba(46,204,113,.4)}
+.cell.owned-cell .cell-pr{color:#5eff9a;text-shadow:0 0 8px rgba(94,255,154,.5),0 0 16px rgba(46,204,113,.3)}
 .cell.leg-cell.owned-cell{border-color:rgba(212,168,67,.5);box-shadow:0 0 22px rgba(212,168,67,.18),inset 0 0 18px rgba(212,168,67,.06);animation:lgP 2.5s ease-in-out infinite alternate}
 @keyframes lgP{0%{box-shadow:0 0 14px rgba(212,168,67,.12)}100%{box-shadow:0 0 28px rgba(212,168,67,.25)}}
-.bcenter{grid-column:2/6;grid-row:2/4;background:linear-gradient(155deg,rgba(8,14,28,.92),rgba(4,6,16,.96));border-radius:10px;border:2px solid rgba(212,168,67,.1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:3px 5px;position:relative;overflow:hidden}
+.bcenter{grid-column:2/6;grid-row:2/4;background:linear-gradient(155deg,rgba(12,20,38,.88),rgba(6,10,24,.92));border-radius:10px;border:2px solid rgba(212,168,67,.1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:3px 5px;position:relative;overflow:hidden}
 .bcenter::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 20%,rgba(212,168,67,.06) 0%,transparent 50%);pointer-events:none}
-.bc-regem{font-size:14px}.bc-reg{font-size:7px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:#fff;opacity:.45}
+.bc-regem{font-size:16px;filter:drop-shadow(0 0 8px rgba(255,255,255,.2))}.bc-reg{font-size:8px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:#fff;opacity:.7}
 .bc-bal{font-size:24px;font-weight:900;background:linear-gradient(180deg,#fffbe8,#D4A843 50%,#a07825);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
-.bc-ballbl{font-size:5.5px;font-weight:800;color:#fff;opacity:.35;letter-spacing:1.5px;text-transform:uppercase}
+.bc-ballbl{font-size:6px;font-weight:800;color:#fff;opacity:.55;letter-spacing:1.5px;text-transform:uppercase}
 .bc-dice{display:flex;gap:5px;align-items:center;margin:1px 0}
 .bc-die{width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:22px;background:linear-gradient(155deg,rgba(22,30,55,.9),rgba(10,16,38,.95));border-radius:8px;border:1px solid rgba(255,255,255,.04);box-shadow:0 4px 15px rgba(0,0,0,.4),inset 0 0 20px rgba(0,0,0,.25)}
 .bc-die.spin{animation:dS .05s linear infinite}
@@ -100,7 +100,7 @@ canvas#airBG{position:absolute;inset:0;width:100%;height:100%;z-index:0}
 .rbtn{font-size:12px;font-weight:900;padding:7px 32px;border:none;border-radius:50px;background:linear-gradient(155deg,#1e3460,#152848);color:#FFF;cursor:pointer;letter-spacing:2px;-webkit-appearance:none;box-shadow:0 0 22px rgba(27,42,74,.3),0 3px 12px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.07);position:relative;overflow:hidden;white-space:nowrap}
 .rbtn::after{content:'';position:absolute;top:-50%;left:-100%;width:40%;height:200%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);transform:rotate(25deg);animation:gsh 5s ease-in-out infinite}
 .rbtn:active{transform:scale(.95)}.rbtn:disabled{opacity:.12}
-.bc-info{font-size:5.5px;color:#fff;opacity:.3;font-weight:700;letter-spacing:1px}
+.bc-info{font-size:6px;color:#fff;opacity:.5;font-weight:700;letter-spacing:1px}
 /* OVERLAYS */
 .ov{position:fixed;inset:0;z-index:50;background:rgba(2,4,8,.9);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:10px}.ov.hidden{display:none}
 .ov-card{background:linear-gradient(170deg,#fefefe,#f0ece2);border-radius:18px;padding:18px 16px 14px;max-width:290px;width:100%;color:#0e1224;text-align:center;animation:ovP .35s cubic-bezier(.34,1.56,.64,1);box-shadow:0 25px 80px rgba(0,0,0,.7),0 0 0 1px rgba(212,168,67,.1);position:relative;overflow:hidden}
@@ -143,8 +143,8 @@ canvas#airBG{position:absolute;inset:0;width:100%;height:100%;z-index:0}
 #easter.on{display:flex}
 canvas#easterBG{position:absolute;inset:0;width:100%;height:100%;z-index:0}
 .ee-wrap{position:relative;z-index:2;text-align:center}
-.ee-ti{font-size:18px;font-weight:900;background:linear-gradient(180deg,#fffbe8,#D4A843);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:6px 0 2px}
-.ee-de{font-size:9px;color:#fff;opacity:.5;margin-bottom:8px;max-width:250px;line-height:1.5}
+.ee-ti{font-size:16px;font-weight:900;background:linear-gradient(180deg,#fffbe8,#D4A843);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:6px 0 2px}
+.ee-de{font-size:8px;color:#fff;opacity:.6;margin-bottom:6px;max-width:250px;line-height:1.5}
 /* REGION DONE */
 #regDone{z-index:70;background:rgba(2,4,8,.9)}
 .rd-z{text-align:center;animation:ovP .5s cubic-bezier(.34,1.56,.64,1);padding:16px}
@@ -186,15 +186,15 @@ canvas#villaScene{position:absolute;inset:0;width:100%;height:100%;z-index:1}
 <canvas id="bgMain" class="bg-layer"></canvas>
 <div id="portrait"><div class="p-icon">📱</div><div class="p-txt">Rotate Your Phone</div><div class="p-sub">Gooby needs landscape mode!</div></div>
 <div id="safariTip">For best experience, tap Share then Add to Home Screen <button class="ct" onclick="this.parentElement.style.display='none'">✕</button></div>
-<div id="splash" class="scr on"><canvas id="splashBG"></canvas><div class="sz"><canvas id="ptFlag" width="60" height="40" style="margin:0 auto;display:block"></canvas><div class="s-paw">🐾</div><div class="s-ti">GOOBY</div><div class="s-ln"></div><div class="s-st">Portugal Adventure</div><div class="s-st2">A Fonseca Family Story</div><button class="gbtn" onclick="startAirline()">Board Flight ✈️</button></div></div>
-<div id="airline" class="scr"><canvas id="airBG"></canvas><div class="al-z"><div class="al-logo">✈️ Gooby Airlines ✈️</div><div class="al-pass"><div class="al-row"><div><div class="al-lbl">Passenger</div><div class="al-val">The Fonseca Family</div></div><div><div class="al-lbl">Flight</div><div class="al-val gold">GA-2024</div></div></div><div class="al-div"></div><div class="al-row"><div><div class="al-lbl">From</div><div class="al-val">Maryland, USA 🏠</div></div><div><div class="al-lbl">To</div><div class="al-val gold">Lisbon, PT 🇵🇹</div></div></div><div class="al-div"></div><div class="al-row"><div><div class="al-lbl">Seat</div><div class="al-val">First Class 🐾</div></div><div><div class="al-lbl">Gate</div><div class="al-val gold">FONSECA</div></div></div><div class="al-fam">Jessica · Mae · Dad · Brian · Steven · Angie · Rambo 🐕</div></div><div class="al-fly"><div class="al-city"><div class="al-city-em">🏠</div><div class="al-city-nm">Maryland</div></div><div class="al-path"><div class="al-trail" id="alTrail"></div><div class="al-plane" id="alPlane">✈️</div></div><div class="al-city"><div class="al-city-em">🇵🇹</div><div class="al-city-nm">Portugal</div></div></div><div class="al-msg" id="alMsg">Bem-vindo a Portugal! 🐾</div><div class="al-sub" id="alSub">The Fonseca adventure begins...</div></div></div>
+<div id="splash" class="scr on"><canvas id="splashBG"></canvas><div class="sz"><canvas id="ptFlag" width="90" height="60" style="margin:0 auto;display:block"></canvas><div class="s-paw">🐾</div><div class="s-ti">GOOBY</div><div class="s-ln"></div><div class="s-st">Portugal Adventure</div><div class="s-st2">A Fonseca Family Story</div><button class="gbtn" onclick="startAirline()">Board Flight ✈️</button></div></div>
+<div id="airline" class="scr"><canvas id="airBG"></canvas><div class="al-z"><div class="al-logo">✈️ Gooby Airlines ✈️</div><div class="al-pass"><div class="al-row"><div><div class="al-lbl">Passenger</div><div class="al-val">The Fonseca Family</div></div><div><div class="al-lbl">Flight</div><div class="al-val gold">GA-2024</div></div></div><div class="al-div"></div><div class="al-row"><div><div class="al-lbl">From</div><div class="al-val">Maryland, USA 🏠</div></div><div><div class="al-lbl">To</div><div class="al-val gold">Lisbon, PT 🇵🇹</div></div></div><div class="al-div"></div><div class="al-row"><div><div class="al-lbl">Seat</div><div class="al-val">First Class 🐾</div></div><div><div class="al-lbl">Gate</div><div class="al-val gold">FONSECA</div></div></div><div class="al-fam">Jessica · Mae · Dad · Brian · Steven · Angie · Grandpa · Rambo 🐕</div></div><div class="al-fly"><div class="al-city"><div class="al-city-em">🏠</div><div class="al-city-nm">Maryland</div></div><div class="al-path"><div class="al-trail" id="alTrail"></div><div class="al-plane" id="alPlane">✈️</div></div><div class="al-city"><div class="al-city-em">🇵🇹</div><div class="al-city-nm">Portugal</div></div></div><div class="al-msg" id="alMsg">Bem-vindo a Portugal! 🐾</div><div class="al-sub" id="alSub">The Fonseca adventure begins...</div></div></div>
 <div id="board" class="scr"><div class="bg" id="bgrid"></div></div>
 <div class="ov hidden" id="ov"><div class="ov-card"><div class="ov-em" id="oEm">🎉</div><div class="ov-badge hidden" id="oBadge"></div><div class="ov-ti" id="oTi"></div><div class="ov-de" id="oDe"></div><div class="ov-btns" id="oBt"></div></div></div>
 <div id="turkeyMG" class="mg"><canvas class="mg-bg-c" id="tBgC"></canvas><div class="mg-z"><div class="mg-hud"><div class="mg-title">🏹 Dad's Crossbow</div><div class="mg-score" id="tScore">0</div><div class="mg-timer" id="tTimer">10</div></div><div class="mg-inst">TAP THE TURKEYS! Dad handed you the crossbow 🎯</div><div class="mg-arena" id="tArena"></div></div></div>
 <div id="turkeyResult" class="mg-result"><div class="mg-r-em">🏹</div><div class="mg-r-ti" id="tResTi"></div><div class="mg-r-de" id="tResDe"></div><button class="gbtn" onclick="closeTurkey()">Continue 🐾</button></div>
 <div id="fartMG" class="mg"><canvas class="mg-bg-c" id="fBgC"></canvas><div class="mg-z"><div class="mg-hud"><div class="mg-title">💨 Gatooooos Arena</div><div class="mg-score" id="fScore">0</div><div class="mg-timer" id="fTimer">10</div></div><div class="mg-inst">TAP to blast gatooooos at the family! 💨😵</div><div class="mg-arena" id="fArena"></div></div></div>
 <div id="fartResult" class="mg-result"><div class="mg-r-em">💨</div><div class="mg-r-ti" id="fResTi"></div><div class="mg-r-de" id="fResDe"></div><button class="gbtn" onclick="closeFart()">Continue 🐾</button></div>
-<div id="easter" class="scr"><canvas id="easterBG"></canvas><div class="ee-wrap"><canvas id="houseCanvas" width="220" height="190" style="display:block;margin:0 auto"></canvas><div class="ee-ti">KEVIN!</div><div class="ee-de" id="eeDe">Jessica screams! The McCallister house! Doubles = +100 coins + bonus roll!</div><button class="gbtn" onclick="closeEaster()">Merry Christmas 🎅</button></div></div>
+<div id="easter" class="scr"><canvas id="easterBG"></canvas><div class="ee-wrap"><canvas id="houseCanvas" width="240" height="220" style="display:block;margin:0 auto"></canvas><div class="ee-ti">KEVIN!</div><div class="ee-de" id="eeDe">Jessica screams! The McCallister house! Doubles = +100 coins + bonus roll!</div><button class="gbtn" onclick="closeEaster()">Merry Christmas 🎅</button></div></div>
 <div id="regDone" class="scr"><div class="rd-z"><div class="rd-em" id="rdEm">🎉</div><div class="rd-ti" id="rdTi"></div><div class="rd-de" id="rdDe"></div><button class="gbtn" id="rdBtn" onclick="nextRegion()">Next Region</button></div></div>
 <div id="win" class="scr"><canvas id="villaScene"></canvas><div class="wz"><div class="w-em">🏆</div><div class="w-ti">Portugal Conquered!</div><div class="w-su" id="wMsg"></div><button class="gbtn" onclick="fullRestart()">Play Again 🎲</button></div></div>
 <script>
@@ -243,7 +243,7 @@ var x=BG.x,W=BG.W,H=BG.H;BG.t++;x.clearRect(0,0,W,H);
 // ---- NEBULA with bloom ----
 for(var i=0;i<BG.nebs.length;i++){var n=BG.nebs[i];n.x+=n.vx;n.y+=n.vy;n.p+=n.s;
 if(n.x<-400)n.x=W+400;if(n.x>W+400)n.x=-400;if(n.y<-400)n.y=H+400;if(n.y>H+400)n.y=-400;
-var a=.14+Math.sin(n.p)*.07;
+var a=.22+Math.sin(n.p)*.1;
 // Core glow
 var g=x.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r);
 g.addColorStop(0,'rgba('+n.c[0]+','+n.c[1]+','+n.c[2]+','+a+')');
@@ -253,13 +253,13 @@ g.addColorStop(1,'rgba('+n.c[0]+','+n.c[1]+','+n.c[2]+',0)');
 x.fillStyle=g;x.fillRect(n.x-n.r,n.y-n.r,n.r*2,n.r*2);
 // Bloom pass - larger, softer
 var g2=x.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*1.6);
-g2.addColorStop(0,'rgba('+n.c[0]+','+n.c[1]+','+n.c[2]+','+(a*.08)+')');
+g2.addColorStop(0,'rgba('+n.c[0]+','+n.c[1]+','+n.c[2]+','+(a*.14)+')');
 g2.addColorStop(1,'transparent');
 x.fillStyle=g2;x.fillRect(n.x-n.r*1.6,n.y-n.r*1.6,n.r*3.2,n.r*3.2);}
 // ---- GOD RAYS (volumetric light shafts) ----
 x.save();x.globalCompositeOperation='screen';
 for(var i=0;i<BG.rays.length;i++){var r=BG.rays[i];r.p+=r.s;
-var ra=.07+Math.sin(r.p)*.04;
+var ra=.1+Math.sin(r.p)*.06;
 x.save();x.translate(r.x,0);x.rotate(.08*Math.sin(r.p*.7));
 var g=x.createLinearGradient(0,0,0,H);
 g.addColorStop(0,'rgba(212,168,67,'+(ra*1.2)+')');
@@ -272,14 +272,14 @@ x.restore();
 // ---- STARS with multi-point flares ----
 for(var i=0;i<BG.stars.length;i++){var s=BG.stars[i];s.x+=s.vx;s.y+=s.vy;s.p+=s.s;
 if(s.x<0)s.x=W;if(s.x>W)s.x=0;if(s.y<0)s.y=H;if(s.y>H)s.y=0;
-var a=.2+Math.sin(s.p)*.18;var c=s.w?'220,180,80':'190,205,235';
+var a=.35+Math.sin(s.p)*.2;var c=s.w?'220,180,80':'190,205,235';
 // Star core
-x.beginPath();x.arc(s.x,s.y,s.r,0,6.28);x.fillStyle='rgba('+c+','+(a*2)+')';x.fill();
+x.beginPath();x.arc(s.x,s.y,s.r,0,6.28);x.fillStyle='rgba('+c+','+(a*2.5)+')';x.fill();
 // Soft halo
-x.beginPath();x.arc(s.x,s.y,s.r*4,0,6.28);x.fillStyle='rgba('+c+','+(a*.1)+')';x.fill();
+x.beginPath();x.arc(s.x,s.y,s.r*4,0,6.28);x.fillStyle='rgba('+c+','+(a*.15)+')';x.fill();
 if(s.bright){
 // 4-point cross flare
-x.save();x.globalAlpha=a*.55;x.strokeStyle='rgba('+c+',1)';
+x.save();x.globalAlpha=a*.7;x.strokeStyle='rgba('+c+',1)';
 var fl=s.r*10;
 x.lineWidth=.6;x.beginPath();x.moveTo(s.x-fl,s.y);x.lineTo(s.x+fl,s.y);x.stroke();
 x.beginPath();x.moveTo(s.x,s.y-fl);x.lineTo(s.x,s.y+fl);x.stroke();
@@ -301,7 +301,7 @@ for(var i=0;i<BG.stars.length;i++){if(!BG.stars[i].bright)continue;
 for(var j=i+1;j<BG.stars.length;j++){if(!BG.stars[j].bright)continue;
 var dx=BG.stars[i].x-BG.stars[j].x,dy=BG.stars[i].y-BG.stars[j].y,d=dx*dx+dy*dy;
 if(d<8000){x.beginPath();x.moveTo(BG.stars[i].x,BG.stars[i].y);x.lineTo(BG.stars[j].x,BG.stars[j].y);
-x.strokeStyle='rgba(100,140,200,'+(0.08*(1-d/8000))+')';x.lineWidth=.5;x.stroke();}}}
+x.strokeStyle='rgba(100,140,200,'+(0.12*(1-d/8000))+')';x.lineWidth=.5;x.stroke();}}}
 x.restore();
 // ---- FLOATING EMBERS with trail ----
 for(var i=0;i<BG.parts.length;i++){var p=BG.parts[i];p.x+=p.vx;p.y+=p.vy;
@@ -314,7 +314,7 @@ x.beginPath();x.arc(p.x,p.y,p.r*5,0,6.28);x.fillStyle='rgba('+c+','+(p.a*.08)+')
 // ---- DUST MOTES (atmospheric depth) ----
 for(var i=0;i<BG.dust.length;i++){var d=BG.dust[i];d.x+=d.vx;d.y+=d.vy;d.p+=d.s;
 if(d.x<0)d.x=W;if(d.x>W)d.x=0;if(d.y<0)d.y=H;if(d.y>H)d.y=0;
-var da=.04+Math.sin(d.p)*.03;
+var da=.08+Math.sin(d.p)*.05;
 x.beginPath();x.arc(d.x,d.y,d.r,0,6.28);x.fillStyle='rgba(200,210,230,'+da+')';x.fill();}
 // ---- VIGNETTE (cinematic edge darkening) ----
 var vg=x.createRadialGradient(W/2,H/2,Math.min(W,H)*.35,W/2,H/2,Math.max(W,H)*.75);
@@ -332,42 +332,59 @@ bgInit();
 var _flagT=0;
 function paintFlag(){
 var cv=document.getElementById('ptFlag');if(!cv)return;
-var c=cv.getContext('2d'),W=cv.width,H=cv.height;c.clearRect(0,0,W,H);_flagT+=.05;
-var gW=Math.floor(W*.4);
-// Waving cloth effect - each row offset by sine
+var c=cv.getContext('2d'),W=cv.width,H=cv.height;c.clearRect(0,0,W,H);
+var t=Date.now()*.001;var gW=Math.floor(W*.4);
+/* Wave distortion per row */
 for(var y=0;y<H;y++){
-var wave=Math.sin(_flagT+y*.1)*3+Math.sin(_flagT*1.3+y*.05)*1.5;
-var shade=1+Math.sin(_flagT+y*.08)*.08; // fabric light/shadow
-// Green section
-c.fillStyle='rgb('+Math.floor(0*shade)+','+Math.floor(102*shade)+','+Math.floor(0*shade)+')';
+var wave=Math.sin(t*2+y*.12)*2.5+Math.sin(t*1.5+y*.06)*1.5;
+var shade=.92+Math.sin(t*1.8+y*.08)*.08;
+/* Green band */
+c.fillStyle='rgb('+Math.floor(0)+','+Math.floor(Math.min(255,110*shade))+','+Math.floor(Math.min(255,20*shade))+')';
 c.fillRect(wave,y,gW,1);
-// Red section
-c.fillStyle='rgb('+Math.floor(218*shade)+','+Math.floor(18*shade)+','+Math.floor(26*shade)+')';
-c.fillRect(gW+wave,y,W-gW,1);}
-// Shield at border
-var sx=gW+Math.sin(_flagT+H*.05)*3,sy=H/2;
-// Yellow armillary sphere
-c.fillStyle='#FFCC00';c.beginPath();c.arc(sx,sy,H*.3,0,6.28);c.fill();
-c.fillStyle='#006600';c.beginPath();c.arc(sx,sy,H*.21,0,6.28);c.fill();
-c.fillStyle='#DA291C';c.beginPath();c.arc(sx,sy,H*.14,0,6.28);c.fill();
-// Castle towers
-c.fillStyle='#FFCC00';
-c.fillRect(sx-H*.06,sy-H*.08,H*.12,H*.16);
-c.fillRect(sx-H*.1,sy-H*.12,H*.04,H*.06);
-c.fillRect(sx+H*.06,sy-H*.12,H*.04,H*.06);
-// Highlight sweep for fabric sheen
+/* Red band */
+c.fillStyle='rgb('+Math.floor(Math.min(255,218*shade))+','+Math.floor(Math.min(255,18*shade))+','+Math.floor(Math.min(255,26*shade))+')';
+c.fillRect(gW+wave,y,W-gW+4,1);}
+/* Shield position with wave */
+var sx=gW+Math.sin(t*2+H*.06)*2.5,sy=H/2;
+/* Armillary sphere outer ring */
+c.lineWidth=2;c.strokeStyle='#DAA520';c.beginPath();c.arc(sx,sy,H*.38,0,6.28);c.stroke();
+/* Diagonal bands of armillary */
+c.save();c.translate(sx,sy);
+for(var i=0;i<6;i++){c.rotate(Math.PI/3);c.strokeStyle='#DAA520';c.lineWidth=1;
+c.beginPath();c.moveTo(-H*.38,0);c.lineTo(H*.38,0);c.stroke();}c.restore();
+/* Inner yellow circle */
+c.fillStyle='#DAA520';c.beginPath();c.arc(sx,sy,H*.32,0,6.28);c.fill();
+/* White shield */
+c.fillStyle='#fff';
+c.beginPath();c.moveTo(sx-H*.2,sy-H*.22);c.lineTo(sx+H*.2,sy-H*.22);
+c.lineTo(sx+H*.2,sy+H*.08);c.quadraticCurveTo(sx,sy+H*.28,sx-H*.2,sy+H*.08);c.fill();
+/* Red border on shield */
+c.strokeStyle='#cc0000';c.lineWidth=2;
+c.beginPath();c.moveTo(sx-H*.2,sy-H*.22);c.lineTo(sx+H*.2,sy-H*.22);
+c.lineTo(sx+H*.2,sy+H*.08);c.quadraticCurveTo(sx,sy+H*.28,sx-H*.2,sy+H*.08);c.closePath();c.stroke();
+/* Red cross on shield */
+c.strokeStyle='#cc0000';c.lineWidth=2;
+c.beginPath();c.moveTo(sx,sy-H*.22);c.lineTo(sx,sy+H*.18);c.stroke();
+c.beginPath();c.moveTo(sx-H*.2,sy-H*.04);c.lineTo(sx+H*.2,sy-H*.04);c.stroke();
+/* 5 blue mini-shields (quinas) */
+var qs=[[sx-H*.1,sy-H*.13],[sx+H*.1,sy-H*.13],[sx,sy-H*.04],
+[sx-H*.1,sy+H*.05],[sx+H*.1,sy+H*.05]];
+for(var i=0;i<5;i++){c.fillStyle='#003399';
+c.beginPath();c.moveTo(qs[i][0]-4,qs[i][1]-4);c.lineTo(qs[i][0]+4,qs[i][1]-4);
+c.lineTo(qs[i][0]+4,qs[i][1]+2);c.quadraticCurveTo(qs[i][0],qs[i][1]+5,qs[i][0]-4,qs[i][1]+2);c.fill();
+/* White dots (bezants) */
+c.fillStyle='#fff';for(var j=0;j<5;j++){var dx2=qs[i][0]-2+Math.floor(j%3)*2,dy2=qs[i][1]-2+Math.floor(j/3)*2;
+c.beginPath();c.arc(dx2,dy2,.6,0,6.28);c.fill();}}
+/* 7 yellow castles on red border */
+c.fillStyle='#DAA520';var castles=[[sx-H*.2,sy-H*.15],[sx+H*.2,sy-H*.15],
+[sx-H*.22,sy-H*.04],[sx+H*.22,sy-H*.04],[sx-H*.18,sy+H*.1],[sx+H*.18,sy+H*.1],[sx,sy+H*.22]];
+for(var i=0;i<7;i++){var cx2=castles[i][0],cy2=castles[i][1];
+c.fillRect(cx2-2,cy2-2,4,4);c.fillRect(cx2-3,cy2-3,2,2);c.fillRect(cx2+1,cy2-3,2,2);}
+/* Fabric sheen overlay */
 c.save();c.globalCompositeOperation='overlay';
-var hg=c.createLinearGradient(0,0,W,0);
-var hp=(_flagT*.3)%1;
-hg.addColorStop(Math.max(0,hp-.2),'transparent');
-hg.addColorStop(hp,'rgba(255,255,255,.15)');
-hg.addColorStop(Math.min(1,hp+.2),'transparent');
-c.fillStyle=hg;c.fillRect(0,0,W,H);c.restore();
-// Pole shadow
-c.fillStyle='rgba(0,0,0,.15)';c.fillRect(0,0,2,H);
-// Pole
-c.fillStyle='#8B7D60';c.fillRect(-1,0,2,H);
-c.fillStyle='rgba(255,255,255,.15)';c.fillRect(-1,0,1,H);
+var hg=c.createLinearGradient(0,0,W,0);var hp=(t*.25)%1;
+hg.addColorStop(Math.max(0,hp-.15),'transparent');hg.addColorStop(hp,'rgba(255,255,255,.12)');
+hg.addColorStop(Math.min(1,hp+.15),'transparent');c.fillStyle=hg;c.fillRect(0,0,W,H);c.restore();
 requestAnimationFrame(paintFlag);}
 paintFlag();
 
@@ -378,7 +395,7 @@ var W=cv.width=cv.offsetWidth||innerWidth,H=cv.height=cv.offsetHeight||innerHeig
 var t=Date.now()*.001;
 // Sky - rich twilight gradient
 var sky=c.createLinearGradient(0,0,0,H*.7);
-sky.addColorStop(0,'#030818');sky.addColorStop(.2,'#08123a');sky.addColorStop(.4,'#0e1d50');
+sky.addColorStop(0,'#050c22');sky.addColorStop(.2,'#0c1a4a');sky.addColorStop(.4,'#142860');
 sky.addColorStop(.6,'#182660');sky.addColorStop(.8,'#1a2d6a');sky.addColorStop(1,'#1e3570');
 c.fillStyle=sky;c.fillRect(0,0,W,H*.7);
 // Aurora borealis streaks
@@ -387,9 +404,9 @@ for(var i=0;i<4;i++){var ay=H*.08+i*H*.06;
 var ag=c.createLinearGradient(0,ay,W,ay+H*.04);
 var phase=t*.2+i;
 ag.addColorStop(0,'transparent');
-ag.addColorStop(.2+Math.sin(phase)*.1,'rgba(80,200,170,'+(0.04+Math.sin(phase)*.02)+')');
-ag.addColorStop(.5,'rgba(100,220,180,'+(0.06+Math.sin(phase*.7)*.03)+')');
-ag.addColorStop(.8-Math.sin(phase)*.1,'rgba(60,180,160,'+(0.03+Math.sin(phase*1.2)*.02)+')');
+ag.addColorStop(.2+Math.sin(phase)*.1,'rgba(80,200,170,'+(0.08+Math.sin(phase)*.04)+')');
+ag.addColorStop(.5,'rgba(100,220,180,'+(0.1+Math.sin(phase*.7)*.05)+')');
+ag.addColorStop(.8-Math.sin(phase)*.1,'rgba(60,180,160,'+(0.06+Math.sin(phase*1.2)*.03)+')');
 ag.addColorStop(1,'transparent');
 c.fillStyle=ag;
 c.beginPath();c.moveTo(0,ay);
@@ -407,7 +424,7 @@ hg.addColorStop(0,'rgba(200,210,240,'+(0.04/r)+')');hg.addColorStop(1,'transpare
 c.fillStyle=hg;c.fillRect(mx-mr*r*6,my-mr*r*6,mr*r*12,mr*r*12);}
 // Moon disc
 var mg=c.createRadialGradient(mx-3,my-3,0,mx,my,mr);
-mg.addColorStop(0,'rgba(255,250,235,.65)');mg.addColorStop(.7,'rgba(230,220,200,.4)');mg.addColorStop(1,'rgba(200,195,180,.15)');
+mg.addColorStop(0,'rgba(255,250,235,.85)');mg.addColorStop(.7,'rgba(230,220,200,.4)');mg.addColorStop(1,'rgba(200,195,180,.15)');
 c.fillStyle=mg;c.beginPath();c.arc(mx,my,mr,0,6.28);c.fill();
 // Moon craters (subtle)
 c.fillStyle='rgba(180,175,160,.08)';
@@ -421,7 +438,7 @@ c.fillStyle=og;c.fillRect(0,H*.62,W,H*.38);
 // Animated wave lines
 c.save();
 for(var w=0;w<10;w++){var wy=H*.64+w*H*.035;
-var wa=.06+w*.01;
+var wa=.1+w*.015;
 c.strokeStyle='rgba(120,160,220,'+wa+')';c.lineWidth=.8;
 c.beginPath();
 for(var x=0;x<=W;x+=2)c.lineTo(x,wy+Math.sin(x*.012+t*1.2+w*.7)*3+Math.sin(x*.005+t*.8)*2);
@@ -435,7 +452,7 @@ var ra=.03+Math.random()*.04;
 c.fillStyle='rgba(200,210,235,'+ra+')';c.fillRect(rx,ry+Math.sin(t+i)*2,rw,rh);}
 c.restore();
 // FAR cliff silhouettes (Algarve arches)
-c.fillStyle='#0c1528';c.beginPath();c.moveTo(0,H*.58);
+c.fillStyle='#142040';c.beginPath();c.moveTo(0,H*.58);
 var cpts=[[.05,.52],[.1,.54],[.14,.48],[.18,.51],[.22,.45],[.26,.49],[.3,.43],[.35,.47],
 [.4,.5],[.45,.47],[.5,.52],[.55,.48],[.6,.54],[.65,.5],[.7,.55],[.75,.49],[.8,.53],[.85,.48],[.9,.52],[.95,.5],[1,.56]];
 for(var i=0;i<cpts.length;i++)c.lineTo(cpts[i][0]*W,cpts[i][1]*H);
@@ -476,7 +493,7 @@ c.beginPath();c.arc(tx+11,ty+36,25,0,6.28);c.fill();
 c.restore();
 // City lights on distant cliff
 for(var i=0;i<80;i++){var lx=W*.22+Math.random()*W*.56,ly=H*.44+Math.random()*H*.14;
-var la=.05+Math.random()*.12;var lc=Math.random()>.7?'255,200,100':'255,220,160';
+var la=.1+Math.random()*.18;var lc=Math.random()>.7?'255,200,100':'255,220,160';
 c.fillStyle='rgba('+lc+','+la+')';c.fillRect(lx,ly,1+Math.random()*2,.5+Math.random()*.5);
 // Light bloom
 if(la>.1){c.fillStyle='rgba('+lc+','+(la*.15)+')';c.beginPath();c.arc(lx,ly,3,0,6.28);c.fill();}}
@@ -500,7 +517,7 @@ var cv=document.getElementById('airBG');if(!cv)return;
 var W=cv.width=cv.offsetWidth||innerWidth,H=cv.height=cv.offsetHeight||innerHeight,c=cv.getContext('2d');
 // Stratosphere gradient
 var sky=c.createLinearGradient(0,0,0,H);
-sky.addColorStop(0,'#020420');sky.addColorStop(.2,'#081040');sky.addColorStop(.45,'#101850');
+sky.addColorStop(0,'#040828');sky.addColorStop(.2,'#0e1850');sky.addColorStop(.45,'#101850');
 sky.addColorStop(.65,'#182260');sky.addColorStop(.85,'#1a2868');sky.addColorStop(1,'#1e3070');
 c.fillStyle=sky;c.fillRect(0,0,W,H);
 // Stars visible from altitude
@@ -510,7 +527,7 @@ c.beginPath();c.arc(sx,sy,sr,0,6.28);c.fillStyle='rgba(200,215,240,'+(0.06+Math.
 if(sr>1){c.fillStyle='rgba(200,215,240,.03)';c.beginPath();c.arc(sx,sy,sr*4,0,6.28);c.fill();}}
 // Cloud layers with volumetric look
 for(var layer=0;layer<3;layer++){
-var ly=H*.42+layer*H*.15;var la=.04+layer*.02;
+var ly=H*.42+layer*H*.15;var la=.08+layer*.03;
 for(var i=0;i<8;i++){var cx=Math.random()*W*1.2-W*.1,cy=ly+Math.random()*H*.1;
 var cw=80+Math.random()*200,ch=20+Math.random()*40;
 // Cloud core
@@ -539,7 +556,7 @@ function paintHouse(){
 var cv=document.getElementById('houseCanvas');if(!cv)return;
 var c=cv.getContext('2d'),W=cv.width,H=cv.height;c.clearRect(0,0,W,H);
 var t=Date.now()*.001;
-var bx=20,by=40,bw=180,bh=100;
+var bx=30,by=60,bw=180,bh=100;
 // Snow ground with depth
 var sg=c.createLinearGradient(0,H-30,0,H);
 sg.addColorStop(0,'rgba(225,235,250,.85)');sg.addColorStop(.4,'rgba(210,225,245,.7)');sg.addColorStop(1,'rgba(190,210,235,.5)');
@@ -692,7 +709,7 @@ var cv=document.getElementById('easterBG');if(!cv)return;
 var W=cv.width=innerWidth,H=cv.height=innerHeight,c=cv.getContext('2d');
 // Night sky
 var sky=c.createLinearGradient(0,0,0,H);
-sky.addColorStop(0,'#040815');sky.addColorStop(.4,'#0a1528');sky.addColorStop(.7,'#0e1a30');sky.addColorStop(1,'#101e38');
+sky.addColorStop(0,'#060c20');sky.addColorStop(.4,'#0e1d38');sky.addColorStop(.7,'#0e1a30');sky.addColorStop(1,'#101e38');
 c.fillStyle=sky;c.fillRect(0,0,W,H);
 // Stars
 for(var i=0;i<60;i++){c.beginPath();c.arc(Math.random()*W,Math.random()*H*.5,.2+Math.random()*1,0,6.28);
@@ -704,13 +721,13 @@ c.lineTo(W,H);c.lineTo(0,H);c.fill();
 // Neighborhood houses (larger, more detailed)
 for(var i=0;i<10;i++){var hx=W*.02+i*W*.098,hw=W*.07,hh=20+Math.random()*35;
 var hy=H*.62-hh;
-c.fillStyle='#0a1425';c.fillRect(hx,hy,hw,hh+H*.38);
+c.fillStyle='#122040';c.fillRect(hx,hy,hw,hh+H*.38);
 // Peaked roof
 c.beginPath();c.moveTo(hx-4,hy);c.lineTo(hx+hw/2,hy-10-Math.random()*12);c.lineTo(hx+hw+4,hy);c.fill();
 // Random lit windows (warm glow)
 for(var j=0;j<3;j++){if(Math.random()>.35){
 var wx=hx+4+j*(hw/3.5),wy=hy+6+Math.floor(Math.random()*2)*16,ww=hw/5,wh=7;
-c.fillStyle='rgba(255,210,120,.15)';c.fillRect(wx,wy,ww,wh);
+c.fillStyle='rgba(255,210,120,.3)';c.fillRect(wx,wy,ww,wh);
 // Window bloom
 c.save();c.globalCompositeOperation='screen';
 c.fillStyle='rgba(255,200,100,.04)';c.beginPath();c.arc(wx+ww/2,wy+wh/2,15,0,6.28);c.fill();
@@ -721,11 +738,11 @@ sg.addColorStop(0,'rgba(190,210,240,.3)');sg.addColorStop(.5,'rgba(170,195,230,.
 c.fillStyle=sg;c.fillRect(0,H*.62,W,H*.38);
 // Streetlight
 var slx=W*.5;c.fillStyle='#0c1520';c.fillRect(slx-1.5,H*.52,3,H*.48);
-c.beginPath();c.arc(slx,H*.52,4,0,6.28);c.fillStyle='rgba(255,220,130,.3)';c.fill();
+c.beginPath();c.arc(slx,H*.52,4,0,6.28);c.fillStyle='rgba(255,220,130,.5)';c.fill();
 // Streetlight cone of light
 c.save();c.globalCompositeOperation='screen';
 c.beginPath();c.moveTo(slx-3,H*.53);c.lineTo(slx-W*.06,H*.68);c.lineTo(slx+W*.06,H*.68);c.lineTo(slx+3,H*.53);c.closePath();
-c.fillStyle='rgba(255,220,130,.03)';c.fill();c.restore();}
+c.fillStyle='rgba(255,220,130,.06)';c.fill();c.restore();}
 
 
 /* ====== FONSECA VILLA: GOLDEN HOUR MASTERPIECE ====== */
@@ -777,7 +794,7 @@ if(h<2){c.fillStyle='rgba(200,180,140,'+(0.03-h*.01)+')';c.fillRect(0,H*hi[0],W,
 var rowY=H*.62,rowEnd=H*.82;
 for(var r=0;r<16;r++){var ry=rowY+r*(rowEnd-rowY)/16;var a=.12+r*.025;
 // Support posts
-c.fillStyle='rgba(90,60,25,'+(a*2)+')';
+c.fillStyle='rgba(90,60,25,'+(a*2.5)+')';
 for(var x=W*.06;x<W*.65;x+=18){c.fillRect(x,ry-5,1.5,10);}
 // Wire with vine
 c.strokeStyle='rgba(70,110,35,'+a+')';c.lineWidth=1.5;c.beginPath();
@@ -846,6 +863,9 @@ c.strokeStyle='rgba(60,30,10,.25)';c.lineWidth=.5;
 c.strokeRect(dx+3,dy+4,dw/2-4,dh*.4);c.strokeRect(dx+dw/2+1,dy+4,dw/2-4,dh*.4);
 c.fillStyle='#D4A843';c.beginPath();c.arc(dx+dw*.78,dy+dh*.55,2,0,6.28);c.fill();
 // Mae in doorway
+// Grandpa on the porch chair
+c.font='14px sans-serif';c.fillText('🪑',vx+vw*.1,vy+vh+8);
+c.font='13px sans-serif';c.fillText('👴',vx+vw*.12,vy+vh+2);
 c.font='12px sans-serif';c.fillText('👩‍🍳',dx+dw/2-6,dy+dh-4);
 // Climbing vine
 c.strokeStyle='rgba(50,90,30,.5)';c.lineWidth=1.2;
@@ -995,6 +1015,7 @@ var CHANCE=[
 {e:"💨",t:"DOUBLE GATOOOOOS!",d:"Brian AND Steven. Rambo hides. Angie opens everything. Mae threatens the priest.",c:120,fx:"fart",who:"Brian & Steven"},
 {e:"💨",t:"TRIPLE GATOOOOOS!",d:"Dad, Brian, Steven in sequence. Jessica films. Mae leaves. Rambo howls.",c:150,fx:"fart",who:"Fonseca Men"},
 {e:"💨",t:"Steven Blames Rambo!",d:"Steven points at Rambo. Angie: 'It was NOT the dog.'",c:55,fx:"fart",who:"Steven"},
+{e:"💨",t:"Grandpa's Couch Bomb!",d:"Grandpa lets one rip from the couch. The whole room clears. Even Rambo leaves.",c:90,fx:"fart",who:"Grandpa"},
 {e:"🍷",t:"Vinho Verde!",d:"Local pours the family wine. Dad has two. Brian has four. Mae cuts him off.",c:60,fx:"gold"},
 {e:"🌧️",t:"Chuva!",d:"Portuguese rain. Jessica forgot the umbrella. Steven gives Angie his jacket.",c:-40,fx:"red"},
 {e:"🐓",t:"Galo de Barcelos!",d:"Lucky rooster! Mae says good fortune for the Fonseca family!",c:80,fx:"gold"},
@@ -1008,6 +1029,7 @@ var COMMUNITY=[
 {e:"🏠",t:"KEVIN!",d:"Jessica does the face. Steven copies. Brian doesn't get it. Dad is asleep.",c:50,fx:"xmas"},
 {e:"🎅",t:"Merry Christmas!",d:"Jessica decorates everything. The vineyard, Rambo, the chicken coop. Lights.",c:65,fx:"xmas"},
 {e:"👩‍🍳",t:"Mae's Kitchen!",d:"Something incredible cooking. Gooby and Rambo sit by the door.",c:65,fx:"fam"},
+{e:"👴",t:"Grandpa's Stories!",d:"Grandpa tells tales from the old country on the couch. Everyone gathers around.",c:75,fx:"fam"},
 {e:"🍲",t:"Mae's Bacalhau!",d:"Best in Braga. Dad: 'Best ever.' Mae: 'You say that every time.'",c:80,fx:"fam"},
 {e:"📢",t:"Mae Yells!",d:"'Come eat NOW or I feed it to Rambo!' Everyone sprints.",c:45,fx:"fam"},
 {e:"📱",t:"Ring Doorbell!",d:"DING! Entire family grabs phones. Package delivery. Rambo barking.",c:35,fx:"doorbell"},
@@ -1138,7 +1160,7 @@ function closeTurkey(){_$('turkeyResult').classList.remove('on');renderBoard();f
 
 /* ====== GATOOOOOS GAME - TOUCHSTART ====== */
 var fS,fT,fI,fSI;
-var FTARGS=[{em:'😀',nm:'Brian'},{em:'😎',nm:'Steven'},{em:'🧔',nm:'Dad'},{em:'😊',nm:'Angie'},{em:'🐕',nm:'Rambo'}];
+var FTARGS=[{em:'😀',nm:'Brian'},{em:'😎',nm:'Steven'},{em:'🧔',nm:'Dad'},{em:'😊',nm:'Angie'},{em:'🐕',nm:'Rambo'},{em:'👴',nm:'Grandpa'}];
 function startFartGame(){hideOv();_$('fartMG').classList.add('on');fS=0;fT=10;
 _$('fScore').textContent='0';_$('fTimer').textContent='10';_$('fArena').innerHTML='';
 initMGCanvas('fBgC','#050f05','#0a1a0a');
@@ -1190,7 +1212,7 @@ _$('rdEm').textContent=r.em;_$('rdTi').textContent=r.name+' Complete!';_$('rdDe'
 _$('rdBtn').textContent=curReg>=3?'Victory!':'Next: '+REGIONS[curReg+1].name;showScr('regDone');doConfetti();}
 function nextRegion(){if(curReg>=3){winGame();return;}curReg++;pos=0;busy=false;rollAgain=false;coins+=500;showScr('board');renderBoard();}
 function winGame(){var tot=0;for(var i=0;i<4;i++)tot+=Object.keys(owned[i]).length;
-_$('wMsg').textContent='Jessica, you did it. Maryland to Portugal. '+tot+' properties. '+coins+' coins. '+rnd+' rounds. '+steps+' steps. Mae cooked. Dad plowed the vineyard and napped. Brian and Steven provided the gatooooos. Angie documented everything. Rambo barked at the chickens and lost. The vineyard is secure. The chicken coop thrives. Feliz Natal. 🇵🇹🐾';
+_$('wMsg').textContent='Jessica, you did it. Maryland to Portugal. '+tot+' properties. '+coins+' coins. '+rnd+' rounds. '+steps+' steps. Mae cooked. Dad plowed the vineyard and napped. Grandpa told stories from the couch. Brian and Steven provided the gatooooos. Angie documented everything. Rambo barked at the chickens and lost. The vineyard is secure. The chicken coop thrives. Feliz Natal. 🇵🇹🐾';
 showScr('win');paintVilla();doConfetti();doConfetti();setTimeout(doXmas,500);}
 function fullRestart(){initState();showScr('splash');}
 
