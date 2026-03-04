@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="author" content="Richard B. Price Jr.">
+<title>Gooby</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;background-color:#05070e;color:#fff;min-height:100vh;min-height:100dvh;overflow:hidden;-webkit-font-smoothing:antialiased}
+canvas#sky{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.aur{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.ab{position:absolute;width:220%;height:45%;border-radius:50%;filter:blur(90px);opacity:0.1;animation:aS 14s ease-in-out infinite alternate}
+.ab1{background-color:#2B4C7E;top:-15%;left:-40%}.ab2{background-color:#D4A843;bottom:0;right:-50%;animation-duration:11s;opacity:0.06}.ab3{background-color:#148F77;top:25%;left:-30%;animation-duration:18s;opacity:0.07}
+@keyframes aS{0%{transform:translateX(0) rotate(0) scale(1)}100%{transform:translateX(50px) rotate(6deg) scale(1.2)}}
+
+/* ===== SCREENS ===== */
+.screen{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:10}
+.screen.on{display:flex}
+
+/* ===== SPLASH ===== */
+#splash{z-index:100;background-color:#05070e;overflow:hidden}
+.sp-orb{position:absolute;border-radius:50%;filter:blur(80px)}
+.sp-o1{width:300px;height:300px;background-color:rgba(212,168,67,0.07);top:10%;left:15%}
+.sp-o2{width:250px;height:250px;background-color:rgba(43,76,126,0.09);bottom:12%;right:8%}
+.spz{position:relative;z-index:2;text-align:center;padding:20px}
+.sp-flag{font-size:26px;margin-bottom:4px;opacity:0.5;animation:fw 3s ease-in-out infinite}
+@keyframes fw{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+.sp-paw{font-size:92px;animation:pawGo 2.5s cubic-bezier(0.36,0.07,0.19,0.97) infinite;filter:drop-shadow(0 0 30px rgba(212,168,67,0.25))}
+@keyframes pawGo{0%,100%{transform:translateY(0) rotate(-10deg) scale(1)}25%{transform:translateY(-30px) rotate(8deg) scale(1.08)}50%{transform:translateY(-4px) rotate(-5deg) scale(0.96)}75%{transform:translateY(-18px) rotate(4deg) scale(1.03)}}
+.sp-ti{font-size:58px;font-weight:900;color:#D4A843;margin:12px 0 0;letter-spacing:6px;text-shadow:0 0 50px rgba(212,168,67,0.3)}
+.sp-ln{width:65px;height:3px;border-radius:2px;background-color:#D4A843;margin:8px auto 4px;opacity:0.3}
+.sp-st{font-size:11px;font-weight:700;color:#2a3050;letter-spacing:4px;text-transform:uppercase;margin-bottom:6px}
+.sp-st2{font-size:9px;color:#1e2440;letter-spacing:2px;margin-bottom:36px;font-weight:600}
+.gbtn{font-size:20px;font-weight:900;padding:18px 56px;border:none;border-radius:50px;background-color:#D4A843;color:#05070e;cursor:pointer;-webkit-appearance:none;appearance:none;box-shadow:0 0 35px rgba(212,168,67,0.2),0 6px 24px rgba(0,0,0,0.5);position:relative;overflow:hidden;letter-spacing:1px}
+.gbtn::after{content:’’;position:absolute;top:0;left:-100%;width:70%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent);animation:gsh 3.5s ease-in-out infinite}
+@keyframes gsh{0%,100%{left:-100%}50%{left:130%}}
+.gbtn:active{transform:scale(0.96)}
+
+/* ===== FLIGHT ===== */
+#flight{z-index:99;background-color:#05070e;overflow:hidden}
+.fl-content{position:relative;z-index:2;text-align:center;width:100%;padding:0 30px}
+.fl-route{font-size:12px;font-weight:800;letter-spacing:3px;color:#3a4060;text-transform:uppercase;margin-bottom:20px}
+.fl-cities{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+.fl-city{text-align:center}
+.fl-city-em{font-size:32px;margin-bottom:4px}
+.fl-city-nm{font-size:11px;font-weight:800;color:#D4A843;letter-spacing:2px}
+.fl-path{flex:1;height:2px;background-color:#1a2040;margin:0 15px;position:relative;border-radius:1px}
+.fl-dot{position:absolute;top:-8px;font-size:18px;left:0;animation:flyAcross 3s ease-in-out forwards}
+@keyframes flyAcross{0%{left:0;transform:rotate(0)}50%{top:-20px}100%{left:calc(100% - 18px);top:-8px}}
+.fl-msg{font-size:22px;font-weight:900;color:#fff;opacity:0;animation:flMsgIn 0.5s ease-out 3.2s forwards}
+@keyframes flMsgIn{to{opacity:1}}
+.fl-sub{font-size:12px;color:#3a4060;opacity:0;animation:flMsgIn 0.5s ease-out 3.6s forwards;margin-top:6px}
+
+/* ===== GAME ===== */
+#game{z-index:10;overflow-y:auto;overflow-x:hidden;justify-content:flex-start;padding:8px 10px 20px}
+.hud{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background-color:rgba(10,14,28,0.8);border-radius:14px;margin-bottom:6px;border:1px solid rgba(255,255,255,0.03);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.hud-l{font-size:16px;font-weight:900;color:#D4A843}
+.hud-c{font-weight:800;font-size:14px;background-color:rgba(212,168,67,0.08);padding:4px 12px;border-radius:18px;border:1px solid rgba(212,168,67,0.06)}
+
+.reg-hdr{text-align:center;padding:6px 0;margin-bottom:4px}
+.reg-em{font-size:18px}
+.reg-nm{font-size:11px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-top:2px}
+.reg-sub{font-size:8px;color:#222844;letter-spacing:2px;font-weight:700;margin-top:1px}
+
+.row4{display:flex;gap:5px;margin-bottom:5px}
+.bx{flex:1;text-align:center;padding:6px 2px;background-color:rgba(10,14,28,0.6);border-radius:11px;border:1px solid rgba(255,255,255,0.02)}
+.bx-l{font-size:7px;color:#222844;text-transform:uppercase;letter-spacing:1.2px;font-weight:800}
+.bx-v{font-size:18px;font-weight:900;color:#D4A843}
+
+/* REGION MAP */
+.rmap{display:flex;gap:3px;margin-bottom:5px}
+.rm{flex:1;border-radius:8px;padding:5px 2px;text-align:center;opacity:0.15;transition:all 0.4s;border:1px solid transparent}
+.rm.act{opacity:1;border-color:rgba(212,168,67,0.15)}
+.rm.done{opacity:0.5}
+.rm-em{font-size:14px}
+.rm-nm{font-size:6px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;margin-top:1px;color:rgba(255,255,255,0.6)}
+.rm-bar{height:2px;border-radius:1px;background-color:rgba(255,255,255,0.06);margin-top:3px;overflow:hidden}
+.rm-fill{height:100%;border-radius:1px;background-color:#D4A843;transition:width 0.5s}
+
+.dots{display:flex;gap:5px;justify-content:center;margin-bottom:6px}
+.dot{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;opacity:0.12;transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1);border:2px solid transparent}
+.dot.owned{opacity:1;transform:scale(1.1);border-color:rgba(255,255,255,0.1);box-shadow:0 4px 14px rgba(0,0,0,0.4)}
+.dot.leg.owned{border-color:rgba(212,168,67,0.4);box-shadow:0 0 18px rgba(212,168,67,0.2);animation:lgGlow 2s ease-in-out infinite alternate}
+@keyframes lgGlow{0%{box-shadow:0 0 12px rgba(212,168,67,0.15)}100%{box-shadow:0 0 24px rgba(212,168,67,0.3)}}
+.dot.pop{animation:dPop 0.7s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes dPop{0%{transform:scale(0.2) rotate(-40deg);opacity:0}40%{transform:scale(1.6) rotate(12deg);opacity:1}100%{transform:scale(1.1) rotate(0);opacity:1}}
+
+/* CARD */
+.card{width:100%;max-width:340px;border-radius:22px;overflow:hidden;animation:cIn 0.5s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 14px 45px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.04);margin:0 auto}
+@keyframes cIn{from{opacity:0;transform:translateY(24px) scale(0.9) rotate(-1.5deg)}to{opacity:1;transform:translateY(0) scale(1) rotate(0)}}
+.card.leg{box-shadow:0 14px 45px rgba(0,0,0,0.5),0 0 25px rgba(212,168,67,0.1),0 0 0 2px rgba(212,168,67,0.12)}
+.c-top{height:88px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.c-top::before{content:’’;position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.14) 0%,transparent 50%,rgba(0,0,0,0.2) 100%)}
+.c-em{position:relative;z-index:1;font-size:46px;filter:drop-shadow(0 6px 14px rgba(0,0,0,0.35));animation:emB 3.5s ease-in-out infinite}
+@keyframes emB{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.c-badge{position:absolute;top:7px;right:9px;z-index:2;font-size:7px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#D4A843;background-color:rgba(0,0,0,0.45);padding:3px 7px;border-radius:8px;border:1px solid rgba(212,168,67,0.25)}
+.c-bod{background-color:#f4efe5;padding:14px 18px 16px;color:#0e1224}
+.c-nm{font-size:20px;font-weight:900;margin-bottom:3px}
+.c-de{font-size:11px;color:#6b7080;line-height:1.55;margin-bottom:10px}
+.c-ft{display:flex;justify-content:space-between;align-items:center;padding-top:9px;border-top:2px solid rgba(0,0,0,0.04)}
+.c-pr{font-size:17px;font-weight:900;color:#1a8f4a}
+.c-rn{font-size:10px;color:#a0a4b0;font-weight:700}
+.c-own{font-size:12px;font-weight:900;color:#2B4C7E;background-color:rgba(43,76,126,0.08);padding:5px 14px;border-radius:18px}
+
+/* PROGRESS */
+.pb{width:100%;max-width:340px;height:4px;background-color:rgba(255,255,255,0.03);border-radius:2px;overflow:hidden;margin:6px auto 2px}
+.pfl{height:100%;border-radius:2px;background-color:#D4A843;transition:width 0.6s;box-shadow:0 0 8px rgba(212,168,67,0.25)}
+.plb{font-size:7px;color:#1e2440;text-align:center;letter-spacing:2px;text-transform:uppercase;font-weight:800;margin-bottom:6px}
+
+/* DICE */
+.da{display:flex;flex-direction:column;align-items:center;gap:10px}
+.dd{width:80px;height:80px;display:flex;align-items:center;justify-content:center;font-size:48px;background-color:rgba(10,14,28,0.6);border-radius:20px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 6px 25px rgba(0,0,0,0.4)}
+.dd.spin{animation:dsp 0.06s linear infinite}
+@keyframes dsp{0%{transform:rotate(0) scale(1)}50%{transform:rotate(180deg) scale(1.12)}100%{transform:rotate(360deg) scale(1)}}
+.dd.land{animation:dlnd 0.45s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes dlnd{from{transform:scale(0.3) rotate(-180deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+
+.rbtn{display:block;font-size:20px;font-weight:900;padding:16px 62px;border:none;border-radius:50px;background-color:#1B2A4A;color:#FFFFFF;cursor:pointer;letter-spacing:2px;-webkit-appearance:none;appearance:none;box-shadow:0 0 28px rgba(27,42,74,0.4),0 6px 20px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.06);position:relative;overflow:hidden}
+.rbtn::after{content:’’;position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.05),transparent);animation:gsh 5s ease-in-out infinite}
+.rbtn:active{transform:scale(0.96)}
+.rbtn:disabled{opacity:0.25}
+
+/* ===== OVERLAYS ===== */
+.ov{position:fixed;inset:0;z-index:50;background-color:rgba(4,5,12,0.82);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:16px;animation:ovF 0.2s}
+@keyframes ovF{from{opacity:0}to{opacity:1}}
+.ov.hidden{display:none}
+
+.ev{background-color:#fff;border-radius:24px;padding:26px 22px 22px;max-width:310px;width:100%;color:#0e1224;text-align:center;animation:evP 0.5s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 28px 65px rgba(0,0,0,0.55);position:relative;overflow:hidden}
+.ev::before{content:’’;position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#D4A843,#2B4C7E,#1d9d51,#C0392B,#D4A843);background-size:200%;animation:gBar 3s linear infinite}
+@keyframes gBar{0%{background-position:0}100%{background-position:200%}}
+@keyframes evP{from{transform:scale(0.5) translateY(30px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.ev-em{font-size:52px;margin-bottom:10px;animation:evEm 0.5s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes evEm{from{transform:scale(0) rotate(-40deg)}to{transform:scale(1) rotate(0)}}
+.ev-ti{font-size:20px;font-weight:900;margin-bottom:5px}
+.ev-de{font-size:13px;color:#5a5e6e;line-height:1.6;margin-bottom:18px}
+.ev-bt{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.eb{font-size:14px;font-weight:800;padding:11px 24px;border:none;border-radius:50px;cursor:pointer;-webkit-appearance:none;appearance:none;transition:transform 0.15s}
+.eb:active{transform:scale(0.94)}
+.eb-buy{background-color:#1d9d51;color:#fff;box-shadow:0 4px 14px rgba(29,157,81,0.2)}
+.eb-pass{background-color:#eae6dc;color:#5a5e6e}
+.eb-ok{background-color:#1B2A4A;color:#fff;box-shadow:0 4px 14px rgba(27,42,74,0.2)}
+.eb-fart{background-color:#4a7a2e;color:#fff;box-shadow:0 4px 14px rgba(74,122,46,0.3)}
+.eb-xmas{background-color:#c0392b;color:#fff;box-shadow:0 4px 14px rgba(192,57,43,0.2)}
+
+/* FART OVERLAY */
+.fart-ring{position:fixed;border-radius:50%;border:3px solid rgba(120,180,60,0.5);pointer-events:none;z-index:55;animation:fRing 1s ease-out forwards}
+@keyframes fRing{0%{width:10px;height:10px;opacity:1}100%{width:300px;height:300px;opacity:0;border-width:1px}}
+.fart-cloud{position:fixed;font-size:28px;pointer-events:none;z-index:55;animation:fCloud 1.5s ease-out forwards}
+@keyframes fCloud{0%{opacity:1;transform:translate(0,0) scale(1) rotate(0)}100%{opacity:0;transform:translate(var(–fx),var(–fy)) scale(0.3) rotate(180deg)}}
+
+/* SNOW */
+.snow{position:fixed;width:6px;height:6px;background-color:#fff;border-radius:50%;pointer-events:none;z-index:55;opacity:0.7;animation:snowF linear forwards}
+@keyframes snowF{0%{transform:translateY(-10px) translateX(0);opacity:0.8}50%{transform:translateY(50vh) translateX(20px);opacity:0.6}100%{transform:translateY(110vh) translateX(-10px);opacity:0}}
+
+/* XMAS LIGHTS */
+.xlight{position:fixed;width:8px;height:8px;border-radius:50%;pointer-events:none;z-index:54;animation:xlBlink 0.8s ease-in-out infinite alternate}
+@keyframes xlBlink{0%{opacity:0.4;transform:scale(0.8)}100%{opacity:1;transform:scale(1.2)}}
+
+/* ===== REGION COMPLETE ===== */
+#regComp{z-index:60;background-color:rgba(5,7,14,0.92)}
+.rc-content{text-align:center;padding:24px;animation:evP 0.5s cubic-bezier(0.34,1.56,0.64,1)}
+.rc-em{font-size:72px;margin-bottom:14px}
+.rc-ti{font-size:28px;font-weight:900;color:#D4A843;margin-bottom:6px}
+.rc-de{font-size:14px;color:#4a5068;line-height:1.6;margin-bottom:24px;max-width:280px}
+
+/* ===== WIN ===== */
+#win{z-index:100;background-color:#05070e;overflow:hidden}
+.wg{position:absolute;border-radius:50%;filter:blur(80px)}
+.wg1{width:300px;height:300px;background-color:rgba(212,168,67,0.1);top:15%;left:50%;transform:translateX(-50%)}
+.wg2{width:200px;height:200px;background-color:rgba(43,76,126,0.08);bottom:20%;left:30%}
+.wz{position:relative;z-index:2;text-align:center;padding:20px}
+.w-em{font-size:88px;margin-bottom:16px;animation:pawGo 2.5s cubic-bezier(0.36,0.07,0.19,0.97) infinite;filter:drop-shadow(0 0 30px rgba(212,168,67,0.3))}
+.w-ti{font-size:36px;font-weight:900;color:#D4A843;margin-bottom:8px;text-shadow:0 0 40px rgba(212,168,67,0.25)}
+.w-su{font-size:14px;color:#3a4060;margin-bottom:28px;line-height:1.7;max-width:290px}
+
+/* ===== FX ===== */
+.confetti{position:fixed;z-index:200;pointer-events:none;animation:cFall linear forwards}
+@keyframes cFall{0%{transform:translateY(-20px) rotateZ(0);opacity:1}100%{transform:translateY(110vh) rotateZ(720deg);opacity:0}}
+.fcoin{position:fixed;font-size:16px;font-weight:900;pointer-events:none;z-index:60;color:#D4A843;text-shadow:0 0 10px rgba(212,168,67,0.3);animation:fUp 1.2s cubic-bezier(0.2,0.8,0.3,1) forwards}
+@keyframes fUp{0%{opacity:1;transform:translateY(0) scale(1.1)}100%{opacity:0;transform:translateY(-90px) scale(0.5)}}
+.sflash{position:fixed;inset:0;z-index:45;pointer-events:none;animation:sf 0.45s ease-out forwards}
+@keyframes sf{from{opacity:0.18}to{opacity:0}}
+.shake{animation:shk 0.35s ease-out}
+@keyframes shk{0%,100%{transform:translateX(0)}15%{transform:translateX(-5px)}30%{transform:translateX(4px)}45%{transform:translateX(-3px)}60%{transform:translateX(2px)}}
+.sparkle{position:fixed;pointer-events:none;z-index:55;width:5px;height:5px;border-radius:50%;animation:spk 0.8s ease-out forwards}
+@keyframes spk{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(–sx),var(–sy)) scale(0);opacity:0}}
+.doorbell{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:80px;z-index:56;pointer-events:none;animation:dbPop 1.5s ease-out forwards}
+@keyframes dbPop{0%{transform:translate(-50%,-50%) scale(0) rotate(-30deg);opacity:0}20%{transform:translate(-50%,-50%) scale(1.3) rotate(10deg);opacity:1}40%{transform:translate(-50%,-50%) scale(1) rotate(0);opacity:1}100%{transform:translate(-50%,-50%) scale(0.5);opacity:0}}
+</style>
+
+</head>
+<body>
+<canvas id="sky"></canvas>
+<div class="aur"><div class="ab ab1"></div><div class="ab ab2"></div><div class="ab ab3"></div></div>
+
+<!-- SPLASH -->
+
+<div id="splash" class="screen on">
+  <div class="sp-orb sp-o1"></div><div class="sp-orb sp-o2"></div>
+  <div class="spz">
+    <div class="sp-flag">🇵🇹</div>
+    <div class="sp-paw">🐾</div>
+    <div class="sp-ti">GOOBY</div>
+    <div class="sp-ln"></div>
+    <div class="sp-st">Portugal Adventure</div>
+    <div class="sp-st2">From Maryland to Braga</div>
+    <button class="gbtn" onclick="startFlight()">Jogar! 🎲</button>
+  </div>
+</div>
+
+<!-- FLIGHT -->
+
+<div id="flight" class="screen">
+  <div class="sp-orb sp-o1"></div>
+  <div class="fl-content">
+    <div class="fl-route">Gooby's Journey</div>
+    <div class="fl-cities">
+      <div class="fl-city"><div class="fl-city-em">🏠</div><div class="fl-city-nm">Maryland</div></div>
+      <div class="fl-path"><div class="fl-dot">✈️</div></div>
+      <div class="fl-city"><div class="fl-city-em">🇵🇹</div><div class="fl-city-nm">Portugal</div></div>
+    </div>
+    <div class="fl-msg">Bem-vindo a Portugal! 🐾</div>
+    <div class="fl-sub">The Fonseca adventure begins...</div>
+  </div>
+</div>
+
+<!-- GAME -->
+
+<div id="game" class="screen">
+  <div style="width:100%;max-width:380px;margin:0 auto">
+    <div class="hud">
+      <div class="hud-l">🐾 Gooby</div>
+      <div class="hud-c">💰 <span id="coins">800</span></div>
+    </div>
+    <div class="reg-hdr">
+      <div class="reg-em" id="regEm">🏛️</div>
+      <div class="reg-nm" id="regNm">Lisbon</div>
+      <div class="reg-sub" id="regSub">Region 1 of 4</div>
+    </div>
+    <div class="row4">
+      <div class="bx"><div class="bx-l">Round</div><div class="bx-v" id="vRnd">1</div></div>
+      <div class="bx"><div class="bx-l">Region</div><div class="bx-v" id="vReg">1/4</div></div>
+      <div class="bx"><div class="bx-l">Owned</div><div class="bx-v" id="vOwn">0</div></div>
+      <div class="bx"><div class="bx-l">Steps</div><div class="bx-v" id="vStp">0</div></div>
+    </div>
+    <div class="rmap" id="rmap"></div>
+    <div class="dots" id="dots"></div>
+    <div class="bd">
+      <div class="card" id="card">
+        <div class="c-top" id="cTop"><span class="c-em" id="cEm">🏛️</span></div>
+        <div class="c-bod">
+          <div class="c-nm" id="cNm">Loading...</div>
+          <div class="c-de" id="cDe"></div>
+          <div class="c-ft" id="cFt"></div>
+        </div>
+      </div>
+      <div class="pb"><div class="pfl" id="pfl" style="width:0%"></div></div>
+      <div class="plb" id="plb">Lisbon Conquest</div>
+      <div class="da">
+        <div class="dd" id="dd">🎲</div>
+        <button class="rbtn" id="rb" onclick="roll()">ROLL 🎲</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EVENT -->
+
+<div class="ov hidden" id="ov">
+  <div class="ev">
+    <div class="ev-em" id="eEm">🎉</div>
+    <div class="ev-ti" id="eTi">Event</div>
+    <div class="ev-de" id="eDe">Something happened.</div>
+    <div class="ev-bt" id="eBt"></div>
+  </div>
+</div>
+
+<!-- REGION COMPLETE -->
+
+<div id="regComp" class="screen">
+  <div class="rc-content">
+    <div class="rc-em" id="rcEm">🎉</div>
+    <div class="rc-ti" id="rcTi">Region Complete!</div>
+    <div class="rc-de" id="rcDe">Amazing work!</div>
+    <button class="gbtn" id="rcBtn" onclick="nextRegion()">Next Region →</button>
+  </div>
+</div>
+
+<!-- WIN -->
+
+<div id="win" class="screen">
+  <div class="wg wg1"></div><div class="wg wg2"></div>
+  <div class="wz">
+    <div class="w-em">🏆</div>
+    <div class="w-ti">Gooby Conquered Portugal!</div>
+    <div class="w-su" id="wMsg">The Fonseca legacy lives on.</div>
+    <button class="gbtn" onclick="fullRestart()">Play Again 🎲</button>
+  </div>
+</div>
+
+<script>
+/* ========== STARFIELD ========== */
+(function(){
+  var c=document.getElementById('sky'),x=c.getContext('2d'),pts=[],W,H;
+  function sz(){W=c.width=innerWidth;H=c.height=innerHeight;pts=[];
+    for(var i=0,n=Math.min(70,Math.floor(W*H/11000));i<n;i++)
+      pts.push({x:Math.random()*W,y:Math.random()*H,r:0.4+Math.random()*1.8,dx:(Math.random()-0.5)*0.2,dy:(Math.random()-0.5)*0.2,ph:Math.random()*6.28,sp:0.008+Math.random()*0.012});}
+  function draw(){
+    x.clearRect(0,0,W,H);
+    for(var i=0;i<pts.length;i++){var p=pts[i];p.x+=p.dx;p.y+=p.dy;p.ph+=p.sp;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      var a=0.12+Math.sin(p.ph)*0.18;
+      x.beginPath();x.arc(p.x,p.y,p.r,0,6.28);x.fillStyle='rgba(212,168,67,'+a+')';x.fill();
+      x.beginPath();x.arc(p.x,p.y,p.r*3,0,6.28);x.fillStyle='rgba(212,168,67,'+(a*0.06)+')';x.fill();}
+    for(var i=0;i<pts.length;i++)for(var j=i+1;j<pts.length;j++){
+      var dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<95){x.beginPath();x.moveTo(pts[i].x,pts[i].y);x.lineTo(pts[j].x,pts[j].y);
+        x.strokeStyle='rgba(43,76,126,'+(0.04*(1-d/95))+')';x.lineWidth=0.5;x.stroke();}}
+    requestAnimationFrame(draw);}
+  sz();draw();addEventListener('resize',sz);
+})();
+
+/* ========== GAME DATA ========== */
+var REGIONS=[
+  {name:"Lisbon",em:"🏛️",col:"#2B4C7E",sub:"The capital awaits",
+    props:[
+      {n:"Torre de Belém",e:"🏰",d:"The iconic tower on the Tagus. Gooby pretends to be a sailor!",p:100,r:20},
+      {n:"Alfama",e:"🎵",d:"Narrow streets and fado music. Gooby gets lost (again).",p:120,r:24},
+      {n:"Pastéis de Belém",e:"🍮",d:"The original pastel de nata shop. Gooby eats 12.",p:90,r:18},
+      {n:"Praça do Comércio",e:"☀️",d:"The grand waterfront square. Gooby does a victory pose.",p:130,r:26}
+    ]},
+  {name:"Porto",em:"🍷",col:"#7D3C98",sub:"City of wine and bridges",
+    props:[
+      {n:"Ribeira",e:"🌊",d:"Colorful houses along the Douro. Gooby takes 200 selfies.",p:140,r:28},
+      {n:"Livraria Lello",e:"📚",d:"The world's most beautiful bookstore. Gooby can't read but loves it.",p:150,r:30},
+      {n:"Dom Luís Bridge",e:"🌉",d:"Double-deck iron bridge. Gooby walks the top level!",p:130,r:26},
+      {n:"Port Wine Cellars",e:"🍷",d:"Gooby discovers port wine. Things get interesting.",p:160,r:32}
+    ]},
+  {name:"Algarve",em:"🏖️",col:"#148F77",sub:"Sun, sand, and secrets",
+    props:[
+      {n:"Benagil Cave",e:"🕳️",d:"The famous sea cave! Gooby swims in through the opening.",p:170,r:34},
+      {n:"Lagos Beach",e:"🏝️",d:"Golden cliffs and turquoise water. Gooby builds a sandcastle.",p:150,r:30},
+      {n:"Albufeira",e:"🎡",d:"The party capital. Gooby stays out past bedtime.",p:140,r:28},
+      {n:"Sagres",e:"🧭",d:"End of the world! Gooby stares at the Atlantic and feels things.",p:180,r:36}
+    ]},
+  {name:"Braga",em:"⛪",col:"#B8860B",sub:"The final challenge",
+    props:[
+      {n:"Bom Jesus",e:"⛪",d:"577 baroque steps. Gooby's legs are burning but the view is worth it.",p:200,r:40},
+      {n:"Sé de Braga",e:"🏛️",d:"The oldest cathedral in Portugal. Mae would be proud.",p:220,r:44},
+      {n:"Jardim de Santa Bárbara",e:"🌺",d:"Medieval gardens where Gooby finally catches a breath.",p:190,r:38},
+      {n:"Fonseca Vineyard",e:"🍇",d:"The legendary family vineyard. Gooby is home. This is where it all comes together.",p:350,r:70,leg:true}
+    ]}
+];
+
+var EVENTS=[
+  // PORTUGAL
+  {e:"🍷",t:"Vinho Verde!",d:"A local pours Gooby a cold glass. Saúde!",c:60,fx:"green"},
+  {e:"🌧️",t:"Chuva!",d:"Classic Portuguese rain. Gooby forgot the umbrella.",c:-40,fx:"blue"},
+  {e:"🐓",t:"Galo de Barcelos!",d:"Gooby finds the lucky rooster. Good fortune!",c:80,fx:"gold"},
+  {e:"🍰",t:"Natas!",d:"A pastelaria hands Gooby free pastéis de nata.",c:50,fx:"gold"},
+  {e:"🚃",t:"Tram Ride!",d:"Gooby hops on the famous tram 28. Scenic detour.",c:-25,fx:"blue"},
+  {e:"🐟",t:"Bacalhau!",d:"The best bacalhau in Portugal. Gooby is in food heaven.",c:45,fx:"gold"},
+  // GATOOOOOS (FARTS)
+  {e:"💨",t:"GATOOOOOS!",d:"Brian rips a legendary one. The whole room clears. Gooby rides the blast wave forward!",c:70,fx:"fart",farter:"Brian"},
+  {e:"💨",t:"GATOOOOOS!",d:"Steven lets one loose. Angie is NOT impressed. Rambo barks. Gooby gains speed!",c:65,fx:"fart",farter:"Steven"},
+  {e:"💨",t:"GATOOOOOS!",d:"Dad fires off a silent but deadly. Mae yells from the kitchen. Gooby profits from the chaos!",c:85,fx:"fart",farter:"Dad"},
+  {e:"💨",t:"DOUBLE GATOOOOOS!",d:"Brian AND Steven at the same time. The house shakes. Rambo hides. Historic moment.",c:120,fx:"fart",farter:"Both"},
+  {e:"💨",t:"GATOOOOOS REVENGE!",d:"Steven blames Rambo. Nobody believes him. Angie opens a window. Gooby escapes with coins!",c:55,fx:"fart",farter:"Steven"},
+  // FAMILY
+  {e:"🐕",t:"Rambo Alert!",d:"Rambo spotted something on the Ring camera. It's just the mailman. False alarm bonus!",c:40,fx:"doorbell"},
+  {e:"📱",t:"Ring Doorbell!",d:"Someone's at the door! The whole family checks the camera simultaneously.",c:30,fx:"doorbell"},
+  {e:"👩‍🍳",t:"Mae's Kitchen!",d:"Mae is cooking something incredible. The smell alone is worth coins.",c:60,fx:"gold"},
+  {e:"📱",t:"Ring Alert!",d:"Rambo is barking at the Ring camera again. Dad checks it. It's a cat.",c:35,fx:"doorbell"},
+  // CHRISTMAS
+  {e:"🎄",t:"Christmas Lights!",d:"Jessica spots an incredible Christmas display. She makes everyone stop and look.",c:75,fx:"xmas"},
+  {e:"🎬",t:"Home Alone!",d:"Jessica puts on Home Alone. Everyone has to watch. Gooby sets up booby traps for bonus coins!",c:90,fx:"xmas"},
+  {e:"🎅",t:"Merry Christmas!",d:"Jessica decorates everything in sight. Even Rambo gets a sweater.",c:65,fx:"xmas"},
+  {e:"🏠",t:"Kevin!",d:"'KEVIN!' Jessica does the Home Alone face. Gooby is inspired. Bonus coins!",c:50,fx:"xmas"},
+  // BAD LUCK
+  {e:"🧹",t:"Lost Passport!",d:"Gooby drops the passport again. Panic mode.",c:-50,fx:"red"},
+  {e:"🚕",t:"Tourist Trap!",d:"Gooby paid way too much for a taxi. Classic.",c:-45,fx:"red"},
+  {e:"☀️",t:"Sunburn!",d:"Gooby forgot sunscreen in the Algarve. Ouch.",c:-35,fx:"red"}
+];
+
+var DF=['⚀','⚁','⚂','⚃','⚄','⚅'];
+var coins,pos,rnd,steps,owned,curReg,busy;
+function _$(s){return document.getElementById(s)}
+
+function initState(){coins=800;pos=0;rnd=1;steps=0;owned={};curReg=0;busy=false;
+  for(var i=0;i<REGIONS.length;i++){owned[i]={};}}
+
+/* ========== SCREENS ========== */
+function showScreen(id){
+  var screens=['splash','flight','game','regComp','win'];
+  for(var i=0;i<screens.length;i++){
+    var el=_$(screens[i]);
+    if(screens[i]===id)el.classList.add('on');
+    else el.classList.remove('on');
+  }
+}
+
+/* ========== FLIGHT ========== */
+function startFlight(){
+  showScreen('flight');
+  setTimeout(function(){showScreen('game');initState();buildAll();showLoc();},4500);
+}
+
+/* ========== BUILD UI ========== */
+function buildAll(){buildRmap();buildDots();updateHud();}
+
+function buildRmap(){
+  var m=_$('rmap');m.innerHTML='';
+  for(var i=0;i<REGIONS.length;i++){
+    var r=REGIONS[i],d=document.createElement('div');
+    d.className='rm'+(i===curReg?' act':'')+(isRegDone(i)?' done':'');
+    d.id='rm'+i;d.style.backgroundColor=r.col;
+    var ownedInReg=Object.keys(owned[i]||{}).length;
+    d.innerHTML='<div class="rm-em">'+r.em+'</div><div class="rm-nm">'+r.name+'</div><div class="rm-bar"><div class="rm-fill" style="width:'+(ownedInReg/4*100)+'%"></div></div>';
+    m.appendChild(d);
+  }
+}
+
+function buildDots(){
+  var s=_$('dots');s.innerHTML='';
+  var props=REGIONS[curReg].props;
+  for(var i=0;i<props.length;i++){
+    var d=document.createElement('div'),p=props[i];
+    d.className='dot'+(owned[curReg][i]?' owned':'')+(p.leg?' leg':'');
+    d.style.backgroundColor=REGIONS[curReg].col;
+    d.textContent=p.e;d.id='dot'+i;
+    s.appendChild(d);
+  }
+}
+
+function updateHud(){
+  _$('coins').textContent=coins;
+  _$('vRnd').textContent=rnd;
+  _$('vReg').textContent=(curReg+1)+'/4';
+  var total=0;for(var i=0;i<4;i++)total+=Object.keys(owned[i]||{}).length;
+  _$('vOwn').textContent=total+'/16';
+  _$('vStp').textContent=steps;
+  var r=REGIONS[curReg];
+  _$('regEm').textContent=r.em;
+  _$('regNm').textContent=r.name;
+  _$('regSub').textContent=r.sub;
+  var regOwned=Object.keys(owned[curReg]||{}).length;
+  _$('pfl').style.width=(regOwned/4*100)+'%';
+  _$('plb').textContent=r.name+' Conquest — '+regOwned+'/4';
+  buildRmap();
+}
+
+function isRegDone(ri){return Object.keys(owned[ri]||{}).length>=4;}
+
+function showLoc(){
+  var r=REGIONS[curReg],p=r.props[pos];
+  _$('cTop').style.backgroundColor=r.col;
+  _$('cEm').textContent=p.e;
+  _$('cNm').textContent=p.n;
+  _$('cDe').textContent=p.d;
+  var card=_$('card');
+  card.className='card'+(p.leg?' leg':'');
+  // badge
+  var oldBadge=card.querySelector('.c-badge');
+  if(oldBadge)oldBadge.remove();
+  if(p.leg){var bg=document.createElement('div');bg.className='c-badge';bg.textContent='★ LEGENDARY';_$('cTop').appendChild(bg);}
+  var f=_$('cFt');
+  if(owned[curReg][pos])f.innerHTML='<span class="c-own">🐾 Gooby owns this!</span>';
+  else f.innerHTML='<span class="c-pr">💰 '+p.p+'</span><span class="c-rn">Rent: '+p.r+'/turn</span>';
+  card.style.animation='none';card.offsetHeight;card.style.animation='cIn 0.5s cubic-bezier(0.34,1.56,0.64,1)';
+  updateHud();
+}
+
+/* ========== DICE ========== */
+function roll(){
+  if(busy)return;busy=true;
+  _$('rb').disabled=true;
+  var d=_$('dd');d.classList.add('spin');d.classList.remove('land');
+  var t=0,iv=setInterval(function(){
+    d.textContent=DF[Math.floor(Math.random()*6)];t++;
+    if(t>=20){clearInterval(iv);
+      var r=Math.floor(Math.random()*6)+1;
+      d.textContent=DF[r-1];d.classList.remove('spin');d.classList.add('land');
+      setTimeout(function(){move(r)},400);}
+  },55);
+}
+
+function move(s){
+  steps+=s;var old=pos;
+  var regLen=REGIONS[curReg].props.length;
+  pos=(pos+s)%regLen;
+  if(pos<=old&&s>0){rnd++;coins+=80;fcoin('+80');flash('#D4A843');}
+  showLoc();
+  if(Math.random()<0.4)setTimeout(randEvt,500);
+  else setTimeout(propEvt,500);
+}
+
+/* ========== PROPERTY EVENT ========== */
+function propEvt(){
+  var p=REGIONS[curReg].props[pos];
+  if(owned[curReg][pos]){
+    coins+=p.r;fcoin('+'+p.r);flash('#1d9d51');
+    showEv(p.e,p.n,'Gooby collects '+p.r+' coins rent!',[
+      {t:'Nice! 🐾',c:'eb-ok',f:function(){hideEv();fin();}}]);
+  }else if(coins>=p.p){
+    showEv(p.e,'Buy '+p.n+'?','Costs '+p.p+' coins. Earns '+p.r+' each visit.'+(p.leg?' This is the LEGENDARY Fonseca property!':''),[
+      {t:'Buy 💰'+p.p,c:'eb-buy',f:doBuy},
+      {t:'Pass',c:'eb-pass',f:doRent}]);
+  }else{
+    showEv('😅','Too Expensive!',"Can't afford "+p.n+'. Pays '+p.r+' rent.',[
+      {t:'Okay 😔',c:'eb-ok',f:doRent}]);
+  }
+}
+
+function doBuy(){
+  var p=REGIONS[curReg].props[pos];
+  coins-=p.p;owned[curReg][pos]=true;
+  var d=_$('dot'+pos);
+  if(d){d.classList.add('owned');if(p.leg)d.classList.add('leg');d.classList.add('pop');setTimeout(function(){d.classList.remove('pop')},800);}
+  if(p.leg){flash('#D4A843');sparkles();shake();doConfetti();}
+  else{flash('#D4A843');sparkles();shake();}
+  hideEv();showLoc();
+  if(isRegDone(curReg)){
+    setTimeout(function(){
+      if(curReg>=3)winGame();
+      else showRegComplete();
+    },700);
+  }else fin();
+}
+
+function doRent(){
+  coins-=REGIONS[curReg].props[pos].r;if(coins<0)coins=0;
+  hideEv();updateHud();fin();
+}
+
+/* ========== RANDOM EVENTS ========== */
+function randEvt(){
+  var ev=EVENTS[Math.floor(Math.random()*EVENTS.length)];
+  var tx=ev.c>0?'+'+ev.c:''+ev.c;
+  var btnClass=ev.fx==='fart'?'eb-fart':ev.fx==='xmas'?'eb-xmas':ev.c>0?'eb-buy':'eb-pass';
+  showEv(ev.e,ev.t,ev.d,[
+    {t:tx+' coins',c:btnClass,f:function(){
+      coins+=ev.c;if(coins<0)coins=0;
+      if(ev.c>0)fcoin('+'+ev.c);
+      // FX
+      if(ev.fx==='fart')doFart(ev.farter);
+      else if(ev.fx==='xmas')doXmas();
+      else if(ev.fx==='doorbell')doDoorbell();
+      else if(ev.fx==='gold')flash('#D4A843');
+      else if(ev.fx==='green')flash('#27AE60');
+      else if(ev.fx==='blue')flash('#2B4C7E');
+      else if(ev.fx==='red'){flash('#C0392B');shake();}
+      hideEv();updateHud();fin();
+    }}
+  ]);
+}
+
+/* ========== EVENT UI ========== */
+function showEv(em,ti,de,bs){
+  _$('eEm').textContent=em;_$('eTi').textContent=ti;_$('eDe').textContent=de;
+  var c=_$('eBt');c.innerHTML='';
+  for(var i=0;i<bs.length;i++){var b=document.createElement('button');
+    b.className='eb '+bs[i].c;b.textContent=bs[i].t;b.onclick=bs[i].f;c.appendChild(b);}
+  _$('ov').classList.remove('hidden');
+}
+function hideEv(){_$('ov').classList.add('hidden')}
+function fin(){busy=false;_$('rb').disabled=false;updateHud();}
+
+/* ========== REGION COMPLETE ========== */
+function showRegComplete(){
+  var r=REGIONS[curReg];
+  var msgs=[
+    "Lisbon conquered! Gooby ate all the natas and saw all the sights. Porto is calling!",
+    "Porto dominated! Gooby drank port wine and crossed every bridge. The Algarve sun awaits!",
+    "Algarve secured! Gooby is tanned and ready. One final challenge remains... BRAGA. The Fonseca homeland.",
+    "BRAGA IS YOURS!"
+  ];
+  _$('rcEm').textContent=r.em;
+  _$('rcTi').textContent=r.name+' Complete!';
+  _$('rcDe').textContent=msgs[curReg];
+  if(curReg>=3)_$('rcBtn').textContent='🏆 Victory!';
+  else _$('rcBtn').textContent='Next: '+REGIONS[curReg+1].name+' →';
+  showScreen('regComp');
+  doConfetti();
+}
+
+function nextRegion(){
+  if(curReg>=3){winGame();return;}
+  curReg++;pos=0;busy=false;
+  showScreen('game');
+  buildAll();buildDots();showLoc();
+  _$('rb').disabled=false;
+}
+
+/* ========== WIN ========== */
+function winGame(){
+  var total=0;for(var i=0;i<4;i++)total+=Object.keys(owned[i]).length;
+  _$('wMsg').textContent='Gooby traveled from Maryland to Portugal, conquered '+total+' legendary locations across 4 regions, collected '+coins+' coins in '+rnd+' rounds and '+steps+' steps. The Fonseca Vineyard is secure. Jessica, you did it. Que aventura! 🇵🇹';
+  showScreen('win');
+  doConfetti();doConfetti();
+  setTimeout(doXmas,500);
+}
+
+function fullRestart(){initState();showScreen('splash');}
+
+/* ========== FX: FART (GATOOOOOS) ========== */
+function doFart(who){
+  shake();flash('#4a7a2e');
+  var cx=innerWidth/2,cy=innerHeight/2;
+  // rings
+  for(var i=0;i<5;i++){
+    (function(i){setTimeout(function(){
+      var ring=document.createElement('div');ring.className='fart-ring';
+      ring.style.left=(cx-5)+'px';ring.style.top=(cy-5)+'px';
+      ring.style.animationDuration=(0.8+i*0.2)+'s';
+      document.body.appendChild(ring);
+      setTimeout(function(){ring.remove()},2000);
+    },i*150)})(i);
+  }
+  // cloud particles
+  var fartEms=['💨','💨','💨','🐱','😤','🤢','💚'];
+  for(var i=0;i<18;i++){
+    (function(i){setTimeout(function(){
+      var cl=document.createElement('div');cl.className='fart-cloud';
+      var angle=Math.random()*6.28,dist=60+Math.random()*120;
+      cl.style.setProperty('--fx',Math.cos(angle)*dist+'px');
+      cl.style.setProperty('--fy',Math.sin(angle)*dist+'px');
+      cl.style.left=(cx-14)+'px';cl.style.top=(cy-14)+'px';
+      cl.textContent=fartEms[Math.floor(Math.random()*fartEms.length)];
+      document.body.appendChild(cl);
+      setTimeout(function(){cl.remove()},2000);
+    },i*60)})(i);
+  }
+  // who farted label
+  var lb=document.createElement('div');lb.className='fcoin';
+  lb.textContent='💨 '+who+"'s GATOOOOOS!";
+  lb.style.left=(cx-80)+'px';lb.style.top=(cy-60)+'px';
+  lb.style.fontSize='14px';lb.style.color='#7adb4a';
+  document.body.appendChild(lb);setTimeout(function(){lb.remove()},1500);
+}
+
+/* ========== FX: CHRISTMAS ========== */
+function doXmas(){
+  // snowfall
+  for(var i=0;i<30;i++){
+    (function(i){setTimeout(function(){
+      var s=document.createElement('div');s.className='snow';
+      s.style.left=Math.random()*100+'vw';
+      s.style.width=s.style.height=(3+Math.random()*5)+'px';
+      s.style.animationDuration=(2+Math.random()*3)+'s';
+      document.body.appendChild(s);
+      setTimeout(function(){s.remove()},6000);
+    },i*100)})(i);
+  }
+  // christmas lights
+  var xCols=['#ff0000','#00ff00','#ffff00','#ff6600','#0066ff','#ff00ff'];
+  for(var i=0;i<20;i++){
+    (function(i){setTimeout(function(){
+      var l=document.createElement('div');l.className='xlight';
+      l.style.left=Math.random()*100+'vw';l.style.top=Math.random()*100+'vh';
+      l.style.backgroundColor=xCols[Math.floor(Math.random()*xCols.length)];
+      l.style.animationDelay=Math.random()*0.5+'s';
+      l.style.boxShadow='0 0 10px '+l.style.backgroundColor;
+      document.body.appendChild(l);
+      setTimeout(function(){l.remove()},3000);
+    },i*50)})(i);
+  }
+  flash('#c0392b');
+}
+
+/* ========== FX: DOORBELL ========== */
+function doDoorbell(){
+  var db=document.createElement('div');db.className='doorbell';
+  db.textContent='🔔';
+  document.body.appendChild(db);
+  setTimeout(function(){db.remove()},2000);
+  shake();flash('#3498db');
+}
+
+/* ========== FX: CORE ========== */
+function fcoin(t){
+  var e=document.createElement('div');e.className='fcoin';e.textContent='💰 '+t;
+  e.style.left=(innerWidth/2-28)+'px';e.style.top='48px';
+  document.body.appendChild(e);setTimeout(function(){e.remove()},1300);
+}
+function flash(c){
+  var f=document.createElement('div');f.className='sflash';f.style.backgroundColor=c;
+  document.body.appendChild(f);setTimeout(function(){f.remove()},600);
+}
+function shake(){
+  var g=_$('game');g.classList.remove('shake');g.offsetHeight;g.classList.add('shake');
+}
+function sparkles(){
+  var cx=innerWidth/2,cy=innerHeight/2;
+  for(var i=0;i<16;i++){
+    var s=document.createElement('div');s.className='sparkle';
+    var angle=Math.random()*6.28,dist=40+Math.random()*90;
+    s.style.setProperty('--sx',Math.cos(angle)*dist+'px');
+    s.style.setProperty('--sy',Math.sin(angle)*dist+'px');
+    s.style.left=(cx-3)+'px';s.style.top=(cy-3)+'px';
+    s.style.backgroundColor=['#D4A843','#fff','#2B4C7E','#1d9d51'][Math.floor(Math.random()*4)];
+    document.body.appendChild(s);setTimeout((function(s){return function(){s.remove()}})(s),900);
+  }
+}
+function doConfetti(){
+  var cols=['#D4A843','#2B4C7E','#C0392B','#27AE60','#E67E22','#7D3C98','#fff','#148F77'];
+  for(var i=0;i<70;i++){(function(i){setTimeout(function(){
+    var p=document.createElement('div');p.className='confetti';
+    p.style.left=Math.random()*100+'vw';
+    p.style.backgroundColor=cols[Math.floor(Math.random()*cols.length)];
+    var sz=4+Math.random()*10;p.style.width=sz+'px';p.style.height=sz+'px';
+    p.style.borderRadius=Math.random()>0.5?'50%':'2px';
+    p.style.animationDuration=(1.5+Math.random()*3)+'s';
+    document.body.appendChild(p);setTimeout(function(){p.remove()},5000);
+  },i*35)})(i)}
+}
+</script>
+
+</body>
+</html>
