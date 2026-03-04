@@ -1,300 +1,334 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="author" content="Richard B. Price Jr.">
 <title>Gooby</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;background-color:#05070e;color:#fff;min-height:100vh;min-height:100dvh;overflow:hidden;-webkit-font-smoothing:antialiased}
-canvas#sky{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;background:#05070e;color:#fff;overflow:hidden;-webkit-font-smoothing:antialiased;height:100vh;height:100dvh;width:100vw}
+canvas#sky{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 .aur{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.ab{position:absolute;width:220%;height:45%;border-radius:50%;filter:blur(90px);opacity:0.1;animation:aS 14s ease-in-out infinite alternate}
-.ab1{background-color:#2B4C7E;top:-15%;left:-40%}.ab2{background-color:#D4A843;bottom:0;right:-50%;animation-duration:11s;opacity:0.06}.ab3{background-color:#148F77;top:25%;left:-30%;animation-duration:18s;opacity:0.07}
-@keyframes aS{0%{transform:translateX(0) rotate(0) scale(1)}100%{transform:translateX(50px) rotate(6deg) scale(1.2)}}
+.ab{position:absolute;width:200%;height:50%;border-radius:50%;filter:blur(100px);opacity:0.08;will-change:transform}
+.ab1{background:#2B4C7E;top:-20%;left:-40%;animation:aD 16s ease-in-out infinite alternate}
+.ab2{background:#D4A843;bottom:-10%;right:-40%;animation:aD 12s ease-in-out infinite alternate-reverse;opacity:0.05}
+.ab3{background:#148F77;top:20%;left:-20%;animation:aD 20s ease-in-out infinite alternate;opacity:0.06}
+@keyframes aD{0%{transform:translate(0,0) rotate(0) scale(1)}100%{transform:translate(40px,20px) rotate(5deg) scale(1.15)}}
+
+/* ===== PORTRAIT WARNING ===== */
+#portrait{position:fixed;inset:0;z-index:9999;background:#05070e;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px}
+#portrait .p-icon{font-size:60px;animation:pRot 2s ease-in-out infinite}
+@keyframes pRot{0%,100%{transform:rotate(0)}50%{transform:rotate(90deg)}}
+#portrait .p-txt{font-size:20px;font-weight:900;color:#D4A843;margin-top:20px}
+#portrait .p-sub{font-size:12px;color:#fff;margin-top:8px;opacity:0.6}
 
 /* ===== SCREENS ===== */
-.screen{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:10}
-.screen.on{display:flex}
+.scr{position:fixed;inset:0;display:none;z-index:10;overflow:hidden}
+.scr.on{display:flex;flex-direction:column;align-items:center;justify-content:center}
 
 /* ===== SPLASH ===== */
-#splash{z-index:100;background-color:#05070e;overflow:hidden}
-.sp-orb{position:absolute;border-radius:50%;filter:blur(80px)}
-.sp-o1{width:300px;height:300px;background-color:rgba(212,168,67,0.07);top:10%;left:15%}
-.sp-o2{width:250px;height:250px;background-color:rgba(43,76,126,0.09);bottom:12%;right:8%}
-.spz{position:relative;z-index:2;text-align:center;padding:20px}
-.sp-flag{font-size:26px;margin-bottom:4px;opacity:0.5;animation:fw 3s ease-in-out infinite}
-@keyframes fw{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
-.sp-paw{font-size:92px;animation:pawGo 2.5s cubic-bezier(0.36,0.07,0.19,0.97) infinite;filter:drop-shadow(0 0 30px rgba(212,168,67,0.25))}
-@keyframes pawGo{0%,100%{transform:translateY(0) rotate(-10deg) scale(1)}25%{transform:translateY(-30px) rotate(8deg) scale(1.08)}50%{transform:translateY(-4px) rotate(-5deg) scale(0.96)}75%{transform:translateY(-18px) rotate(4deg) scale(1.03)}}
-.sp-ti{font-size:58px;font-weight:900;color:#D4A843;margin:12px 0 0;letter-spacing:6px;text-shadow:0 0 50px rgba(212,168,67,0.3)}
-.sp-ln{width:65px;height:3px;border-radius:2px;background-color:#D4A843;margin:8px auto 4px;opacity:0.3}
-.sp-st{font-size:11px;font-weight:700;color:#2a3050;letter-spacing:4px;text-transform:uppercase;margin-bottom:6px}
-.sp-st2{font-size:9px;color:#1e2440;letter-spacing:2px;margin-bottom:36px;font-weight:600}
-.gbtn{font-size:20px;font-weight:900;padding:18px 56px;border:none;border-radius:50px;background-color:#D4A843;color:#05070e;cursor:pointer;-webkit-appearance:none;appearance:none;box-shadow:0 0 35px rgba(212,168,67,0.2),0 6px 24px rgba(0,0,0,0.5);position:relative;overflow:hidden;letter-spacing:1px}
-.gbtn::after{content:’’;position:absolute;top:0;left:-100%;width:70%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent);animation:gsh 3.5s ease-in-out infinite}
-@keyframes gsh{0%,100%{left:-100%}50%{left:130%}}
-.gbtn:active{transform:scale(0.96)}
+#splash{z-index:100;background:#05070e}
+.s-orb{position:absolute;border-radius:50%;filter:blur(90px)}
+.s-o1{width:300px;height:300px;background:rgba(212,168,67,0.07);top:5%;left:10%}
+.s-o2{width:250px;height:250px;background:rgba(43,76,126,0.09);bottom:10%;right:5%}
+.sz{position:relative;z-index:2;text-align:center}
+.s-flag{font-size:24px;opacity:0.5;margin-bottom:4px}
+.s-paw{font-size:80px;filter:drop-shadow(0 0 25px rgba(212,168,67,0.3));animation:sPaw 2.5s cubic-bezier(.36,.07,.19,.97) infinite}
+@keyframes sPaw{0%,100%{transform:translateY(0) rotate(-8deg) scale(1)}30%{transform:translateY(-25px) rotate(6deg) scale(1.06)}60%{transform:translateY(-3px) rotate(-4deg) scale(.97)}}
+.s-ti{font-size:52px;font-weight:900;color:#D4A843;letter-spacing:5px;margin:8px 0 2px;text-shadow:0 0 40px rgba(212,168,67,.3)}
+.s-ln{width:50px;height:2px;background:#D4A843;margin:6px auto;opacity:.3;border-radius:1px}
+.s-st{font-size:10px;font-weight:700;color:#fff;letter-spacing:3px;text-transform:uppercase;opacity:.5;margin-bottom:4px}
+.s-st2{font-size:8px;color:#fff;letter-spacing:2px;margin-bottom:24px;opacity:.35}
+.gbtn{font-size:18px;font-weight:900;padding:14px 48px;border:none;border-radius:50px;background:#D4A843;color:#05070e;cursor:pointer;-webkit-appearance:none;appearance:none;box-shadow:0 0 30px rgba(212,168,67,.2),0 4px 20px rgba(0,0,0,.5);position:relative;overflow:hidden;letter-spacing:1px}
+.gbtn::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);animation:gsh 3s ease-in-out infinite}
+@keyframes gsh{0%,100%{left:-100%}50%{left:140%}}
+.gbtn:active{transform:scale(.96)}
 
-/* ===== FLIGHT ===== */
-#flight{z-index:99;background-color:#05070e;overflow:hidden}
-.fl-content{position:relative;z-index:2;text-align:center;width:100%;padding:0 30px}
-.fl-route{font-size:12px;font-weight:800;letter-spacing:3px;color:#3a4060;text-transform:uppercase;margin-bottom:20px}
-.fl-cities{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
-.fl-city{text-align:center}
-.fl-city-em{font-size:32px;margin-bottom:4px}
-.fl-city-nm{font-size:11px;font-weight:800;color:#D4A843;letter-spacing:2px}
-.fl-path{flex:1;height:2px;background-color:#1a2040;margin:0 15px;position:relative;border-radius:1px}
-.fl-dot{position:absolute;top:-8px;font-size:18px;left:0;animation:flyAcross 3s ease-in-out forwards}
-@keyframes flyAcross{0%{left:0;transform:rotate(0)}50%{top:-20px}100%{left:calc(100% - 18px);top:-8px}}
-.fl-msg{font-size:22px;font-weight:900;color:#fff;opacity:0;animation:flMsgIn 0.5s ease-out 3.2s forwards}
-@keyframes flMsgIn{to{opacity:1}}
-.fl-sub{font-size:12px;color:#3a4060;opacity:0;animation:flMsgIn 0.5s ease-out 3.6s forwards;margin-top:6px}
+/* ===== AIRLINE ===== */
+#airline{z-index:99;background:#05070e}
+.al-z{position:relative;z-index:2;text-align:center;width:100%;max-width:500px;padding:20px}
+.al-logo{font-size:14px;font-weight:900;color:#D4A843;letter-spacing:4px;text-transform:uppercase;margin-bottom:16px;text-shadow:0 0 15px rgba(212,168,67,.3)}
+.al-pass{background:rgba(10,16,38,.8);border:1px solid rgba(212,168,67,.15);border-radius:16px;padding:20px;text-align:left;box-shadow:0 0 40px rgba(212,168,67,.05),0 10px 30px rgba(0,0,0,.5);animation:alIn .8s cubic-bezier(.34,1.56,.64,1)}
+@keyframes alIn{from{opacity:0;transform:translateY(30px) scale(.9)}to{opacity:1;transform:translateY(0) scale(1)}}
+.al-row{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:14px}
+.al-lbl{font-size:7px;font-weight:800;color:#fff;opacity:.4;letter-spacing:2px;text-transform:uppercase;margin-bottom:2px}
+.al-val{font-size:16px;font-weight:900;color:#fff}
+.al-val.gold{color:#D4A843}
+.al-div{height:1px;background:rgba(255,255,255,.05);margin:12px 0}
+.al-fam{font-size:9px;color:#fff;opacity:.5;text-align:center;margin-top:10px;letter-spacing:1px}
+.al-fly{margin-top:20px;display:flex;align-items:center;justify-content:center;gap:10px}
+.al-city{text-align:center}
+.al-city-em{font-size:24px}
+.al-city-nm{font-size:8px;font-weight:800;color:#D4A843;letter-spacing:1px}
+.al-path{flex:1;height:2px;background:rgba(255,255,255,.08);position:relative;max-width:200px;border-radius:1px}
+.al-plane{position:absolute;top:-10px;font-size:20px;left:0;transition:left 3s ease-in-out}
+.al-msg{font-size:20px;font-weight:900;color:#fff;margin-top:16px;opacity:0;transition:opacity .5s}
+.al-msg.show{opacity:1}
+.al-sub{font-size:11px;color:#fff;opacity:0;transition:opacity .5s;margin-top:4px}
+.al-sub.show{opacity:.5}
 
-/* ===== GAME ===== */
-#game{z-index:10;overflow-y:auto;overflow-x:hidden;justify-content:flex-start;padding:8px 10px 20px}
-.hud{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background-color:rgba(10,14,28,0.8);border-radius:14px;margin-bottom:6px;border:1px solid rgba(255,255,255,0.03);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
-.hud-l{font-size:16px;font-weight:900;color:#D4A843}
-.hud-c{font-weight:800;font-size:14px;background-color:rgba(212,168,67,0.08);padding:4px 12px;border-radius:18px;border:1px solid rgba(212,168,67,0.06)}
+/* ===== GAME BOARD ===== */
+#board{z-index:10;padding:4px;display:none}
+#board.on{display:flex;align-items:center;justify-content:center}
+.bg{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(4,1fr);gap:3px;width:100%;height:100%;max-width:850px;max-height:420px}
 
-.reg-hdr{text-align:center;padding:6px 0;margin-bottom:4px}
-.reg-em{font-size:18px}
-.reg-nm{font-size:11px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-top:2px}
-.reg-sub{font-size:8px;color:#222844;letter-spacing:2px;font-weight:700;margin-top:1px}
+/* Board cells */
+.cell{border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.04);transition:all .3s;cursor:pointer;padding:2px}
+.cell-corner{background:rgba(10,16,38,.85)}
+.cell-prop{background:rgba(10,16,38,.7)}
+.cell-chance{background:rgba(10,16,38,.5)}
+.cell-strip{position:absolute;top:0;left:0;right:0;height:4px;border-radius:8px 8px 0 0}
+.cell-em{font-size:18px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));line-height:1;margin-top:2px}
+.cell-nm{font-size:6px;font-weight:800;color:#fff;letter-spacing:.5px;text-transform:uppercase;margin-top:1px;text-align:center;line-height:1.1;max-width:100%;overflow:hidden}
+.cell-pr{font-size:7px;font-weight:900;color:#D4A843;margin-top:1px}
+.cell.here{border-color:rgba(212,168,67,.5);box-shadow:0 0 15px rgba(212,168,67,.2)}
+.cell.owned-cell{border-color:rgba(29,157,81,.4);box-shadow:0 0 12px rgba(29,157,81,.15)}
+.cell.owned-cell .cell-pr{color:#1d9d51}
+.cell.leg-cell.owned-cell{border-color:rgba(212,168,67,.5);box-shadow:0 0 20px rgba(212,168,67,.2);animation:lgPulse 2s ease-in-out infinite alternate}
+@keyframes lgPulse{0%{box-shadow:0 0 15px rgba(212,168,67,.15)}100%{box-shadow:0 0 25px rgba(212,168,67,.3)}}
+.cell-paw{position:absolute;bottom:1px;right:2px;font-size:10px;filter:drop-shadow(0 0 5px rgba(212,168,67,.5));animation:pawBob 1s ease-in-out infinite}
+@keyframes pawBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 
-.row4{display:flex;gap:5px;margin-bottom:5px}
-.bx{flex:1;text-align:center;padding:6px 2px;background-color:rgba(10,14,28,0.6);border-radius:11px;border:1px solid rgba(255,255,255,0.02)}
-.bx-l{font-size:7px;color:#222844;text-transform:uppercase;letter-spacing:1.2px;font-weight:800}
-.bx-v{font-size:18px;font-weight:900;color:#D4A843}
-
-/* REGION MAP */
-.rmap{display:flex;gap:3px;margin-bottom:5px}
-.rm{flex:1;border-radius:8px;padding:5px 2px;text-align:center;opacity:0.15;transition:all 0.4s;border:1px solid transparent}
-.rm.act{opacity:1;border-color:rgba(212,168,67,0.15)}
-.rm.done{opacity:0.5}
-.rm-em{font-size:14px}
-.rm-nm{font-size:6px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;margin-top:1px;color:rgba(255,255,255,0.6)}
-.rm-bar{height:2px;border-radius:1px;background-color:rgba(255,255,255,0.06);margin-top:3px;overflow:hidden}
-.rm-fill{height:100%;border-radius:1px;background-color:#D4A843;transition:width 0.5s}
-
-.dots{display:flex;gap:5px;justify-content:center;margin-bottom:6px}
-.dot{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;opacity:0.12;transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1);border:2px solid transparent}
-.dot.owned{opacity:1;transform:scale(1.1);border-color:rgba(255,255,255,0.1);box-shadow:0 4px 14px rgba(0,0,0,0.4)}
-.dot.leg.owned{border-color:rgba(212,168,67,0.4);box-shadow:0 0 18px rgba(212,168,67,0.2);animation:lgGlow 2s ease-in-out infinite alternate}
-@keyframes lgGlow{0%{box-shadow:0 0 12px rgba(212,168,67,0.15)}100%{box-shadow:0 0 24px rgba(212,168,67,0.3)}}
-.dot.pop{animation:dPop 0.7s cubic-bezier(0.34,1.56,0.64,1)}
-@keyframes dPop{0%{transform:scale(0.2) rotate(-40deg);opacity:0}40%{transform:scale(1.6) rotate(12deg);opacity:1}100%{transform:scale(1.1) rotate(0);opacity:1}}
-
-/* CARD */
-.card{width:100%;max-width:340px;border-radius:22px;overflow:hidden;animation:cIn 0.5s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 14px 45px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.04);margin:0 auto}
-@keyframes cIn{from{opacity:0;transform:translateY(24px) scale(0.9) rotate(-1.5deg)}to{opacity:1;transform:translateY(0) scale(1) rotate(0)}}
-.card.leg{box-shadow:0 14px 45px rgba(0,0,0,0.5),0 0 25px rgba(212,168,67,0.1),0 0 0 2px rgba(212,168,67,0.12)}
-.c-top{height:88px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.c-top::before{content:’’;position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.14) 0%,transparent 50%,rgba(0,0,0,0.2) 100%)}
-.c-em{position:relative;z-index:1;font-size:46px;filter:drop-shadow(0 6px 14px rgba(0,0,0,0.35));animation:emB 3.5s ease-in-out infinite}
-@keyframes emB{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.c-badge{position:absolute;top:7px;right:9px;z-index:2;font-size:7px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#D4A843;background-color:rgba(0,0,0,0.45);padding:3px 7px;border-radius:8px;border:1px solid rgba(212,168,67,0.25)}
-.c-bod{background-color:#f4efe5;padding:14px 18px 16px;color:#0e1224}
-.c-nm{font-size:20px;font-weight:900;margin-bottom:3px}
-.c-de{font-size:11px;color:#6b7080;line-height:1.55;margin-bottom:10px}
-.c-ft{display:flex;justify-content:space-between;align-items:center;padding-top:9px;border-top:2px solid rgba(0,0,0,0.04)}
-.c-pr{font-size:17px;font-weight:900;color:#1a8f4a}
-.c-rn{font-size:10px;color:#a0a4b0;font-weight:700}
-.c-own{font-size:12px;font-weight:900;color:#2B4C7E;background-color:rgba(43,76,126,0.08);padding:5px 14px;border-radius:18px}
-
-/* PROGRESS */
-.pb{width:100%;max-width:340px;height:4px;background-color:rgba(255,255,255,0.03);border-radius:2px;overflow:hidden;margin:6px auto 2px}
-.pfl{height:100%;border-radius:2px;background-color:#D4A843;transition:width 0.6s;box-shadow:0 0 8px rgba(212,168,67,0.25)}
-.plb{font-size:7px;color:#1e2440;text-align:center;letter-spacing:2px;text-transform:uppercase;font-weight:800;margin-bottom:6px}
-
-/* DICE */
-.da{display:flex;flex-direction:column;align-items:center;gap:10px}
-.dd{width:80px;height:80px;display:flex;align-items:center;justify-content:center;font-size:48px;background-color:rgba(10,14,28,0.6);border-radius:20px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 6px 25px rgba(0,0,0,0.4)}
-.dd.spin{animation:dsp 0.06s linear infinite}
-@keyframes dsp{0%{transform:rotate(0) scale(1)}50%{transform:rotate(180deg) scale(1.12)}100%{transform:rotate(360deg) scale(1)}}
-.dd.land{animation:dlnd 0.45s cubic-bezier(0.34,1.56,0.64,1)}
-@keyframes dlnd{from{transform:scale(0.3) rotate(-180deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
-
-.rbtn{display:block;font-size:20px;font-weight:900;padding:16px 62px;border:none;border-radius:50px;background-color:#1B2A4A;color:#FFFFFF;cursor:pointer;letter-spacing:2px;-webkit-appearance:none;appearance:none;box-shadow:0 0 28px rgba(27,42,74,0.4),0 6px 20px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.06);position:relative;overflow:hidden}
-.rbtn::after{content:’’;position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.05),transparent);animation:gsh 5s ease-in-out infinite}
-.rbtn:active{transform:scale(0.96)}
-.rbtn:disabled{opacity:0.25}
+/* Center area */
+.bcenter{grid-column:2/6;grid-row:2/4;background:rgba(8,12,24,.9);border-radius:14px;border:1px solid rgba(255,255,255,.03);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px;position:relative;overflow:hidden}
+.bcenter::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(212,168,67,.03) 0%,transparent 70%);pointer-events:none}
+.bc-reg{font-size:10px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:#fff;opacity:.7}
+.bc-regem{font-size:18px}
+.bc-bal{font-size:32px;font-weight:900;color:#D4A843;text-shadow:0 0 20px rgba(212,168,67,.3)}
+.bc-ballbl{font-size:7px;font-weight:800;color:#fff;opacity:.3;letter-spacing:2px;text-transform:uppercase;margin-top:-4px}
+.bc-dice{display:flex;gap:8px;align-items:center}
+.bc-die{width:42px;height:42px;display:flex;align-items:center;justify-content:center;font-size:28px;background:rgba(255,255,255,.04);border-radius:10px;border:1px solid rgba(255,255,255,.06);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.bc-die.spin{animation:dieSpin .06s linear infinite}
+@keyframes dieSpin{0%{transform:rotate(0) scale(1)}50%{transform:rotate(180deg) scale(1.1)}100%{transform:rotate(360deg) scale(1)}}
+.bc-die.land{animation:dieLand .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes dieLand{from{transform:scale(.3) rotate(-180deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.rbtn{font-size:16px;font-weight:900;padding:10px 44px;border:none;border-radius:50px;background:#1B2A4A;color:#FFF;cursor:pointer;letter-spacing:2px;-webkit-appearance:none;appearance:none;box-shadow:0 0 20px rgba(27,42,74,.4),0 4px 14px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.06);position:relative;overflow:hidden}
+.rbtn::after{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);animation:gsh 5s ease-in-out infinite}
+.rbtn:active{transform:scale(.96)}
+.rbtn:disabled{opacity:.25}
+.bc-info{font-size:8px;color:#fff;opacity:.4;font-weight:700;letter-spacing:1px}
 
 /* ===== OVERLAYS ===== */
-.ov{position:fixed;inset:0;z-index:50;background-color:rgba(4,5,12,0.82);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:16px;animation:ovF 0.2s}
-@keyframes ovF{from{opacity:0}to{opacity:1}}
+.ov{position:fixed;inset:0;z-index:50;background:rgba(4,5,12,.85);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:12px}
 .ov.hidden{display:none}
-
-.ev{background-color:#fff;border-radius:24px;padding:26px 22px 22px;max-width:310px;width:100%;color:#0e1224;text-align:center;animation:evP 0.5s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 28px 65px rgba(0,0,0,0.55);position:relative;overflow:hidden}
-.ev::before{content:’’;position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#D4A843,#2B4C7E,#1d9d51,#C0392B,#D4A843);background-size:200%;animation:gBar 3s linear infinite}
+.ov-card{background:#fff;border-radius:20px;padding:22px 20px 18px;max-width:320px;width:100%;color:#0e1224;text-align:center;animation:ovPop .45s cubic-bezier(.34,1.56,.64,1);box-shadow:0 20px 50px rgba(0,0,0,.5);position:relative;overflow:hidden}
+.ov-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#D4A843,#2B4C7E,#1d9d51,#C0392B,#D4A843);background-size:200%;animation:gBar 3s linear infinite}
 @keyframes gBar{0%{background-position:0}100%{background-position:200%}}
-@keyframes evP{from{transform:scale(0.5) translateY(30px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
-.ev-em{font-size:52px;margin-bottom:10px;animation:evEm 0.5s cubic-bezier(0.34,1.56,0.64,1)}
-@keyframes evEm{from{transform:scale(0) rotate(-40deg)}to{transform:scale(1) rotate(0)}}
-.ev-ti{font-size:20px;font-weight:900;margin-bottom:5px}
-.ev-de{font-size:13px;color:#5a5e6e;line-height:1.6;margin-bottom:18px}
-.ev-bt{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-.eb{font-size:14px;font-weight:800;padding:11px 24px;border:none;border-radius:50px;cursor:pointer;-webkit-appearance:none;appearance:none;transition:transform 0.15s}
-.eb:active{transform:scale(0.94)}
-.eb-buy{background-color:#1d9d51;color:#fff;box-shadow:0 4px 14px rgba(29,157,81,0.2)}
-.eb-pass{background-color:#eae6dc;color:#5a5e6e}
-.eb-ok{background-color:#1B2A4A;color:#fff;box-shadow:0 4px 14px rgba(27,42,74,0.2)}
-.eb-fart{background-color:#4a7a2e;color:#fff;box-shadow:0 4px 14px rgba(74,122,46,0.3)}
-.eb-xmas{background-color:#c0392b;color:#fff;box-shadow:0 4px 14px rgba(192,57,43,0.2)}
+@keyframes ovPop{from{transform:scale(.5) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.ov-em{font-size:48px;margin-bottom:8px;animation:ovEmPop .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes ovEmPop{from{transform:scale(0) rotate(-30deg)}to{transform:scale(1) rotate(0)}}
+.ov-ti{font-size:18px;font-weight:900;margin-bottom:4px}
+.ov-de{font-size:12px;color:#5a5e6e;line-height:1.55;margin-bottom:14px}
+.ov-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.ob{font-size:13px;font-weight:800;padding:10px 22px;border:none;border-radius:50px;cursor:pointer;-webkit-appearance:none;appearance:none;transition:transform .15s}
+.ob:active{transform:scale(.94)}
+.ob-buy{background:#1d9d51;color:#fff;box-shadow:0 4px 12px rgba(29,157,81,.2)}
+.ob-pass{background:#eae6dc;color:#5a5e6e}
+.ob-ok{background:#1B2A4A;color:#fff}
+.ob-fart{background:#4a7a2e;color:#fff}
+.ob-xmas{background:#c0392b;color:#fff}
+.ob-fam{background:#2B4C7E;color:#fff}
+.ob-gold{background:#D4A843;color:#05070e}
+.ov-badge{display:inline-block;font-size:7px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#D4A843;background:rgba(212,168,67,.1);padding:3px 8px;border-radius:8px;margin-bottom:6px}
 
-/* FART OVERLAY */
-.fart-ring{position:fixed;border-radius:50%;border:3px solid rgba(120,180,60,0.5);pointer-events:none;z-index:55;animation:fRing 1s ease-out forwards}
-@keyframes fRing{0%{width:10px;height:10px;opacity:1}100%{width:300px;height:300px;opacity:0;border-width:1px}}
-.fart-cloud{position:fixed;font-size:28px;pointer-events:none;z-index:55;animation:fCloud 1.5s ease-out forwards}
-@keyframes fCloud{0%{opacity:1;transform:translate(0,0) scale(1) rotate(0)}100%{opacity:0;transform:translate(var(–fx),var(–fy)) scale(0.3) rotate(180deg)}}
+/* ===== MINI-GAMES ===== */
+.mg{position:fixed;inset:0;z-index:60;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding:10px;overflow:hidden}
+.mg.on{display:flex}
+.mg-bg{position:absolute;inset:0;z-index:0}
+.mg-z{position:relative;z-index:2;width:100%;height:100%;display:flex;flex-direction:column}
+.mg-hud{display:flex;justify-content:space-between;align-items:center;padding:6px 12px;margin-bottom:6px}
+.mg-title{font-size:14px;font-weight:900;color:#D4A843;letter-spacing:2px}
+.mg-score{font-size:18px;font-weight:900;color:#fff}
+.mg-timer{font-size:14px;font-weight:900;color:#ff6b6b}
+.mg-arena{flex:1;position:relative;overflow:hidden;border-radius:12px;border:1px solid rgba(255,255,255,.05)}
+.mg-target{position:absolute;cursor:pointer;user-select:none;-webkit-user-select:none;transition:transform .1s}
+.mg-target:active{transform:scale(.8)}
+.mg-result{position:fixed;inset:0;z-index:61;background:rgba(5,7,14,.92);display:none;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:20px}
+.mg-result.on{display:flex}
+.mg-r-em{font-size:64px;margin-bottom:12px}
+.mg-r-ti{font-size:24px;font-weight:900;color:#D4A843;margin-bottom:6px}
+.mg-r-de{font-size:13px;color:#fff;opacity:.6;margin-bottom:20px}
 
-/* SNOW */
-.snow{position:fixed;width:6px;height:6px;background-color:#fff;border-radius:50%;pointer-events:none;z-index:55;opacity:0.7;animation:snowF linear forwards}
-@keyframes snowF{0%{transform:translateY(-10px) translateX(0);opacity:0.8}50%{transform:translateY(50vh) translateX(20px);opacity:0.6}100%{transform:translateY(110vh) translateX(-10px);opacity:0}}
-
-/* XMAS LIGHTS */
-.xlight{position:fixed;width:8px;height:8px;border-radius:50%;pointer-events:none;z-index:54;animation:xlBlink 0.8s ease-in-out infinite alternate}
-@keyframes xlBlink{0%{opacity:0.4;transform:scale(0.8)}100%{opacity:1;transform:scale(1.2)}}
+/* ===== EASTER EGG ===== */
+#easter{position:fixed;inset:0;z-index:55;display:none;align-items:center;justify-content:center;background:rgba(5,7,14,.9);flex-direction:column;text-align:center;padding:20px}
+#easter.on{display:flex}
+.ee-house{font-size:80px;animation:eeHouse 1s cubic-bezier(.34,1.56,.64,1);filter:drop-shadow(0 0 30px rgba(212,168,67,.3))}
+@keyframes eeHouse{from{transform:scale(0) rotate(-20deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.ee-ti{font-size:28px;font-weight:900;color:#D4A843;margin:10px 0 4px;text-shadow:0 0 20px rgba(212,168,67,.3)}
+.ee-de{font-size:12px;color:#fff;opacity:.6;margin-bottom:16px;max-width:280px;line-height:1.5}
 
 /* ===== REGION COMPLETE ===== */
-#regComp{z-index:60;background-color:rgba(5,7,14,0.92)}
-.rc-content{text-align:center;padding:24px;animation:evP 0.5s cubic-bezier(0.34,1.56,0.64,1)}
-.rc-em{font-size:72px;margin-bottom:14px}
-.rc-ti{font-size:28px;font-weight:900;color:#D4A843;margin-bottom:6px}
-.rc-de{font-size:14px;color:#4a5068;line-height:1.6;margin-bottom:24px;max-width:280px}
+#regDone{z-index:70;background:rgba(5,7,14,.95)}
+.rd-z{text-align:center;animation:ovPop .5s cubic-bezier(.34,1.56,.64,1)}
+.rd-em{font-size:64px;margin-bottom:10px}
+.rd-ti{font-size:24px;font-weight:900;color:#D4A843;margin-bottom:4px}
+.rd-de{font-size:12px;color:#fff;opacity:.6;margin-bottom:20px;max-width:280px;line-height:1.5}
 
 /* ===== WIN ===== */
-#win{z-index:100;background-color:#05070e;overflow:hidden}
+#win{z-index:100;background:#05070e}
 .wg{position:absolute;border-radius:50%;filter:blur(80px)}
-.wg1{width:300px;height:300px;background-color:rgba(212,168,67,0.1);top:15%;left:50%;transform:translateX(-50%)}
-.wg2{width:200px;height:200px;background-color:rgba(43,76,126,0.08);bottom:20%;left:30%}
-.wz{position:relative;z-index:2;text-align:center;padding:20px}
-.w-em{font-size:88px;margin-bottom:16px;animation:pawGo 2.5s cubic-bezier(0.36,0.07,0.19,0.97) infinite;filter:drop-shadow(0 0 30px rgba(212,168,67,0.3))}
-.w-ti{font-size:36px;font-weight:900;color:#D4A843;margin-bottom:8px;text-shadow:0 0 40px rgba(212,168,67,0.25)}
-.w-su{font-size:14px;color:#3a4060;margin-bottom:28px;line-height:1.7;max-width:290px}
+.wg1{width:300px;height:300px;background:rgba(212,168,67,.1);top:10%;left:50%;transform:translateX(-50%)}
+.wg2{width:200px;height:200px;background:rgba(43,76,126,.08);bottom:15%;left:20%}
+.wz{position:relative;z-index:2;text-align:center;padding:16px}
+.w-em{font-size:72px;margin-bottom:10px;animation:sPaw 2.5s cubic-bezier(.36,.07,.19,.97) infinite;filter:drop-shadow(0 0 25px rgba(212,168,67,.3))}
+.w-ti{font-size:28px;font-weight:900;color:#D4A843;margin-bottom:6px;text-shadow:0 0 30px rgba(212,168,67,.2)}
+.w-su{font-size:11px;color:#fff;opacity:.5;margin-bottom:22px;line-height:1.7;max-width:320px}
 
 /* ===== FX ===== */
 .confetti{position:fixed;z-index:200;pointer-events:none;animation:cFall linear forwards}
 @keyframes cFall{0%{transform:translateY(-20px) rotateZ(0);opacity:1}100%{transform:translateY(110vh) rotateZ(720deg);opacity:0}}
-.fcoin{position:fixed;font-size:16px;font-weight:900;pointer-events:none;z-index:60;color:#D4A843;text-shadow:0 0 10px rgba(212,168,67,0.3);animation:fUp 1.2s cubic-bezier(0.2,0.8,0.3,1) forwards}
-@keyframes fUp{0%{opacity:1;transform:translateY(0) scale(1.1)}100%{opacity:0;transform:translateY(-90px) scale(0.5)}}
-.sflash{position:fixed;inset:0;z-index:45;pointer-events:none;animation:sf 0.45s ease-out forwards}
-@keyframes sf{from{opacity:0.18}to{opacity:0}}
-.shake{animation:shk 0.35s ease-out}
-@keyframes shk{0%,100%{transform:translateX(0)}15%{transform:translateX(-5px)}30%{transform:translateX(4px)}45%{transform:translateX(-3px)}60%{transform:translateX(2px)}}
-.sparkle{position:fixed;pointer-events:none;z-index:55;width:5px;height:5px;border-radius:50%;animation:spk 0.8s ease-out forwards}
-@keyframes spk{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(–sx),var(–sy)) scale(0);opacity:0}}
-.doorbell{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:80px;z-index:56;pointer-events:none;animation:dbPop 1.5s ease-out forwards}
-@keyframes dbPop{0%{transform:translate(-50%,-50%) scale(0) rotate(-30deg);opacity:0}20%{transform:translate(-50%,-50%) scale(1.3) rotate(10deg);opacity:1}40%{transform:translate(-50%,-50%) scale(1) rotate(0);opacity:1}100%{transform:translate(-50%,-50%) scale(0.5);opacity:0}}
+.fcoin{position:fixed;font-size:14px;font-weight:900;pointer-events:none;z-index:60;color:#D4A843;text-shadow:0 0 8px rgba(212,168,67,.3);animation:fUp 1.2s cubic-bezier(.2,.8,.3,1) forwards}
+@keyframes fUp{0%{opacity:1;transform:translateY(0) scale(1.1)}100%{opacity:0;transform:translateY(-80px) scale(.5)}}
+.sflash{position:fixed;inset:0;z-index:45;pointer-events:none;animation:sf .4s ease-out forwards}
+@keyframes sf{from{opacity:.18}to{opacity:0}}
+.shake{animation:shk .3s ease-out}
+@keyframes shk{0%,100%{transform:translate(0)}15%{transform:translate(-4px,-1px)}30%{transform:translate(3px,1px)}45%{transform:translate(-2px)}60%{transform:translate(1px)}}
+.sparkle{position:fixed;pointer-events:none;z-index:55;width:4px;height:4px;border-radius:50%;animation:spk .7s ease-out forwards}
+@keyframes spk{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--sx),var(--sy)) scale(0);opacity:0}}
+.fart-ring{position:fixed;border-radius:50%;border:3px solid rgba(120,180,60,.5);pointer-events:none;z-index:55;animation:fRing .8s ease-out forwards}
+@keyframes fRing{0%{width:10px;height:10px;opacity:1}100%{width:250px;height:250px;opacity:0;border-width:1px}}
+.fart-cloud{position:fixed;font-size:24px;pointer-events:none;z-index:55;animation:fCl 1.2s ease-out forwards}
+@keyframes fCl{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--fx),var(--fy)) scale(.3)}}
+.snow{position:fixed;background:#fff;border-radius:50%;pointer-events:none;z-index:55;opacity:.8;animation:snF linear forwards}
+@keyframes snF{0%{transform:translateY(-10px);opacity:.8}100%{transform:translateY(110vh);opacity:0}}
+.xlight{position:fixed;width:7px;height:7px;border-radius:50%;pointer-events:none;z-index:54;animation:xlB .7s ease-in-out infinite alternate}
+@keyframes xlB{0%{opacity:.3;transform:scale(.7)}100%{opacity:1;transform:scale(1.3)}}
+.chicken{position:fixed;font-size:30px;pointer-events:none;z-index:55;animation:chkR 2s ease-in-out forwards}
+@keyframes chkR{0%{left:-40px;opacity:1}50%{bottom:45%}100%{left:110vw;opacity:0}}
+.moneybag{position:fixed;font-size:32px;pointer-events:none;z-index:55;animation:mbFly 1.5s ease-out forwards}
+@keyframes mbFly{0%{opacity:1;transform:scale(0) rotate(-30deg)}30%{opacity:1;transform:scale(1.3) rotate(10deg)}100%{opacity:0;transform:scale(.5) translateY(-120px) rotate(360deg)}}
+.turkey-hit{position:absolute;font-size:28px;pointer-events:none;animation:tHit .5s ease-out forwards}
+@keyframes tHit{0%{transform:scale(1);opacity:1}100%{transform:scale(2) translateY(-30px);opacity:0}}
+.fart-hit{position:absolute;pointer-events:none;animation:fHitAnim .6s ease-out forwards}
+@keyframes fHitAnim{0%{transform:scale(1);opacity:1}100%{transform:scale(1.8);opacity:0}}
 </style>
-
 </head>
 <body>
 <canvas id="sky"></canvas>
 <div class="aur"><div class="ab ab1"></div><div class="ab ab2"></div><div class="ab ab3"></div></div>
 
-<!-- SPLASH -->
+<div id="portrait">
+  <div class="p-icon">📱</div>
+  <div class="p-txt">Rotate Your Phone</div>
+  <div class="p-sub">Gooby needs landscape mode!</div>
+</div>
 
-<div id="splash" class="screen on">
-  <div class="sp-orb sp-o1"></div><div class="sp-orb sp-o2"></div>
-  <div class="spz">
-    <div class="sp-flag">🇵🇹</div>
-    <div class="sp-paw">🐾</div>
-    <div class="sp-ti">GOOBY</div>
-    <div class="sp-ln"></div>
-    <div class="sp-st">Portugal Adventure</div>
-    <div class="sp-st2">From Maryland to Braga</div>
-    <button class="gbtn" onclick="startFlight()">Jogar! 🎲</button>
+<div id="splash" class="scr on">
+  <div class="s-orb s-o1"></div><div class="s-orb s-o2"></div>
+  <div class="sz">
+    <div class="s-flag">🇵🇹</div>
+    <div class="s-paw">🐾</div>
+    <div class="s-ti">GOOBY</div>
+    <div class="s-ln"></div>
+    <div class="s-st">Portugal Adventure</div>
+    <div class="s-st2">A Fonseca Family Story</div>
+    <button class="gbtn" onclick="startAirline()">Board Flight ✈️</button>
   </div>
 </div>
 
-<!-- FLIGHT -->
-
-<div id="flight" class="screen">
-  <div class="sp-orb sp-o1"></div>
-  <div class="fl-content">
-    <div class="fl-route">Gooby's Journey</div>
-    <div class="fl-cities">
-      <div class="fl-city"><div class="fl-city-em">🏠</div><div class="fl-city-nm">Maryland</div></div>
-      <div class="fl-path"><div class="fl-dot">✈️</div></div>
-      <div class="fl-city"><div class="fl-city-em">🇵🇹</div><div class="fl-city-nm">Portugal</div></div>
-    </div>
-    <div class="fl-msg">Bem-vindo a Portugal! 🐾</div>
-    <div class="fl-sub">The Fonseca adventure begins...</div>
-  </div>
-</div>
-
-<!-- GAME -->
-
-<div id="game" class="screen">
-  <div style="width:100%;max-width:380px;margin:0 auto">
-    <div class="hud">
-      <div class="hud-l">🐾 Gooby</div>
-      <div class="hud-c">💰 <span id="coins">800</span></div>
-    </div>
-    <div class="reg-hdr">
-      <div class="reg-em" id="regEm">🏛️</div>
-      <div class="reg-nm" id="regNm">Lisbon</div>
-      <div class="reg-sub" id="regSub">Region 1 of 4</div>
-    </div>
-    <div class="row4">
-      <div class="bx"><div class="bx-l">Round</div><div class="bx-v" id="vRnd">1</div></div>
-      <div class="bx"><div class="bx-l">Region</div><div class="bx-v" id="vReg">1/4</div></div>
-      <div class="bx"><div class="bx-l">Owned</div><div class="bx-v" id="vOwn">0</div></div>
-      <div class="bx"><div class="bx-l">Steps</div><div class="bx-v" id="vStp">0</div></div>
-    </div>
-    <div class="rmap" id="rmap"></div>
-    <div class="dots" id="dots"></div>
-    <div class="bd">
-      <div class="card" id="card">
-        <div class="c-top" id="cTop"><span class="c-em" id="cEm">🏛️</span></div>
-        <div class="c-bod">
-          <div class="c-nm" id="cNm">Loading...</div>
-          <div class="c-de" id="cDe"></div>
-          <div class="c-ft" id="cFt"></div>
-        </div>
+<div id="airline" class="scr">
+  <div class="s-orb s-o1"></div>
+  <div class="al-z">
+    <div class="al-logo">✈️ Gooby Airlines ✈️</div>
+    <div class="al-pass">
+      <div class="al-row">
+        <div><div class="al-lbl">Passenger</div><div class="al-val">The Fonseca Family</div></div>
+        <div><div class="al-lbl">Flight</div><div class="al-val gold">GA-2024</div></div>
       </div>
-      <div class="pb"><div class="pfl" id="pfl" style="width:0%"></div></div>
-      <div class="plb" id="plb">Lisbon Conquest</div>
-      <div class="da">
-        <div class="dd" id="dd">🎲</div>
-        <button class="rbtn" id="rb" onclick="roll()">ROLL 🎲</button>
+      <div class="al-div"></div>
+      <div class="al-row">
+        <div><div class="al-lbl">From</div><div class="al-val">Maryland, USA 🏠</div></div>
+        <div><div class="al-lbl">To</div><div class="al-val gold">Lisbon, Portugal 🇵🇹</div></div>
       </div>
+      <div class="al-div"></div>
+      <div class="al-row">
+        <div><div class="al-lbl">Seat</div><div class="al-val">First Class 🐾</div></div>
+        <div><div class="al-lbl">Gate</div><div class="al-val gold">FONSECA</div></div>
+      </div>
+      <div class="al-fam">Jessica · Mae · Dad · Brian · Steven · Angie · Rambo 🐕</div>
     </div>
+    <div class="al-fly">
+      <div class="al-city"><div class="al-city-em">🏠</div><div class="al-city-nm">Maryland</div></div>
+      <div class="al-path"><div class="al-plane" id="alPlane">✈️</div></div>
+      <div class="al-city"><div class="al-city-em">🇵🇹</div><div class="al-city-nm">Portugal</div></div>
+    </div>
+    <div class="al-msg" id="alMsg">Bem-vindo a Portugal! 🐾</div>
+    <div class="al-sub" id="alSub">The Fonseca adventure begins...</div>
   </div>
 </div>
 
-<!-- EVENT -->
+<div id="board" class="scr">
+  <div class="bg" id="bgrid"></div>
+</div>
 
 <div class="ov hidden" id="ov">
-  <div class="ev">
-    <div class="ev-em" id="eEm">🎉</div>
-    <div class="ev-ti" id="eTi">Event</div>
-    <div class="ev-de" id="eDe">Something happened.</div>
-    <div class="ev-bt" id="eBt"></div>
+  <div class="ov-card">
+    <div class="ov-em" id="oEm">🎉</div>
+    <div class="ov-badge hidden" id="oBadge">LEGENDARY</div>
+    <div class="ov-ti" id="oTi">Event</div>
+    <div class="ov-de" id="oDe">Something happened.</div>
+    <div class="ov-btns" id="oBt"></div>
   </div>
 </div>
 
-<!-- REGION COMPLETE -->
+<div id="turkeyMG" class="mg">
+  <div class="mg-bg" style="background:linear-gradient(180deg,#1a0f0a 0%,#2a1f12 50%,#1a1a0a 100%)"></div>
+  <div class="mg-z">
+    <div class="mg-hud">
+      <div class="mg-title">🏹 Dad's Turkey Shoot</div>
+      <div class="mg-score" id="tScore">0</div>
+      <div class="mg-timer" id="tTimer">8</div>
+    </div>
+    <div class="mg-arena" id="tArena"></div>
+  </div>
+</div>
+<div id="turkeyResult" class="mg-result">
+  <div class="mg-r-em">🏹</div>
+  <div class="mg-r-ti" id="tResTi">Nice shooting!</div>
+  <div class="mg-r-de" id="tResDe">Dad is proud.</div>
+  <button class="gbtn" onclick="closeTurkey()">Continue 🐾</button>
+</div>
 
-<div id="regComp" class="screen">
-  <div class="rc-content">
-    <div class="rc-em" id="rcEm">🎉</div>
-    <div class="rc-ti" id="rcTi">Region Complete!</div>
-    <div class="rc-de" id="rcDe">Amazing work!</div>
-    <button class="gbtn" id="rcBtn" onclick="nextRegion()">Next Region →</button>
+<div id="fartMG" class="mg">
+  <div class="mg-bg" style="background:linear-gradient(180deg,#0a1a0a 0%,#122a12 50%,#0a1a0f 100%)"></div>
+  <div class="mg-z">
+    <div class="mg-hud">
+      <div class="mg-title">💨 Gatooooos Arena</div>
+      <div class="mg-score" id="fScore">0</div>
+      <div class="mg-timer" id="fTimer">8</div>
+    </div>
+    <div class="mg-arena" id="fArena"></div>
+  </div>
+</div>
+<div id="fartResult" class="mg-result">
+  <div class="mg-r-em">💨</div>
+  <div class="mg-r-ti" id="fResTi">Room cleared!</div>
+  <div class="mg-r-de" id="fResDe">Everyone evacuated.</div>
+  <button class="gbtn" onclick="closeFart()">Continue 🐾</button>
+</div>
+
+<div id="easter" class="scr">
+  <div class="ee-house">🏠🎄</div>
+  <div class="ee-ti">KEVIN!</div>
+  <div class="ee-de" id="eeDe">Jessica screams! It's the McCallister house! Doubles means treats and a bonus roll!</div>
+  <button class="gbtn" onclick="closeEaster()">Merry Christmas! 🎅</button>
+</div>
+
+<div id="regDone" class="scr">
+  <div class="rd-z">
+    <div class="rd-em" id="rdEm">🎉</div>
+    <div class="rd-ti" id="rdTi">Region Complete!</div>
+    <div class="rd-de" id="rdDe">Amazing!</div>
+    <button class="gbtn" id="rdBtn" onclick="nextRegion()">Next →</button>
   </div>
 </div>
 
-<!-- WIN -->
-
-<div id="win" class="screen">
+<div id="win" class="scr">
   <div class="wg wg1"></div><div class="wg wg2"></div>
   <div class="wz">
     <div class="w-em">🏆</div>
-    <div class="w-ti">Gooby Conquered Portugal!</div>
+    <div class="w-ti">Portugal Conquered!</div>
     <div class="w-su" id="wMsg">The Fonseca legacy lives on.</div>
     <button class="gbtn" onclick="fullRestart()">Play Again 🎲</button>
   </div>
@@ -302,420 +336,444 @@ canvas#sky{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-
 
 <script>
 /* ========== STARFIELD ========== */
-(function(){
-  var c=document.getElementById('sky'),x=c.getContext('2d'),pts=[],W,H;
-  function sz(){W=c.width=innerWidth;H=c.height=innerHeight;pts=[];
-    for(var i=0,n=Math.min(70,Math.floor(W*H/11000));i<n;i++)
-      pts.push({x:Math.random()*W,y:Math.random()*H,r:0.4+Math.random()*1.8,dx:(Math.random()-0.5)*0.2,dy:(Math.random()-0.5)*0.2,ph:Math.random()*6.28,sp:0.008+Math.random()*0.012});}
-  function draw(){
-    x.clearRect(0,0,W,H);
-    for(var i=0;i<pts.length;i++){var p=pts[i];p.x+=p.dx;p.y+=p.dy;p.ph+=p.sp;
-      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
-      var a=0.12+Math.sin(p.ph)*0.18;
-      x.beginPath();x.arc(p.x,p.y,p.r,0,6.28);x.fillStyle='rgba(212,168,67,'+a+')';x.fill();
-      x.beginPath();x.arc(p.x,p.y,p.r*3,0,6.28);x.fillStyle='rgba(212,168,67,'+(a*0.06)+')';x.fill();}
-    for(var i=0;i<pts.length;i++)for(var j=i+1;j<pts.length;j++){
-      var dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
-      if(d<95){x.beginPath();x.moveTo(pts[i].x,pts[i].y);x.lineTo(pts[j].x,pts[j].y);
-        x.strokeStyle='rgba(43,76,126,'+(0.04*(1-d/95))+')';x.lineWidth=0.5;x.stroke();}}
-    requestAnimationFrame(draw);}
-  sz();draw();addEventListener('resize',sz);
-})();
+(function(){var c=document.getElementById('sky'),x=c.getContext('2d'),pts=[],W,H;
+function sz(){W=c.width=innerWidth;H=c.height=innerHeight;pts=[];
+for(var i=0,n=Math.min(60,Math.floor(W*H/12000));i<n;i++)pts.push({x:Math.random()*W,y:Math.random()*H,r:.4+Math.random()*1.6,dx:(Math.random()-.5)*.18,dy:(Math.random()-.5)*.18,ph:Math.random()*6.28,sp:.007+Math.random()*.01});}
+function draw(){x.clearRect(0,0,W,H);for(var i=0;i<pts.length;i++){var p=pts[i];p.x+=p.dx;p.y+=p.dy;p.ph+=p.sp;
+if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+var a=.1+Math.sin(p.ph)*.15;x.beginPath();x.arc(p.x,p.y,p.r,0,6.28);x.fillStyle='rgba(212,168,67,'+a+')';x.fill();
+x.beginPath();x.arc(p.x,p.y,p.r*3,0,6.28);x.fillStyle='rgba(212,168,67,'+(a*.05)+')';x.fill();}
+for(var i=0;i<pts.length;i++)for(var j=i+1;j<pts.length;j++){var dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+if(d<90){x.beginPath();x.moveTo(pts[i].x,pts[i].y);x.lineTo(pts[j].x,pts[j].y);x.strokeStyle='rgba(43,76,126,'+(0.04*(1-d/90))+')';x.lineWidth=.5;x.stroke();}}
+requestAnimationFrame(draw);}sz();draw();addEventListener('resize',sz);})();
 
-/* ========== GAME DATA ========== */
+/* ========== ORIENTATION ========== */
+function checkOri(){var p=document.getElementById('portrait');
+if(window.innerWidth<window.innerHeight&&document.getElementById('board').classList.contains('on')){p.style.display='flex';}
+else{p.style.display='none';}}
+window.addEventListener('resize',checkOri);window.addEventListener('orientationchange',function(){setTimeout(checkOri,200);});
+
+/* ========== DATA ========== */
+var GRID_POS=[[4,1],[4,2],[4,3],[4,4],[4,5],[4,6],[3,6],[2,6],[1,6],[1,5],[1,4],[1,3],[1,2],[1,1],[2,1],[3,1]];
+var SPACE_TYPE=['go','prop','prop','chance','prop','turkey','prop','chance','doordash','prop','prop','chance','prop','gatooos','prop','community'];
+var PROP_MAP=[null,0,1,null,2,null,3,null,null,4,5,null,6,null,7,null];
+
 var REGIONS=[
-  {name:"Lisbon",em:"🏛️",col:"#2B4C7E",sub:"The capital awaits",
-    props:[
-      {n:"Torre de Belém",e:"🏰",d:"The iconic tower on the Tagus. Gooby pretends to be a sailor!",p:100,r:20},
-      {n:"Alfama",e:"🎵",d:"Narrow streets and fado music. Gooby gets lost (again).",p:120,r:24},
-      {n:"Pastéis de Belém",e:"🍮",d:"The original pastel de nata shop. Gooby eats 12.",p:90,r:18},
-      {n:"Praça do Comércio",e:"☀️",d:"The grand waterfront square. Gooby does a victory pose.",p:130,r:26}
-    ]},
-  {name:"Porto",em:"🍷",col:"#7D3C98",sub:"City of wine and bridges",
-    props:[
-      {n:"Ribeira",e:"🌊",d:"Colorful houses along the Douro. Gooby takes 200 selfies.",p:140,r:28},
-      {n:"Livraria Lello",e:"📚",d:"The world's most beautiful bookstore. Gooby can't read but loves it.",p:150,r:30},
-      {n:"Dom Luís Bridge",e:"🌉",d:"Double-deck iron bridge. Gooby walks the top level!",p:130,r:26},
-      {n:"Port Wine Cellars",e:"🍷",d:"Gooby discovers port wine. Things get interesting.",p:160,r:32}
-    ]},
-  {name:"Algarve",em:"🏖️",col:"#148F77",sub:"Sun, sand, and secrets",
-    props:[
-      {n:"Benagil Cave",e:"🕳️",d:"The famous sea cave! Gooby swims in through the opening.",p:170,r:34},
-      {n:"Lagos Beach",e:"🏝️",d:"Golden cliffs and turquoise water. Gooby builds a sandcastle.",p:150,r:30},
-      {n:"Albufeira",e:"🎡",d:"The party capital. Gooby stays out past bedtime.",p:140,r:28},
-      {n:"Sagres",e:"🧭",d:"End of the world! Gooby stares at the Atlantic and feels things.",p:180,r:36}
-    ]},
-  {name:"Braga",em:"⛪",col:"#B8860B",sub:"The final challenge",
-    props:[
-      {n:"Bom Jesus",e:"⛪",d:"577 baroque steps. Gooby's legs are burning but the view is worth it.",p:200,r:40},
-      {n:"Sé de Braga",e:"🏛️",d:"The oldest cathedral in Portugal. Mae would be proud.",p:220,r:44},
-      {n:"Jardim de Santa Bárbara",e:"🌺",d:"Medieval gardens where Gooby finally catches a breath.",p:190,r:38},
-      {n:"Fonseca Vineyard",e:"🍇",d:"The legendary family vineyard. Gooby is home. This is where it all comes together.",p:350,r:70,leg:true}
-    ]}
+{name:"Lisbon",em:"🏛️",col:"#2B4C7E",sub:"The capital awaits",props:[
+{n:"Torre de Belém",e:"🏰",d:"The iconic tower on the Tagus. Jessica needs a photo from every angle!",p:100,r:20},
+{n:"Alfama",e:"🎵",d:"Narrow streets and fado. Mae says it reminds her of the old days.",p:120,r:24},
+{n:"Pastéis de Belém",e:"🍮",d:"The original nata shop. Gooby eats 12. Brian eats 15.",p:90,r:18},
+{n:"Praça do Comércio",e:"☀️",d:"Grand waterfront square. Dad checks the Ring camera back home.",p:130,r:26},
+{n:"Tram 28",e:"🚃",d:"The famous yellow tram. Steven and Angie squeeze in. Rambo waits outside.",p:110,r:22},
+{n:"LX Factory",e:"🎨",d:"Trendy art district. Angie takes 200 photos. Steven is in 3 of them.",p:140,r:28},
+{n:"Jerónimos",e:"🏛️",d:"The grand monastery. Mae lights a candle for the whole Fonseca family.",p:150,r:30},
+{n:"São Jorge Castle",e:"🗡️",d:"Brian and Steven pretend to be knights. Dad sits on a bench and naps.",p:160,r:32}
+]},
+{name:"Porto",em:"🍷",col:"#7D3C98",sub:"City of wine and bridges",props:[
+{n:"Ribeira",e:"🌊",d:"Colorful Douro houses. Angie takes photos while Steven photobombs every one.",p:140,r:28},
+{n:"Livraria Lello",e:"📚",d:"World's most beautiful bookstore. Jessica says it's like Home Alone. It's not.",p:150,r:30},
+{n:"Dom Luís Bridge",e:"🌉",d:"Brian races Steven across the top deck. Rambo barks from below.",p:130,r:26},
+{n:"Clérigos Tower",e:"🔔",d:"225 steps up. Brian runs. Dad takes one look and says 'I'll wait here.'",p:160,r:32},
+{n:"São Bento Station",e:"🚂",d:"Gorgeous blue tile murals. Mae wants tiles like this for her kitchen.",p:120,r:24},
+{n:"Majestic Café",e:"☕",d:"Most beautiful café in Porto. Jessica orders hot chocolate. Twice.",p:170,r:34},
+{n:"Port Wine Cellars",e:"🍷",d:"Dad discovers port wine. Three glasses later Mae gives him The Look.",p:180,r:36},
+{n:"Crystal Palace",e:"🏰",d:"Stunning gardens. Rambo tries to chase the peacocks. Steven holds him back.",p:150,r:30}
+]},
+{name:"Algarve",em:"🏖️",col:"#148F77",sub:"Sun, sand, and sunburn",props:[
+{n:"Benagil Cave",e:"🕳️",d:"Famous sea cave! Rambo tries to swim in. Steven rescues him. Again.",p:170,r:34},
+{n:"Lagos Beach",e:"🏝️",d:"Golden cliffs. Angie and Jessica lay out. Brian buries Steven in sand.",p:150,r:30},
+{n:"Albufeira",e:"🎡",d:"Party town. Dad falls asleep at dinner at 8pm. Mae photographs it.",p:140,r:28},
+{n:"Sagres",e:"🧭",d:"Edge of the world! Whole Fonseca family at the cliffs. Rambo hides from wind.",p:180,r:36},
+{n:"Faro Old Town",e:"🏘️",d:"Charming streets. Mae finds a shop with perfect bacalhau seasoning.",p:130,r:26},
+{n:"Tavira",e:"🌸",d:"Quiet and beautiful. The only place Steven hasn't let a gatooooos yet.",p:160,r:32},
+{n:"Praia da Marinha",e:"🏖️",d:"Best beach in the Algarve. Jessica finds it 'very Home Alone vibes.' How?",p:190,r:38},
+{n:"Vilamoura",e:"⛵",d:"Fancy marina. Brian orders lobster. Twice. The waiter double-checks.",p:170,r:34}
+]},
+{name:"Braga",em:"⛪",col:"#B8860B",sub:"The Fonseca Homeland",props:[
+{n:"Bom Jesus",e:"⛪",d:"577 baroque steps. Mae climbs every one. Dad takes the funicular.",p:200,r:40},
+{n:"Sé de Braga",e:"🏛️",d:"Oldest cathedral in Portugal. Mae lights candles. Even Rambo is quiet.",p:220,r:44},
+{n:"Santa Bárbara",e:"🌺",d:"Medieval gardens. The whole family finally takes a peaceful moment.",p:190,r:38},
+{n:"Sameiro",e:"✨",d:"Sanctuary on the hill. Views of all of Braga. Dad says 'This is home.'",p:210,r:42},
+{n:"Theatro Circo",e:"🎭",d:"Historic theater. Jessica says it needs Christmas lights. She's right.",p:180,r:36},
+{n:"Mercado Municipal",e:"🐟",d:"Mae buys everything. Fish, cheese, wine. Brian carries all the bags.",p:170,r:34},
+{n:"Chicken Coop",e:"🐔",d:"The legendary Fonseca chicken coop! Rambo is terrified. Chickens don't care.",p:250,r:50,leg:true},
+{n:"Fonseca Vineyard",e:"🍇",d:"THE family vineyard. Dad on the tractor. Generations of Fonsecas. Home.",p:400,r:80,leg:true}
+]}];
+
+var CHANCE_EVENTS=[
+{e:"💨",t:"Brian's GATOOOOOS!",d:"Brian unleashes at dinner. Mae yells. Rambo leaves. Windows need opening.",c:70,fx:"fart",who:"Brian"},
+{e:"💨",t:"Steven's GATOOOOOS!",d:"Steven lets one rip. Angie: 'Seriously?!' Rambo barks in solidarity.",c:65,fx:"fart",who:"Steven"},
+{e:"💨",t:"Dad's Silent Deadly!",d:"Dad fires from his chair. Mae smells it from the kitchen. 'I can smell it from HERE!'",c:85,fx:"fart",who:"Dad"},
+{e:"💨",t:"DOUBLE GATOOOOOS!",d:"Brian AND Steven simultaneously. Rambo hides under the table. Mae threatens the priest.",c:120,fx:"fart",who:"Brian & Steven"},
+{e:"💨",t:"TRIPLE GATOOOOOS!",d:"Dad, Brian, Steven in sequence. Jessica films it. Mae leaves entirely. Rambo howls. Historic.",c:150,fx:"fart",who:"The Fonseca Men"},
+{e:"💨",t:"Steven Blames Rambo!",d:"Steven points at Rambo. Rambo tilts his head. Angie: 'It was NOT the dog.'",c:55,fx:"fart",who:"Steven"},
+{e:"🍷",t:"Vinho Verde!",d:"A local pours the family vinho verde. Dad has two. Brian has four.",c:60,fx:"gold"},
+{e:"🌧️",t:"Chuva!",d:"Classic Portuguese rain. Jessica forgot the umbrella. Steven gives Angie his jacket.",c:-40,fx:"red"},
+{e:"🐓",t:"Galo de Barcelos!",d:"The lucky rooster! Mae says good fortune for the Fonsecas!",c:80,fx:"gold"},
+{e:"🍰",t:"Natas!",d:"Jessica eats two. Brian eats six. Mae says she'll make better at home.",c:50,fx:"gold"},
+{e:"☀️",t:"Sunburn!",d:"Everyone forgot sunscreen. Steven is tomato red. Angie: 'I told you.'",c:-35,fx:"red"},
+{e:"🚕",t:"Tourist Trap!",d:"Dad says he could have driven. Mae: 'No, you couldn't.'",c:-45,fx:"red"}
 ];
 
-var EVENTS=[
-  // PORTUGAL
-  {e:"🍷",t:"Vinho Verde!",d:"A local pours Gooby a cold glass. Saúde!",c:60,fx:"green"},
-  {e:"🌧️",t:"Chuva!",d:"Classic Portuguese rain. Gooby forgot the umbrella.",c:-40,fx:"blue"},
-  {e:"🐓",t:"Galo de Barcelos!",d:"Gooby finds the lucky rooster. Good fortune!",c:80,fx:"gold"},
-  {e:"🍰",t:"Natas!",d:"A pastelaria hands Gooby free pastéis de nata.",c:50,fx:"gold"},
-  {e:"🚃",t:"Tram Ride!",d:"Gooby hops on the famous tram 28. Scenic detour.",c:-25,fx:"blue"},
-  {e:"🐟",t:"Bacalhau!",d:"The best bacalhau in Portugal. Gooby is in food heaven.",c:45,fx:"gold"},
-  // GATOOOOOS (FARTS)
-  {e:"💨",t:"GATOOOOOS!",d:"Brian rips a legendary one. The whole room clears. Gooby rides the blast wave forward!",c:70,fx:"fart",farter:"Brian"},
-  {e:"💨",t:"GATOOOOOS!",d:"Steven lets one loose. Angie is NOT impressed. Rambo barks. Gooby gains speed!",c:65,fx:"fart",farter:"Steven"},
-  {e:"💨",t:"GATOOOOOS!",d:"Dad fires off a silent but deadly. Mae yells from the kitchen. Gooby profits from the chaos!",c:85,fx:"fart",farter:"Dad"},
-  {e:"💨",t:"DOUBLE GATOOOOOS!",d:"Brian AND Steven at the same time. The house shakes. Rambo hides. Historic moment.",c:120,fx:"fart",farter:"Both"},
-  {e:"💨",t:"GATOOOOOS REVENGE!",d:"Steven blames Rambo. Nobody believes him. Angie opens a window. Gooby escapes with coins!",c:55,fx:"fart",farter:"Steven"},
-  // FAMILY
-  {e:"🐕",t:"Rambo Alert!",d:"Rambo spotted something on the Ring camera. It's just the mailman. False alarm bonus!",c:40,fx:"doorbell"},
-  {e:"📱",t:"Ring Doorbell!",d:"Someone's at the door! The whole family checks the camera simultaneously.",c:30,fx:"doorbell"},
-  {e:"👩‍🍳",t:"Mae's Kitchen!",d:"Mae is cooking something incredible. The smell alone is worth coins.",c:60,fx:"gold"},
-  {e:"📱",t:"Ring Alert!",d:"Rambo is barking at the Ring camera again. Dad checks it. It's a cat.",c:35,fx:"doorbell"},
-  // CHRISTMAS
-  {e:"🎄",t:"Christmas Lights!",d:"Jessica spots an incredible Christmas display. She makes everyone stop and look.",c:75,fx:"xmas"},
-  {e:"🎬",t:"Home Alone!",d:"Jessica puts on Home Alone. Everyone has to watch. Gooby sets up booby traps for bonus coins!",c:90,fx:"xmas"},
-  {e:"🎅",t:"Merry Christmas!",d:"Jessica decorates everything in sight. Even Rambo gets a sweater.",c:65,fx:"xmas"},
-  {e:"🏠",t:"Kevin!",d:"'KEVIN!' Jessica does the Home Alone face. Gooby is inspired. Bonus coins!",c:50,fx:"xmas"},
-  // BAD LUCK
-  {e:"🧹",t:"Lost Passport!",d:"Gooby drops the passport again. Panic mode.",c:-50,fx:"red"},
-  {e:"🚕",t:"Tourist Trap!",d:"Gooby paid way too much for a taxi. Classic.",c:-45,fx:"red"},
-  {e:"☀️",t:"Sunburn!",d:"Gooby forgot sunscreen in the Algarve. Ouch.",c:-35,fx:"red"}
+var COMMUNITY_EVENTS=[
+{e:"🎄",t:"Christmas Lights!",d:"Jessica spots an incredible display. Makes the ENTIRE family stop and look.",c:75,fx:"xmas"},
+{e:"🎬",t:"Home Alone!",d:"Jessica puts it on. 400th time. Mouths every line. Gooby sets booby traps!",c:90,fx:"xmas"},
+{e:"🏠",t:"KEVIN!",d:"Jessica does the face with hands on cheeks. Steven does it too. Brian doesn't get it.",c:50,fx:"xmas"},
+{e:"👩‍🍳",t:"Mae's Kitchen!",d:"Mae cooks something incredible. Gooby and Rambo wait by the kitchen door.",c:65,fx:"fam"},
+{e:"🍲",t:"Mae's Bacalhau!",d:"Best bacalhau in Braga. Dad says best ever. Mae says he says that every time.",c:80,fx:"fam"},
+{e:"📱",t:"Ring Doorbell!",d:"DING! Entire family checks phones simultaneously. It's a delivery. Rambo barking.",c:35,fx:"doorbell"},
+{e:"🐕",t:"Rambo Alert!",d:"Ring camera catches Rambo barking at his own reflection. Family dies laughing.",c:45,fx:"doorbell"},
+{e:"😴",t:"Dad Naps!",d:"Dad asleep at 7pm. Mae covers him. Steven draws on his face. Brian photographs.",c:40,fx:"fam"},
+{e:"📸",t:"Angie's Photos!",d:"847 photos today. Steven is in approximately 3 willingly.",c:50,fx:"fam"},
+{e:"🐔",t:"Chicken Escape!",d:"One escaped! Rambo panics. Brian chases. Steven films. Mae yells instructions.",c:60,fx:"chicken"},
+{e:"🥚",t:"Fresh Eggs!",d:"Mae collects from the Fonseca chicken coop. Best eggs in Braga.",c:55,fx:"fam"},
+{e:"🎅",t:"Merry Christmas!",d:"Jessica decorates everything. The house, vineyard, Rambo. Even the chicken coop gets lights.",c:65,fx:"xmas"},
+{e:"🐕",t:"Rambo vs Chickens!",d:"Rambo got into the coop. The chickens won. Again. Steven carries him out.",c:35,fx:"chicken"}
 ];
 
 var DF=['⚀','⚁','⚂','⚃','⚄','⚅'];
-var coins,pos,rnd,steps,owned,curReg,busy;
-function _$(s){return document.getElementById(s)}
+var coins,pos,rnd,steps,owned,curReg,busy,rollAgain;
 
-function initState(){coins=800;pos=0;rnd=1;steps=0;owned={};curReg=0;busy=false;
-  for(var i=0;i<REGIONS.length;i++){owned[i]={};}}
+function _$(s){return document.getElementById(s)}
+function initState(){coins=800;pos=0;rnd=1;steps=0;owned={};curReg=0;busy=false;rollAgain=false;
+for(var i=0;i<4;i++)owned[i]={};}
 
 /* ========== SCREENS ========== */
-function showScreen(id){
-  var screens=['splash','flight','game','regComp','win'];
-  for(var i=0;i<screens.length;i++){
-    var el=_$(screens[i]);
-    if(screens[i]===id)el.classList.add('on');
-    else el.classList.remove('on');
+function showScr(id){var s=['splash','airline','board','regDone','win','easter'];
+for(var i=0;i<s.length;i++){var el=_$(s[i]);if(el){if(s[i]===id)el.classList.add('on');else el.classList.remove('on');}}
+checkOri();}
+
+/* ========== AIRLINE INTRO ========== */
+function startAirline(){
+showScr('airline');
+setTimeout(function(){_$('alPlane').style.left='calc(100% - 20px)';},500);
+setTimeout(function(){_$('alMsg').classList.add('show');},3500);
+setTimeout(function(){_$('alSub').classList.add('show');},4000);
+setTimeout(function(){initState();showScr('board');renderBoard();},5500);
+}
+
+/* ========== BOARD RENDERING ========== */
+function renderBoard(){
+var g=_$('bgrid');g.innerHTML='';
+var r=REGIONS[curReg];
+for(var i=0;i<16;i++){
+  var cell=document.createElement('div');
+  var gp=GRID_POS[i];
+  cell.style.gridColumn=gp[1];cell.style.gridRow=gp[0];
+  var st=SPACE_TYPE[i];
+  cell.className='cell cell-'+st;
+  if(i===pos)cell.classList.add('here');
+  var pi=PROP_MAP[i];
+  if(pi!==null&&owned[curReg][pi])cell.classList.add('owned-cell');
+  if(pi!==null&&r.props[pi]&&r.props[pi].leg)cell.classList.add('leg-cell');
+  var inner='';
+  if(st==='go'){inner='<div class="cell-strip" style="background:#D4A843"></div><div class="cell-em">💰</div><div class="cell-nm">GO</div><div class="cell-pr">+200</div>';}
+  else if(st==='turkey'){inner='<div class="cell-strip" style="background:#8B4513"></div><div class="cell-em">🏹</div><div class="cell-nm">Turkey Shoot</div><div class="cell-pr">Dad\'s Game</div>';}
+  else if(st==='doordash'){inner='<div class="cell-strip" style="background:#ff3008"></div><div class="cell-em">🚗</div><div class="cell-nm">DoorDash</div><div class="cell-pr">Tip Driver!</div>';}
+  else if(st==='gatooos'){inner='<div class="cell-strip" style="background:#4a7a2e"></div><div class="cell-em">💨</div><div class="cell-nm">Gatooooos</div><div class="cell-pr">Fart Arena</div>';}
+  else if(st==='chance'){inner='<div class="cell-strip" style="background:#E67E22"></div><div class="cell-em">❓</div><div class="cell-nm">Chance</div>';}
+  else if(st==='community'){inner='<div class="cell-strip" style="background:#9B59B6"></div><div class="cell-em">👨‍👩‍👦‍👦</div><div class="cell-nm">Family</div>';}
+  else if(st==='prop'&&pi!==null){
+    var p=r.props[pi];
+    inner='<div class="cell-strip" style="background:'+r.col+'"></div><div class="cell-em">'+p.e+'</div><div class="cell-nm">'+p.n+'</div>';
+    if(owned[curReg][pi])inner+='<div class="cell-pr" style="color:#1d9d51">✓</div>';
+    else inner+='<div class="cell-pr">'+p.p+'</div>';
   }
+  if(i===pos)inner+='<div class="cell-paw">🐾</div>';
+  cell.innerHTML=inner;
+  g.appendChild(cell);
 }
-
-/* ========== FLIGHT ========== */
-function startFlight(){
-  showScreen('flight');
-  setTimeout(function(){showScreen('game');initState();buildAll();showLoc();},4500);
-}
-
-/* ========== BUILD UI ========== */
-function buildAll(){buildRmap();buildDots();updateHud();}
-
-function buildRmap(){
-  var m=_$('rmap');m.innerHTML='';
-  for(var i=0;i<REGIONS.length;i++){
-    var r=REGIONS[i],d=document.createElement('div');
-    d.className='rm'+(i===curReg?' act':'')+(isRegDone(i)?' done':'');
-    d.id='rm'+i;d.style.backgroundColor=r.col;
-    var ownedInReg=Object.keys(owned[i]||{}).length;
-    d.innerHTML='<div class="rm-em">'+r.em+'</div><div class="rm-nm">'+r.name+'</div><div class="rm-bar"><div class="rm-fill" style="width:'+(ownedInReg/4*100)+'%"></div></div>';
-    m.appendChild(d);
-  }
-}
-
-function buildDots(){
-  var s=_$('dots');s.innerHTML='';
-  var props=REGIONS[curReg].props;
-  for(var i=0;i<props.length;i++){
-    var d=document.createElement('div'),p=props[i];
-    d.className='dot'+(owned[curReg][i]?' owned':'')+(p.leg?' leg':'');
-    d.style.backgroundColor=REGIONS[curReg].col;
-    d.textContent=p.e;d.id='dot'+i;
-    s.appendChild(d);
-  }
-}
-
-function updateHud(){
-  _$('coins').textContent=coins;
-  _$('vRnd').textContent=rnd;
-  _$('vReg').textContent=(curReg+1)+'/4';
-  var total=0;for(var i=0;i<4;i++)total+=Object.keys(owned[i]||{}).length;
-  _$('vOwn').textContent=total+'/16';
-  _$('vStp').textContent=steps;
-  var r=REGIONS[curReg];
-  _$('regEm').textContent=r.em;
-  _$('regNm').textContent=r.name;
-  _$('regSub').textContent=r.sub;
-  var regOwned=Object.keys(owned[curReg]||{}).length;
-  _$('pfl').style.width=(regOwned/4*100)+'%';
-  _$('plb').textContent=r.name+' Conquest — '+regOwned+'/4';
-  buildRmap();
-}
-
-function isRegDone(ri){return Object.keys(owned[ri]||{}).length>=4;}
-
-function showLoc(){
-  var r=REGIONS[curReg],p=r.props[pos];
-  _$('cTop').style.backgroundColor=r.col;
-  _$('cEm').textContent=p.e;
-  _$('cNm').textContent=p.n;
-  _$('cDe').textContent=p.d;
-  var card=_$('card');
-  card.className='card'+(p.leg?' leg':'');
-  // badge
-  var oldBadge=card.querySelector('.c-badge');
-  if(oldBadge)oldBadge.remove();
-  if(p.leg){var bg=document.createElement('div');bg.className='c-badge';bg.textContent='★ LEGENDARY';_$('cTop').appendChild(bg);}
-  var f=_$('cFt');
-  if(owned[curReg][pos])f.innerHTML='<span class="c-own">🐾 Gooby owns this!</span>';
-  else f.innerHTML='<span class="c-pr">💰 '+p.p+'</span><span class="c-rn">Rent: '+p.r+'/turn</span>';
-  card.style.animation='none';card.offsetHeight;card.style.animation='cIn 0.5s cubic-bezier(0.34,1.56,0.64,1)';
-  updateHud();
+// center
+var ctr=document.createElement('div');ctr.className='bcenter';
+ctr.style.gridColumn='2/6';ctr.style.gridRow='2/4';
+var regOwned=Object.keys(owned[curReg]||{}).length;
+var totalOwned=0;for(var i=0;i<4;i++)totalOwned+=Object.keys(owned[i]||{}).length;
+ctr.innerHTML='<div class="bc-regem">'+r.em+'</div>'+
+'<div class="bc-reg">'+r.name+' — Region '+(curReg+1)+'/4</div>'+
+'<div class="bc-bal">💰 <span id="cBal">'+coins+'</span></div>'+
+'<div class="bc-ballbl">Fonseca Bank · '+regOwned+'/8 owned · '+totalOwned+'/32 total</div>'+
+'<div class="bc-dice"><div class="bc-die" id="d1">🎲</div><div class="bc-die" id="d2">🎲</div></div>'+
+'<button class="rbtn" id="rb" onclick="roll()">ROLL 🎲</button>'+
+'<div class="bc-info">Round '+rnd+' · '+steps+' steps'+(rollAgain?' · BONUS ROLL!':'')+'</div>';
+g.appendChild(ctr);
 }
 
 /* ========== DICE ========== */
 function roll(){
-  if(busy)return;busy=true;
-  _$('rb').disabled=true;
-  var d=_$('dd');d.classList.add('spin');d.classList.remove('land');
-  var t=0,iv=setInterval(function(){
-    d.textContent=DF[Math.floor(Math.random()*6)];t++;
-    if(t>=20){clearInterval(iv);
-      var r=Math.floor(Math.random()*6)+1;
-      d.textContent=DF[r-1];d.classList.remove('spin');d.classList.add('land');
-      setTimeout(function(){move(r)},400);}
-  },55);
+if(busy)return;busy=true;
+var btn=_$('rb');if(btn)btn.disabled=true;
+var d1=_$('d1'),d2=_$('d2');
+d1.classList.add('spin');d2.classList.add('spin');
+d1.classList.remove('land');d2.classList.remove('land');
+var t=0,iv=setInterval(function(){
+d1.textContent=DF[Math.floor(Math.random()*6)];
+d2.textContent=DF[Math.floor(Math.random()*6)];t++;
+if(t>=22){clearInterval(iv);
+var r1=Math.floor(Math.random()*6)+1;
+var r2=Math.floor(Math.random()*6)+1;
+d1.textContent=DF[r1-1];d2.textContent=DF[r2-1];
+d1.classList.remove('spin');d2.classList.remove('spin');
+d1.classList.add('land');d2.classList.add('land');
+var isDoubles=(r1===r2);
+setTimeout(function(){
+if(isDoubles){doEasterEgg(r1+r2);}
+else{move(r1+r2);}
+},500);}
+},50);
 }
 
-function move(s){
-  steps+=s;var old=pos;
-  var regLen=REGIONS[curReg].props.length;
-  pos=(pos+s)%regLen;
-  if(pos<=old&&s>0){rnd++;coins+=80;fcoin('+80');flash('#D4A843');}
-  showLoc();
-  if(Math.random()<0.4)setTimeout(randEvt,500);
-  else setTimeout(propEvt,500);
+/* ========== EASTER EGG (DOUBLES) ========== */
+function doEasterEgg(total){
+showScr('easter');doSnow();doXmasLights();
+coins+=100;
+_$('eeDe').textContent="Jessica screams! It's the McCallister house! Doubles! +100 coins and a bonus roll! Kevin would be proud.";
+window._eeTotal=total;
+}
+function closeEaster(){
+showScr('board');
+rollAgain=true;
+move(window._eeTotal);
 }
 
-/* ========== PROPERTY EVENT ========== */
-function propEvt(){
-  var p=REGIONS[curReg].props[pos];
-  if(owned[curReg][pos]){
-    coins+=p.r;fcoin('+'+p.r);flash('#1d9d51');
-    showEv(p.e,p.n,'Gooby collects '+p.r+' coins rent!',[
-      {t:'Nice! 🐾',c:'eb-ok',f:function(){hideEv();fin();}}]);
-  }else if(coins>=p.p){
-    showEv(p.e,'Buy '+p.n+'?','Costs '+p.p+' coins. Earns '+p.r+' each visit.'+(p.leg?' This is the LEGENDARY Fonseca property!':''),[
-      {t:'Buy 💰'+p.p,c:'eb-buy',f:doBuy},
-      {t:'Pass',c:'eb-pass',f:doRent}]);
-  }else{
-    showEv('😅','Too Expensive!',"Can't afford "+p.n+'. Pays '+p.r+' rent.',[
-      {t:'Okay 😔',c:'eb-ok',f:doRent}]);
-  }
+/* ========== MOVEMENT ========== */
+function move(total){
+steps+=total;var oldPos=pos;
+pos=(pos+total)%16;
+// check if passed GO
+if(pos<=oldPos&&total>0&&oldPos!==0){
+rnd++;coins+=200;doMoneyBags();flash('#D4A843');
+}
+renderBoard();
+setTimeout(function(){handleSpace();},400);
 }
 
-function doBuy(){
-  var p=REGIONS[curReg].props[pos];
-  coins-=p.p;owned[curReg][pos]=true;
-  var d=_$('dot'+pos);
-  if(d){d.classList.add('owned');if(p.leg)d.classList.add('leg');d.classList.add('pop');setTimeout(function(){d.classList.remove('pop')},800);}
-  if(p.leg){flash('#D4A843');sparkles();shake();doConfetti();}
-  else{flash('#D4A843');sparkles();shake();}
-  hideEv();showLoc();
-  if(isRegDone(curReg)){
-    setTimeout(function(){
-      if(curReg>=3)winGame();
-      else showRegComplete();
-    },700);
-  }else fin();
+function handleSpace(){
+var st=SPACE_TYPE[pos];
+if(st==='go'){coins+=200;doMoneyBags();showOv('💰','Payday!','Gooby passes GO! The Fonseca Bank pays out 200 coins. Mae says save some for groceries.',[{t:'+200 💰',c:'ob-gold',f:function(){hideOv();fin();}}]);}
+else if(st==='prop'){doProp();}
+else if(st==='chance'){doChance();}
+else if(st==='community'){doCommunity();}
+else if(st==='turkey'){startTurkey();}
+else if(st==='gatooos'){startFartGame();}
+else if(st==='doordash'){doDoorDash();}
 }
 
-function doRent(){
-  coins-=REGIONS[curReg].props[pos].r;if(coins<0)coins=0;
-  hideEv();updateHud();fin();
+/* ========== PROPERTY ========== */
+function doProp(){
+var pi=PROP_MAP[pos];if(pi===null){fin();return;}
+var p=REGIONS[curReg].props[pi];
+if(owned[curReg][pi]){
+coins+=p.r;fcoin('+'+p.r);flash('#1d9d51');
+showOv(p.e,p.n,'Gooby collects '+p.r+' coins rent!',[{t:'Nice! 🐾',c:'ob-ok',f:function(){hideOv();fin();}}]);
+}else if(coins>=p.p){
+var badge=p.leg?'LEGENDARY':'';
+showOvBadge(badge,p.e,'Buy '+p.n+'?','Costs '+p.p+' coins. Earns '+p.r+' each visit.'+(p.leg?' THE legendary Fonseca property!':''),[
+{t:'Buy 💰'+p.p,c:'ob-buy',f:function(){buyProp(pi);}},
+{t:'Pass',c:'ob-pass',f:function(){payRent(pi);}}]);
+}else{
+showOv('😅','Too Expensive!',"Can't afford "+p.n+'. Pays '+p.r+' rent.',[{t:'Okay 😔',c:'ob-ok',f:function(){payRent(pi);}}]);
+}
+}
+function buyProp(pi){
+var p=REGIONS[curReg].props[pi];coins-=p.p;owned[curReg][pi]=true;
+if(p.leg){flash('#D4A843');sparkles();doConfetti();shake();}
+else{flash('#D4A843');sparkles();shake();}
+hideOv();renderBoard();
+if(Object.keys(owned[curReg]).length>=8){setTimeout(function(){if(curReg>=3)winGame();else showRegDone();},600);}
+else fin();
+}
+function payRent(pi){
+var p=REGIONS[curReg].props[pi];coins-=p.r;if(coins<0)coins=0;hideOv();renderBoard();fin();
 }
 
-/* ========== RANDOM EVENTS ========== */
-function randEvt(){
-  var ev=EVENTS[Math.floor(Math.random()*EVENTS.length)];
-  var tx=ev.c>0?'+'+ev.c:''+ev.c;
-  var btnClass=ev.fx==='fart'?'eb-fart':ev.fx==='xmas'?'eb-xmas':ev.c>0?'eb-buy':'eb-pass';
-  showEv(ev.e,ev.t,ev.d,[
-    {t:tx+' coins',c:btnClass,f:function(){
-      coins+=ev.c;if(coins<0)coins=0;
-      if(ev.c>0)fcoin('+'+ev.c);
-      // FX
-      if(ev.fx==='fart')doFart(ev.farter);
-      else if(ev.fx==='xmas')doXmas();
-      else if(ev.fx==='doorbell')doDoorbell();
-      else if(ev.fx==='gold')flash('#D4A843');
-      else if(ev.fx==='green')flash('#27AE60');
-      else if(ev.fx==='blue')flash('#2B4C7E');
-      else if(ev.fx==='red'){flash('#C0392B');shake();}
-      hideEv();updateHud();fin();
-    }}
-  ]);
+/* ========== CHANCE ========== */
+function doChance(){
+var ev=CHANCE_EVENTS[Math.floor(Math.random()*CHANCE_EVENTS.length)];
+var tx=ev.c>0?'+'+ev.c:''+ev.c;
+var bc=ev.fx==='fart'?'ob-fart':ev.c>0?'ob-buy':'ob-pass';
+showOv(ev.e,ev.t,ev.d,[{t:tx+' coins',c:bc,f:function(){
+coins+=ev.c;if(coins<0)coins=0;if(ev.c>0)fcoin('+'+ev.c);
+if(ev.fx==='fart')doFart(ev.who);
+else if(ev.fx==='gold')flash('#D4A843');
+else if(ev.fx==='red'){flash('#C0392B');shake();}
+hideOv();renderBoard();fin();
+}}]);
 }
 
-/* ========== EVENT UI ========== */
-function showEv(em,ti,de,bs){
-  _$('eEm').textContent=em;_$('eTi').textContent=ti;_$('eDe').textContent=de;
-  var c=_$('eBt');c.innerHTML='';
-  for(var i=0;i<bs.length;i++){var b=document.createElement('button');
-    b.className='eb '+bs[i].c;b.textContent=bs[i].t;b.onclick=bs[i].f;c.appendChild(b);}
-  _$('ov').classList.remove('hidden');
-}
-function hideEv(){_$('ov').classList.add('hidden')}
-function fin(){busy=false;_$('rb').disabled=false;updateHud();}
-
-/* ========== REGION COMPLETE ========== */
-function showRegComplete(){
-  var r=REGIONS[curReg];
-  var msgs=[
-    "Lisbon conquered! Gooby ate all the natas and saw all the sights. Porto is calling!",
-    "Porto dominated! Gooby drank port wine and crossed every bridge. The Algarve sun awaits!",
-    "Algarve secured! Gooby is tanned and ready. One final challenge remains... BRAGA. The Fonseca homeland.",
-    "BRAGA IS YOURS!"
-  ];
-  _$('rcEm').textContent=r.em;
-  _$('rcTi').textContent=r.name+' Complete!';
-  _$('rcDe').textContent=msgs[curReg];
-  if(curReg>=3)_$('rcBtn').textContent='🏆 Victory!';
-  else _$('rcBtn').textContent='Next: '+REGIONS[curReg+1].name+' →';
-  showScreen('regComp');
-  doConfetti();
+/* ========== COMMUNITY ========== */
+function doCommunity(){
+var ev=COMMUNITY_EVENTS[Math.floor(Math.random()*COMMUNITY_EVENTS.length)];
+var tx=ev.c>0?'+'+ev.c:''+ev.c;
+var bc=ev.fx==='xmas'?'ob-xmas':ev.fx==='doorbell'?'ob-fam':ev.fx==='chicken'?'ob-fam':ev.c>0?'ob-buy':'ob-pass';
+showOv(ev.e,ev.t,ev.d,[{t:tx+' coins',c:bc,f:function(){
+coins+=ev.c;if(coins<0)coins=0;if(ev.c>0)fcoin('+'+ev.c);
+if(ev.fx==='xmas')doXmas();
+else if(ev.fx==='doorbell')doDoorbell();
+else if(ev.fx==='chicken')doChicken();
+else if(ev.fx==='fam')flash('#2B4C7E');
+hideOv();renderBoard();fin();
+}}]);
 }
 
+/* ========== DOORDASH ========== */
+function doDoorDash(){
+var cost=50+Math.floor(Math.random()*50);
+showOv('🚗',"Angie & Steven's DoorDash!","Their driver is outside. Gooby has to go tip. Steven says 'just the app tip is fine.' Angie says 'NO.' You tip "+cost+" coins.",[
+{t:'Tip '+cost+' 💸',c:'ob-pass',f:function(){coins-=cost;if(coins<0)coins=0;flash('#ff3008');shake();hideOv();renderBoard();fin();}}]);
+}
+
+/* ========== TURKEY SHOOT MINI-GAME ========== */
+var tGameScore,tGameTimer,tGameInt,tSpawnInt;
+function startTurkey(){
+hideOv();
+_$('turkeyMG').classList.add('on');
+tGameScore=0;tGameTimer=8;
+_$('tScore').textContent='0';_$('tTimer').textContent='8';
+_$('tArena').innerHTML='';
+tGameInt=setInterval(function(){
+tGameTimer--;_$('tTimer').textContent=tGameTimer;
+if(tGameTimer<=0){clearInterval(tGameInt);clearInterval(tSpawnInt);endTurkey();}
+},1000);
+tSpawnInt=setInterval(spawnTurkey,900);
+spawnTurkey();
+}
+function spawnTurkey(){
+var arena=_$('tArena');
+var t=document.createElement('div');t.className='mg-target';
+t.style.position='absolute';t.style.fontSize='36px';t.style.cursor='pointer';
+t.style.left='-40px';t.style.top=(10+Math.random()*60)+'%';
+t.textContent='🦃';
+t.style.transition='left '+(2+Math.random()*2)+'s linear';
+t.onclick=function(){
+tGameScore+=30;_$('tScore').textContent=tGameScore;
+var h=document.createElement('div');h.className='turkey-hit';h.textContent='💥 +30';
+h.style.left=t.style.left;h.style.top=t.style.top;
+arena.appendChild(h);setTimeout(function(){h.remove()},500);
+t.remove();
+};
+arena.appendChild(t);
+setTimeout(function(){t.style.left='110%';},50);
+setTimeout(function(){if(t.parentNode)t.remove();},4500);
+}
+function endTurkey(){
+_$('turkeyMG').classList.remove('on');
+_$('tResTi').textContent=tGameScore>60?'Sharpshooter!':'Not bad!';
+_$('tResDe').textContent="Dad's proud. You earned "+tGameScore+" coins with the crossbow! 🏹";
+_$('turkeyResult').classList.add('on');
+coins+=tGameScore;
+}
+function closeTurkey(){_$('turkeyResult').classList.remove('on');renderBoard();fin();}
+
+/* ========== GATOOOOOS MINI-GAME ========== */
+var fGameScore,fGameTimer,fGameInt,fSpawnInt;
+var FART_TARGETS=['😀 Brian','😎 Steven','🧔 Dad','😊 Angie','🐕 Rambo'];
+function startFartGame(){
+hideOv();
+_$('fartMG').classList.add('on');
+fGameScore=0;fGameTimer=8;
+_$('fScore').textContent='0';_$('fTimer').textContent='8';
+_$('fArena').innerHTML='';
+fGameInt=setInterval(function(){
+fGameTimer--;_$('fTimer').textContent=fGameTimer;
+if(fGameTimer<=0){clearInterval(fGameInt);clearInterval(fSpawnInt);endFartGame();}
+},1000);
+fSpawnInt=setInterval(spawnFartTarget,1000);
+spawnFartTarget();
+}
+function spawnFartTarget(){
+var arena=_$('fArena');
+var ft=FART_TARGETS[Math.floor(Math.random()*FART_TARGETS.length)];
+var t=document.createElement('div');t.className='mg-target';
+t.style.position='absolute';t.style.fontSize='32px';t.style.cursor='pointer';
+t.style.left=(10+Math.random()*70)+'%';t.style.top=(10+Math.random()*60)+'%';
+t.textContent=ft.split(' ')[0];
+t.title=ft;
+t.onclick=function(){
+fGameScore+=25;_$('fScore').textContent=fGameScore;
+var h=document.createElement('div');h.className='fart-hit';
+h.style.position='absolute';h.style.left=t.style.left;h.style.top=t.style.top;
+h.style.fontSize='28px';h.textContent='💨😵';
+arena.appendChild(h);setTimeout(function(){h.remove()},600);
+t.textContent='😵';
+setTimeout(function(){if(t.parentNode)t.remove()},300);
+};
+arena.appendChild(t);
+setTimeout(function(){if(t.parentNode)t.remove();},1800);
+}
+function endFartGame(){
+_$('fartMG').classList.remove('on');
+_$('fResTi').textContent=fGameScore>50?'Room DESTROYED!':'Not bad!';
+_$('fResDe').textContent="The Gatooooos are legendary. You earned "+fGameScore+" coins! Mae opened all the windows. 💨";
+_$('fartResult').classList.add('on');
+coins+=fGameScore;
+}
+function closeFart(){_$('fartResult').classList.remove('on');renderBoard();fin();}
+
+/* ========== OVERLAY ========== */
+function showOv(em,ti,de,bs){
+_$('oEm').textContent=em;_$('oTi').textContent=ti;_$('oDe').textContent=de;
+_$('oBadge').classList.add('hidden');
+var c=_$('oBt');c.innerHTML='';
+for(var i=0;i<bs.length;i++){var b=document.createElement('button');b.className='ob '+bs[i].c;b.textContent=bs[i].t;b.onclick=bs[i].f;c.appendChild(b);}
+_$('ov').classList.remove('hidden');
+}
+function showOvBadge(badge,em,ti,de,bs){
+showOv(em,ti,de,bs);
+if(badge){_$('oBadge').textContent='★ '+badge;_$('oBadge').classList.remove('hidden');}
+}
+function hideOv(){_$('ov').classList.add('hidden');}
+
+function fin(){
+busy=false;rollAgain=false;
+renderBoard();
+var btn=_$('rb');if(btn)btn.disabled=false;
+}
+
+/* ========== REGION DONE ========== */
+function showRegDone(){
+var r=REGIONS[curReg];
+var msgs=[
+"Lisbon conquered! Jessica found Christmas lights in summer. Brian ate everything. Dad checked the Ring 14 times. Porto awaits!",
+"Porto dominated! Dad had too much port wine. Steven blamed gatooooos on Rambo. Angie has 2,000 photos. The Algarve calls!",
+"Algarve secured! Brian is sunburned. Rambo chased seagulls. Mae made everyone reapply sunscreen. One region left: BRAGA. The vineyard. The chicken coop. Home.",
+"BRAGA IS YOURS!"
+];
+_$('rdEm').textContent=r.em;_$('rdTi').textContent=r.name+' Complete!';
+_$('rdDe').textContent=msgs[curReg];
+_$('rdBtn').textContent=curReg>=3?'🏆 Victory!':'Next: '+REGIONS[curReg+1].name+' →';
+showScr('regDone');doConfetti();
+}
 function nextRegion(){
-  if(curReg>=3){winGame();return;}
-  curReg++;pos=0;busy=false;
-  showScreen('game');
-  buildAll();buildDots();showLoc();
-  _$('rb').disabled=false;
+if(curReg>=3){winGame();return;}
+curReg++;pos=0;busy=false;rollAgain=false;
+showScr('board');renderBoard();
 }
 
 /* ========== WIN ========== */
 function winGame(){
-  var total=0;for(var i=0;i<4;i++)total+=Object.keys(owned[i]).length;
-  _$('wMsg').textContent='Gooby traveled from Maryland to Portugal, conquered '+total+' legendary locations across 4 regions, collected '+coins+' coins in '+rnd+' rounds and '+steps+' steps. The Fonseca Vineyard is secure. Jessica, you did it. Que aventura! 🇵🇹';
-  showScreen('win');
-  doConfetti();doConfetti();
-  setTimeout(doXmas,500);
+var total=0;for(var i=0;i<4;i++)total+=Object.keys(owned[i]).length;
+_$('wMsg').textContent='Jessica, you did it. Gooby traveled from Maryland across all of Portugal with the Fonseca family. '+total+' properties conquered. '+coins+' coins. '+rnd+' rounds. '+steps+' steps. Mae cooked. Dad plowed the vineyard on his tractor and napped. Brian and Steven provided the gatooooos. Angie documented everything. Rambo barked at the chickens and lost. The vineyard is secure. The chicken coop is thriving. Feliz Natal from Gooby. 🇵🇹🐾';
+showScr('win');doConfetti();doConfetti();setTimeout(doXmas,500);
 }
+function fullRestart(){initState();showScr('splash');}
 
-function fullRestart(){initState();showScreen('splash');}
-
-/* ========== FX: FART (GATOOOOOS) ========== */
-function doFart(who){
-  shake();flash('#4a7a2e');
-  var cx=innerWidth/2,cy=innerHeight/2;
-  // rings
-  for(var i=0;i<5;i++){
-    (function(i){setTimeout(function(){
-      var ring=document.createElement('div');ring.className='fart-ring';
-      ring.style.left=(cx-5)+'px';ring.style.top=(cy-5)+'px';
-      ring.style.animationDuration=(0.8+i*0.2)+'s';
-      document.body.appendChild(ring);
-      setTimeout(function(){ring.remove()},2000);
-    },i*150)})(i);
-  }
-  // cloud particles
-  var fartEms=['💨','💨','💨','🐱','😤','🤢','💚'];
-  for(var i=0;i<18;i++){
-    (function(i){setTimeout(function(){
-      var cl=document.createElement('div');cl.className='fart-cloud';
-      var angle=Math.random()*6.28,dist=60+Math.random()*120;
-      cl.style.setProperty('--fx',Math.cos(angle)*dist+'px');
-      cl.style.setProperty('--fy',Math.sin(angle)*dist+'px');
-      cl.style.left=(cx-14)+'px';cl.style.top=(cy-14)+'px';
-      cl.textContent=fartEms[Math.floor(Math.random()*fartEms.length)];
-      document.body.appendChild(cl);
-      setTimeout(function(){cl.remove()},2000);
-    },i*60)})(i);
-  }
-  // who farted label
-  var lb=document.createElement('div');lb.className='fcoin';
-  lb.textContent='💨 '+who+"'s GATOOOOOS!";
-  lb.style.left=(cx-80)+'px';lb.style.top=(cy-60)+'px';
-  lb.style.fontSize='14px';lb.style.color='#7adb4a';
-  document.body.appendChild(lb);setTimeout(function(){lb.remove()},1500);
-}
-
-/* ========== FX: CHRISTMAS ========== */
-function doXmas(){
-  // snowfall
-  for(var i=0;i<30;i++){
-    (function(i){setTimeout(function(){
-      var s=document.createElement('div');s.className='snow';
-      s.style.left=Math.random()*100+'vw';
-      s.style.width=s.style.height=(3+Math.random()*5)+'px';
-      s.style.animationDuration=(2+Math.random()*3)+'s';
-      document.body.appendChild(s);
-      setTimeout(function(){s.remove()},6000);
-    },i*100)})(i);
-  }
-  // christmas lights
-  var xCols=['#ff0000','#00ff00','#ffff00','#ff6600','#0066ff','#ff00ff'];
-  for(var i=0;i<20;i++){
-    (function(i){setTimeout(function(){
-      var l=document.createElement('div');l.className='xlight';
-      l.style.left=Math.random()*100+'vw';l.style.top=Math.random()*100+'vh';
-      l.style.backgroundColor=xCols[Math.floor(Math.random()*xCols.length)];
-      l.style.animationDelay=Math.random()*0.5+'s';
-      l.style.boxShadow='0 0 10px '+l.style.backgroundColor;
-      document.body.appendChild(l);
-      setTimeout(function(){l.remove()},3000);
-    },i*50)})(i);
-  }
-  flash('#c0392b');
-}
-
-/* ========== FX: DOORBELL ========== */
-function doDoorbell(){
-  var db=document.createElement('div');db.className='doorbell';
-  db.textContent='🔔';
-  document.body.appendChild(db);
-  setTimeout(function(){db.remove()},2000);
-  shake();flash('#3498db');
-}
-
-/* ========== FX: CORE ========== */
-function fcoin(t){
-  var e=document.createElement('div');e.className='fcoin';e.textContent='💰 '+t;
-  e.style.left=(innerWidth/2-28)+'px';e.style.top='48px';
-  document.body.appendChild(e);setTimeout(function(){e.remove()},1300);
-}
-function flash(c){
-  var f=document.createElement('div');f.className='sflash';f.style.backgroundColor=c;
-  document.body.appendChild(f);setTimeout(function(){f.remove()},600);
-}
-function shake(){
-  var g=_$('game');g.classList.remove('shake');g.offsetHeight;g.classList.add('shake');
-}
-function sparkles(){
-  var cx=innerWidth/2,cy=innerHeight/2;
-  for(var i=0;i<16;i++){
-    var s=document.createElement('div');s.className='sparkle';
-    var angle=Math.random()*6.28,dist=40+Math.random()*90;
-    s.style.setProperty('--sx',Math.cos(angle)*dist+'px');
-    s.style.setProperty('--sy',Math.sin(angle)*dist+'px');
-    s.style.left=(cx-3)+'px';s.style.top=(cy-3)+'px';
-    s.style.backgroundColor=['#D4A843','#fff','#2B4C7E','#1d9d51'][Math.floor(Math.random()*4)];
-    document.body.appendChild(s);setTimeout((function(s){return function(){s.remove()}})(s),900);
-  }
-}
-function doConfetti(){
-  var cols=['#D4A843','#2B4C7E','#C0392B','#27AE60','#E67E22','#7D3C98','#fff','#148F77'];
-  for(var i=0;i<70;i++){(function(i){setTimeout(function(){
-    var p=document.createElement('div');p.className='confetti';
-    p.style.left=Math.random()*100+'vw';
-    p.style.backgroundColor=cols[Math.floor(Math.random()*cols.length)];
-    var sz=4+Math.random()*10;p.style.width=sz+'px';p.style.height=sz+'px';
-    p.style.borderRadius=Math.random()>0.5?'50%':'2px';
-    p.style.animationDuration=(1.5+Math.random()*3)+'s';
-    document.body.appendChild(p);setTimeout(function(){p.remove()},5000);
-  },i*35)})(i)}
-}
+/* ========== FX ========== */
+function fcoin(t){var e=document.createElement('div');e.className='fcoin';e.textContent='💰 '+t;e.style.left=(innerWidth/2-24)+'px';e.style.top='40px';document.body.appendChild(e);setTimeout(function(){e.remove()},1300);}
+function flash(c){var f=document.createElement('div');f.className='sflash';f.style.backgroundColor=c;document.body.appendChild(f);setTimeout(function(){f.remove()},500);}
+function shake(){var g=_$('board');if(!g)return;g.classList.remove('shake');g.offsetHeight;g.classList.add('shake');}
+function sparkles(){var cx=innerWidth/2,cy=innerHeight/2;for(var i=0;i<14;i++){var s=document.createElement('div');s.className='sparkle';var a=Math.random()*6.28,d=30+Math.random()*80;s.style.setProperty('--sx',Math.cos(a)*d+'px');s.style.setProperty('--sy',Math.sin(a)*d+'px');s.style.left=(cx-2)+'px';s.style.top=(cy-2)+'px';s.style.backgroundColor=['#D4A843','#fff','#2B4C7E','#1d9d51'][Math.floor(Math.random()*4)];document.body.appendChild(s);setTimeout((function(s){return function(){s.remove()}})(s),800);}}
+function doConfetti(){var cols=['#D4A843','#2B4C7E','#C0392B','#27AE60','#E67E22','#7D3C98','#fff','#148F77'];for(var i=0;i<60;i++){(function(i){setTimeout(function(){var p=document.createElement('div');p.className='confetti';p.style.left=Math.random()*100+'vw';p.style.backgroundColor=cols[Math.floor(Math.random()*cols.length)];var sz=4+Math.random()*10;p.style.width=sz+'px';p.style.height=sz+'px';p.style.borderRadius=Math.random()>.5?'50%':'2px';p.style.animationDuration=(1.5+Math.random()*3)+'s';document.body.appendChild(p);setTimeout(function(){p.remove()},5000);},i*30)})(i)}}
+function doMoneyBags(){var cx=innerWidth/2,cy=innerHeight/2;for(var i=0;i<5;i++){(function(i){setTimeout(function(){var m=document.createElement('div');m.className='moneybag';m.textContent='💰';m.style.left=(cx-16+Math.random()*60-30)+'px';m.style.top=(cy-16)+'px';document.body.appendChild(m);setTimeout(function(){m.remove()},2000);},i*150)})(i)}}
+function doFart(who){shake();flash('#4a7a2e');var cx=innerWidth/2,cy=innerHeight/2;
+for(var i=0;i<5;i++){(function(i){setTimeout(function(){var r=document.createElement('div');r.className='fart-ring';r.style.left=(cx-5)+'px';r.style.top=(cy-5)+'px';r.style.animationDuration=(.6+i*.15)+'s';document.body.appendChild(r);setTimeout(function(){r.remove()},1500);},i*100)})(i);}
+var fEms=['💨','💨','🐱','😤','🤢','💚'];
+for(var i=0;i<16;i++){(function(i){setTimeout(function(){var cl=document.createElement('div');cl.className='fart-cloud';var a=Math.random()*6.28,d=50+Math.random()*110;cl.style.setProperty('--fx',Math.cos(a)*d+'px');cl.style.setProperty('--fy',Math.sin(a)*d+'px');cl.style.left=(cx-12)+'px';cl.style.top=(cy-12)+'px';cl.textContent=fEms[Math.floor(Math.random()*fEms.length)];document.body.appendChild(cl);setTimeout(function(){cl.remove()},1500);},i*40)})(i);}
+var lb=document.createElement('div');lb.className='fcoin';lb.textContent='💨 '+who+"'s GATOOOOOS!";lb.style.left=Math.max(10,(cx-80))+'px';lb.style.top=(cy-50)+'px';lb.style.fontSize='12px';lb.style.color='#7adb4a';document.body.appendChild(lb);setTimeout(function(){lb.remove()},1500);}
+function doXmas(){doSnow();doXmasLights();flash('#c0392b');}
+function doSnow(){for(var i=0;i<30;i++){(function(i){setTimeout(function(){var s=document.createElement('div');s.className='snow';s.style.left=Math.random()*100+'vw';s.style.width=s.style.height=(2+Math.random()*4)+'px';s.style.animationDuration=(2+Math.random()*3)+'s';document.body.appendChild(s);setTimeout(function(){s.remove()},5500);},i*70)})(i);}}
+function doXmasLights(){var xC=['#ff0000','#00ff00','#ffff00','#ff6600','#0066ff','#ff00ff'];for(var i=0;i<20;i++){(function(i){setTimeout(function(){var l=document.createElement('div');l.className='xlight';l.style.left=Math.random()*100+'vw';l.style.top=Math.random()*100+'vh';l.style.backgroundColor=xC[Math.floor(Math.random()*xC.length)];l.style.boxShadow='0 0 10px '+l.style.backgroundColor;document.body.appendChild(l);setTimeout(function(){l.remove()},3000);},i*40)})(i);}}
+function doDoorbell(){var db=document.createElement('div');db.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:60px;z-index:56;pointer-events:none;animation:ovEmPop 1.5s ease-out forwards';db.textContent='🔔';document.body.appendChild(db);setTimeout(function(){db.remove()},1800);shake();flash('#3498db');}
+function doChicken(){for(var i=0;i<3;i++){(function(i){setTimeout(function(){var ch=document.createElement('div');ch.className='chicken';ch.textContent=['🐔','🐓','🐣'][i%3];ch.style.bottom=(25+Math.random()*20)+'%';ch.style.animationDuration=(1.5+Math.random()*1)+'s';document.body.appendChild(ch);setTimeout(function(){ch.remove()},3000);},i*250)})(i);}flash('#D4A843');shake();}
 </script>
-
 </body>
 </html>
