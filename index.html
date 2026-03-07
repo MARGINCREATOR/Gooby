@@ -234,7 +234,7 @@ canvas#villaScene{position:absolute;inset:0;width:100%;height:100%;z-index:1}
 <div id="turkeyResult" class="mg-result"><div class="mg-r-em">🏹</div><div class="mg-r-ti" id="tResTi"></div><div class="mg-r-de" id="tResDe"></div><button class="gbtn" onclick="closeTurkey()">Continue 🐾</button></div>
 <div id="fartMG" class="mg"><canvas class="mg-bg-c" id="fBgC"></canvas><div class="mg-z"><div class="mg-hud"><div class="mg-title">💨 Gatooooos Arena</div><div class="mg-score" id="fScore">0</div><div class="mg-timer" id="fTimer">10</div></div><div class="mg-inst">TAP to blast gatooooos at the family! 💨😵</div><div class="mg-arena" id="fArena"></div></div></div>
 <div id="fartResult" class="mg-result"><div class="mg-r-em">💨</div><div class="mg-r-ti" id="fResTi"></div><div class="mg-r-de" id="fResDe"></div><button class="gbtn" onclick="closeFart()">Continue 🐾</button></div>
-<div id="easter" class="scr"><canvas id="easterBG"></canvas><div class="ee-wrap"><canvas id="houseCanvas" width="300" height="220" style="display:block;margin:0 auto"></canvas><div class="ee-ti">KEVIN!</div><div class="ee-de" id="eeDe">Jessica screams! The McCallister house! Doubles = +100 coins + bonus roll!</div><button class="gbtn" onclick="closeEaster()">Merry Christmas 🎅</button></div></div>
+<div id="easter" class="scr" style="background:linear-gradient(180deg,#0a1528,#081020)"><div class="ee-wrap" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:20px"><div style="font-size:100px;filter:drop-shadow(0 0 30px rgba(255,200,80,.4))">🏠</div><div style="font-size:40px;margin:4px 0;filter:drop-shadow(0 0 15px rgba(255,200,80,.3))">🎄🎅🎄</div><div class="ee-ti" style="font-size:28px;margin:10px 0 6px">KEVIN!</div><div class="ee-de" id="eeDe" style="font-size:13px;opacity:.8;margin-bottom:12px;max-width:280px;line-height:1.5">Jessica screams! The McCallister house! Doubles = +100 coins + bonus roll!</div><button class="gbtn" onclick="closeEaster()">Merry Christmas 🎅</button></div></div>
 <div id="regDone" class="scr"><canvas id="rdScene"></canvas><div class="rd-z"><div class="rd-em" id="rdEm">🎉</div><div class="rd-ti" id="rdTi"></div><div class="rd-de" id="rdDe"></div><button class="gbtn" id="rdBtn" onclick="nextRegion()">Next Region</button></div></div>
 <div id="cityIntro" class="scr"><canvas id="ciScene"></canvas><div class="ci-z"><div class="ci-em" id="ciEm"></div><div class="ci-ti" id="ciTi"></div><div class="ci-sub" id="ciSub"></div></div></div>
 <div id="win" class="scr"><canvas id="villaScene"></canvas><div class="wz"><div class="w-em">🏆</div><div class="w-ti">Portugal Conquered!</div><div class="w-su" id="wMsg"></div><button class="gbtn" onclick="fullRestart()">Play Again 🎲</button></div></div>
@@ -1625,7 +1625,7 @@ function doChicken(){for(var i=0;i<3;i++){(function(i){setTimeout(function(){var
 var _splashRAF=0,_houseRAF=0;
 function startSplashAnim(){cancelAnimationFrame(_splashRAF);
 function lp(){paintSplash();_splashRAF=requestAnimationFrame(lp);}lp();}
-function startHouseAnim(){cancelAnimationFrame(_houseRAF);
+function startHouseAnim(){return;cancelAnimationFrame(_houseRAF);
 function lp(){paintEasterBG();paintHouse();_houseRAF=requestAnimationFrame(lp);}lp();}
 function stopHouseAnim(){cancelAnimationFrame(_houseRAF);}
 startSplashAnim();
