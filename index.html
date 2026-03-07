@@ -191,6 +191,7 @@ canvas#villaScene{position:absolute;inset:0;width:100%;height:100%;z-index:1}
 @keyframes mbF{0%{opacity:1;transform:scale(0) rotate(-20deg)}25%{opacity:1;transform:scale(1.2) rotate(8deg)}100%{opacity:0;transform:scale(.3) translateY(-90px) rotate(360deg)}}
 </style>
 <style>
+body{background:#1a7ab5 !important}
 .cell{background:linear-gradient(170deg,#2a7ec0,#1e6aa8) !important;border:3px solid rgba(255,255,255,.6) !important}
 .cell.corner-go{background:linear-gradient(165deg,#d4a030,#b88820) !important;border-color:#ffe060 !important}
 .cell.corner-turkey{background:linear-gradient(165deg,#a06828,#885218) !important;border-color:#c89040 !important}
@@ -205,21 +206,13 @@ canvas#villaScene{position:absolute;inset:0;width:100%;height:100%;z-index:1}
 .ov{background:rgba(5,30,60,.88) !important}
 #regDone{background:rgba(5,30,60,.85) !important}
 #win{background:#0a3060 !important}
-#easter{background:rgba(5,30,60,.9) !important}
-#easter canvas#easterBG{opacity:.6 !important}
-.ee-wrap{padding:8px !important}
-.ee-ti{font-size:24px !important;margin:8px 0 4px !important}
-.ee-de{font-size:11px !important;opacity:.85 !important;margin-bottom:8px !important}
-#houseCanvas{border-radius:12px !important;box-shadow:0 8px 32px rgba(0,0,0,.4) !important}
-.rd-em{font-size:60px !important}
-.rd-ti{font-size:28px !important}
-.rd-de{font-size:13px !important;opacity:.85 !important}
-#cityIntro{background:rgba(5,30,60,.92) !important}
-.w-ti{font-size:28px !important}
-.w-su{font-size:11px !important;opacity:.85 !important}
-.w-em{font-size:72px !important}
-.mg-hud{border:2px solid rgba(255,255,255,.25) !important}
-.mg-arena{border:2px solid rgba(255,255,255,.25) !important}
+#houseCanvas{display:none !important}
+#easter{background:linear-gradient(180deg,#0a1528,#081020) !important}
+#easter canvas#easterBG{display:none !important}
+.ee-wrap::before{content:"🏠";display:block;font-size:100px;text-align:center;filter:drop-shadow(0 0 30px rgba(255,200,80,.4))}
+.ee-wrap::after{content:"🎄🎅🎄";display:block;font-size:36px;text-align:center;margin-bottom:8px}
+.ee-ti{font-size:28px !important}
+.ee-de{font-size:13px !important;opacity:.85 !important}
 </style>
 </head>
 <body>
@@ -234,7 +227,7 @@ canvas#villaScene{position:absolute;inset:0;width:100%;height:100%;z-index:1}
 <div id="turkeyResult" class="mg-result"><div class="mg-r-em">🏹</div><div class="mg-r-ti" id="tResTi"></div><div class="mg-r-de" id="tResDe"></div><button class="gbtn" onclick="closeTurkey()">Continue 🐾</button></div>
 <div id="fartMG" class="mg"><canvas class="mg-bg-c" id="fBgC"></canvas><div class="mg-z"><div class="mg-hud"><div class="mg-title">💨 Gatooooos Arena</div><div class="mg-score" id="fScore">0</div><div class="mg-timer" id="fTimer">10</div></div><div class="mg-inst">TAP to blast gatooooos at the family! 💨😵</div><div class="mg-arena" id="fArena"></div></div></div>
 <div id="fartResult" class="mg-result"><div class="mg-r-em">💨</div><div class="mg-r-ti" id="fResTi"></div><div class="mg-r-de" id="fResDe"></div><button class="gbtn" onclick="closeFart()">Continue 🐾</button></div>
-<div id="easter" class="scr" style="background:linear-gradient(180deg,#0a1528,#081020)"><div class="ee-wrap" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:20px"><div style="font-size:100px;filter:drop-shadow(0 0 30px rgba(255,200,80,.4))">🏠</div><div style="font-size:40px;margin:4px 0;filter:drop-shadow(0 0 15px rgba(255,200,80,.3))">🎄🎅🎄</div><div class="ee-ti" style="font-size:28px;margin:10px 0 6px">KEVIN!</div><div class="ee-de" id="eeDe" style="font-size:13px;opacity:.8;margin-bottom:12px;max-width:280px;line-height:1.5">Jessica screams! The McCallister house! Doubles = +100 coins + bonus roll!</div><button class="gbtn" onclick="closeEaster()">Merry Christmas 🎅</button></div></div>
+<div id="easter" class="scr"><canvas id="easterBG"></canvas><div class="ee-wrap"><canvas id="houseCanvas" width="300" height="220" style="display:block;margin:0 auto"></canvas><div class="ee-ti">KEVIN!</div><div class="ee-de" id="eeDe">Jessica screams! The McCallister house! Doubles = +100 coins + bonus roll!</div><button class="gbtn" onclick="closeEaster()">Merry Christmas 🎅</button></div></div>
 <div id="regDone" class="scr"><canvas id="rdScene"></canvas><div class="rd-z"><div class="rd-em" id="rdEm">🎉</div><div class="rd-ti" id="rdTi"></div><div class="rd-de" id="rdDe"></div><button class="gbtn" id="rdBtn" onclick="nextRegion()">Next Region</button></div></div>
 <div id="cityIntro" class="scr"><canvas id="ciScene"></canvas><div class="ci-z"><div class="ci-em" id="ciEm"></div><div class="ci-ti" id="ciTi"></div><div class="ci-sub" id="ciSub"></div></div></div>
 <div id="win" class="scr"><canvas id="villaScene"></canvas><div class="wz"><div class="w-em">🏆</div><div class="w-ti">Portugal Conquered!</div><div class="w-su" id="wMsg"></div><button class="gbtn" onclick="fullRestart()">Play Again 🎲</button></div></div>
@@ -594,7 +587,7 @@ var t=Date.now()*.001;
 
 // Snow ground
 var sg=c.createLinearGradient(0,H-25,0,H);
-sg.addColorStop(0,‘rgba(230,238,252,.3)’);sg.addColorStop(.5,‘rgba(215,228,248,.2)’);sg.addColorStop(1,‘rgba(195,212,240,.1)’);
+sg.addColorStop(0,‘rgba(230,238,252,.9)’);sg.addColorStop(.5,‘rgba(215,228,248,.7)’);sg.addColorStop(1,‘rgba(195,212,240,.4)’);
 c.fillStyle=sg;c.beginPath();c.moveTo(0,H-16);
 for(var x=0;x<=W;x+=2)c.lineTo(x,H-16+Math.sin(x*.04+t*.2)*2.5);
 c.lineTo(W,H);c.lineTo(0,H);c.fill();
@@ -630,7 +623,12 @@ c.strokeStyle=‘rgba(50,45,40,.15)’;c.lineWidth=.4;
 for(var y=0;y<48;y+=3){var t2=y/48;
 c.beginPath();c.moveTo(bx-8+8*t2,by-y);c.lineTo(bx+bw+8-8*t2,by-y);c.stroke();}
 
-// Snow removed (rendered as white bar on mobile)
+// Snow on roof
+c.fillStyle=‘rgba(240,245,255,.85)’;c.beginPath();c.moveTo(bx-10,by+4);
+c.bezierCurveTo(bx+bw*.15,by-38,bx+bw*.35,by-48,bx+bw/2,by-46);
+c.bezierCurveTo(bx+bw*.65,by-48,bx+bw*.85,by-38,bx+bw+10,by+4);
+c.bezierCurveTo(bx+bw+5,by+7,bx+bw*.8,by-36,bx+bw/2,by-40);
+c.bezierCurveTo(bx+bw*.2,by-36,bx-5,by+7,bx-10,by+4);c.fill();
 
 // TWO DORMERS
 for(var d=0;d<2;d++){
@@ -639,7 +637,9 @@ var dx=bx+bw*.28+d*bw*.44,dy=by-24;
 c.fillStyle=’#f0e8d8’;c.fillRect(dx-10,dy,20,22);
 // Dormer roof (small peak)
 c.fillStyle=’#2a2520’;c.beginPath();c.moveTo(dx-12,dy);c.lineTo(dx,dy-14);c.lineTo(dx+12,dy);c.fill();
-// Dormer snow removed
+// Dormer snow
+c.fillStyle=‘rgba(240,245,255,.8)’;c.beginPath();c.moveTo(dx-13,dy+2);
+c.quadraticCurveTo(dx,dy-12,dx+13,dy+2);c.quadraticCurveTo(dx,dy-9,dx-13,dy+2);c.fill();
 // Dormer window
 c.fillStyle=‘rgba(255,220,120,.8)’;c.fillRect(dx-6,dy+3,12,14);
 c.strokeStyle=’#fff’;c.lineWidth=1.5;c.strokeRect(dx-6,dy+3,12,14);
@@ -1625,7 +1625,7 @@ function doChicken(){for(var i=0;i<3;i++){(function(i){setTimeout(function(){var
 var _splashRAF=0,_houseRAF=0;
 function startSplashAnim(){cancelAnimationFrame(_splashRAF);
 function lp(){paintSplash();_splashRAF=requestAnimationFrame(lp);}lp();}
-function startHouseAnim(){return;cancelAnimationFrame(_houseRAF);
+function startHouseAnim(){cancelAnimationFrame(_houseRAF);
 function lp(){paintEasterBG();paintHouse();_houseRAF=requestAnimationFrame(lp);}lp();}
 function stopHouseAnim(){cancelAnimationFrame(_houseRAF);}
 startSplashAnim();
