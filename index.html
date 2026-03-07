@@ -322,7 +322,6 @@ var vg=x.createRadialGradient(W/2,H/2,Math.min(W,H)*.4,W/2,H/2,Math.max(W,H)*.7)
 vg.addColorStop(0,‘transparent’);vg.addColorStop(1,‘rgba(15,60,110,.15)’);
 x.fillStyle=vg;x.fillRect(0,0,W,H);
 requestAnimationFrame(bgLoop);}
-bgInit();
 
 /* ====== WAVING PORTUGAL FLAG (canvas-painted, 60fps) ====== */
 var _flagT=0;
@@ -405,7 +404,6 @@ c.fillStyle=hg;c.fillRect(0,0,W,H);c.restore();
 // Shadow at pole edge
 c.fillStyle=‘rgba(0,0,0,.15)’;c.fillRect(0,0,3,H);
 requestAnimationFrame(paintFlag);}
-paintFlag();
 
 /* ====== SPLASH: PORTUGUESE COAST AT TWILIGHT ====== */
 function paintSplash(){
@@ -567,7 +565,6 @@ c.fillStyle=eg;c.fillRect(0,0,W,H);c.restore();
 var hg=c.createLinearGradient(0,H*.7,0,H);
 hg.addColorStop(0,‘transparent’);hg.addColorStop(1,‘rgba(60,100,180,.06)’);
 c.fillStyle=hg;c.fillRect(0,H*.7,W,H*.3);}
-setTimeout(paintAirline,0);
 
 /* ====== McCALLISTER HOUSE (FULL CANVAS PAINTING) ====== */
 /* ====== McCALLISTER HOUSE - MOVIE ACCURATE COLONIAL MANSION ====== */
@@ -1618,8 +1615,12 @@ function lp(){paintSplash();_splashRAF=requestAnimationFrame(lp);}lp();}
 function startHouseAnim(){cancelAnimationFrame(_houseRAF);
 function lp(){paintEasterBG();paintHouse();_houseRAF=requestAnimationFrame(lp);}lp();}
 function stopHouseAnim(){cancelAnimationFrame(_houseRAF);}
-startSplashAnim();
 
-</script>
+/* === SAFE INITIALIZATION (try-catch so game functions survive any canvas crash) === */
+try{bgInit();}catch(e){console.log(“bgInit error”,e);}
+try{paintFlag();}catch(e){console.log(“paintFlag error”,e);}
+try{setTimeout(paintAirline,0);}catch(e){}
+try{startSplashAnim();}catch(e){console.log(“splash error”,e);}</script>
+
 </body>
 </html>
