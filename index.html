@@ -594,7 +594,7 @@ var t=Date.now()*.001;
 
 // Snow ground
 var sg=c.createLinearGradient(0,H-25,0,H);
-sg.addColorStop(0,‘rgba(230,238,252,.9)’);sg.addColorStop(.5,‘rgba(215,228,248,.7)’);sg.addColorStop(1,‘rgba(195,212,240,.4)’);
+sg.addColorStop(0,‘rgba(230,238,252,.3)’);sg.addColorStop(.5,‘rgba(215,228,248,.2)’);sg.addColorStop(1,‘rgba(195,212,240,.1)’);
 c.fillStyle=sg;c.beginPath();c.moveTo(0,H-16);
 for(var x=0;x<=W;x+=2)c.lineTo(x,H-16+Math.sin(x*.04+t*.2)*2.5);
 c.lineTo(W,H);c.lineTo(0,H);c.fill();
@@ -630,12 +630,7 @@ c.strokeStyle=‘rgba(50,45,40,.15)’;c.lineWidth=.4;
 for(var y=0;y<48;y+=3){var t2=y/48;
 c.beginPath();c.moveTo(bx-8+8*t2,by-y);c.lineTo(bx+bw+8-8*t2,by-y);c.stroke();}
 
-// Snow on roof
-c.fillStyle=‘rgba(240,245,255,.45)’;c.beginPath();c.moveTo(bx-10,by+2);
-c.bezierCurveTo(bx+bw*.15,by-38,bx+bw*.35,by-48,bx+bw/2,by-46);
-c.bezierCurveTo(bx+bw*.65,by-48,bx+bw*.85,by-38,bx+bw+10,by+4);
-c.bezierCurveTo(bx+bw+5,by+7,bx+bw*.8,by-36,bx+bw/2,by-40);
-c.bezierCurveTo(bx+bw*.2,by-36,bx-5,by+7,bx-10,by+4);c.fill();
+// Snow removed (rendered as white bar on mobile)
 
 // TWO DORMERS
 for(var d=0;d<2;d++){
@@ -644,9 +639,7 @@ var dx=bx+bw*.28+d*bw*.44,dy=by-24;
 c.fillStyle=’#f0e8d8’;c.fillRect(dx-10,dy,20,22);
 // Dormer roof (small peak)
 c.fillStyle=’#2a2520’;c.beginPath();c.moveTo(dx-12,dy);c.lineTo(dx,dy-14);c.lineTo(dx+12,dy);c.fill();
-// Dormer snow
-c.fillStyle=‘rgba(240,245,255,.35)’;c.beginPath();c.moveTo(dx-13,dy+2);
-c.quadraticCurveTo(dx,dy-12,dx+13,dy+2);c.quadraticCurveTo(dx,dy-9,dx-13,dy+2);c.fill();
+// Dormer snow removed
 // Dormer window
 c.fillStyle=‘rgba(255,220,120,.8)’;c.fillRect(dx-6,dy+3,12,14);
 c.strokeStyle=’#fff’;c.lineWidth=1.5;c.strokeRect(dx-6,dy+3,12,14);
